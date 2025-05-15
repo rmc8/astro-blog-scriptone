@@ -1,2 +1,13 @@
 @import "tailwindcss";
-@import 'material-icons/iconfont/filled.css'
+@import "material-icons/iconfont/filled.css";
+
+:root {
+    --bg1: #fffae8;
+    --bg2: #fffcf4;
+    --accent1: #00c2d1;
+    --accent2: #86e3ed;
+    --accent3: #009cac;
+    --accent4: #00747c;
+    --accent5: #609da2;
+    --accent6: #58b7bd;
+}

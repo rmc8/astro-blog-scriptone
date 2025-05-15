@@ -22,23 +22,15 @@ const postsToShow: CollectionEntry<"blog_ko">[] = sortedPosts.slice(
 ---
 
 <Layout>
-    <main>
-        <div class="pt-16"></div>
-
-        <ul>
-            {
-                postsToShow.map((post) => {
-                    return (
-                        <li>
-                            <a href={`/blog/ja/${post.slug}`}>
-                                {post.data.title}
-                            </a>
-                        </li>
-                    );
-                })
-            }
-        </ul>
-
-        {/* ページネーションリンクは別途実装が必要です */}
-    </main>
+    <ul>
+        {
+            postsToShow.map((post) => {
+                return (
+                    <li>
+                        <a href={`/blog/ja/${post.slug}`}>{post.data.title}</a>
+                    </li>
+                );
+            })
+        }
+    </ul>
 </Layout>
