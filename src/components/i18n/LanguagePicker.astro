@@ -14,8 +14,8 @@ import { languages } from "../../i18n/ui";
         {
             Object.entries(languages).map(([lang, label]) => (
                 <li>
-                    <a
-                        href={`/blog/${lang}`}
+<a
+    href={`/blog/${lang}`}
                         onclick={`localStorage.setItem('selectedLang', '${lang}'); location.reload(); document.getElementById('language-menu').classList.add('hidden');`}
                         class="px-4 py-2 hover:bg-gray-200 flex items-center"
                     >

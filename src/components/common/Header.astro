@@ -1,5 +1,8 @@
 ---
 import LanguagePicker from "../i18n/LanguagePicker.astro";
+import { getLangFromUrl } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
 ---
 
 <header
@@ -11,7 +14,9 @@ import LanguagePicker from "../i18n/LanguagePicker.astro";
         <LanguagePicker />
         <span class="text-gray-400">|</span>
         <a href="/" class="text-gray-600 hover:text-gray-900">HOME</a>
-        <a href="/blog" class="text-gray-600 hover:text-gray-900">BLOG</a>
+        <a href=`/blog/${lang}` class="text-gray-600 hover:text-gray-900"
+            >BLOG</a
+        >
         <a href="/about" class="text-gray-600 hover:text-gray-900">ABOUT</a>
     </nav>
 </header>
