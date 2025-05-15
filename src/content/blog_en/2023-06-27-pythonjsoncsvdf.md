@@ -1,0 +1,70 @@
+---
+title: How to Convert Nested JSON (Dictionary) to CSV or DataFrame in Python
+slug: pythonjsoncsvdf
+description: ""
+date: 2023-06-27T16:36:48.821Z
+preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/python_logo.webp
+draft: false
+tags: ['JSON', 'Python', 'API']
+categories: ['Programming']
+---
+
+# How to Convert Nested JSON (Dictionary) to CSV or DataFrame in Python
+
+<p><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/1170695230331030502?hl=ja#">Weather Web Service API</a> to obtain JSON, and using a recursive function to thoroughly extract values from nested JSON, then write code to convert to Excel, CSV, or Pandas DataFrame. I will explain it simply.<br></p><h2 id="hcf2b66e679">Code</h2><pre><code class="hljs"><span class="hljs-keyword">import</span> time
+
+<span class="hljs-keyword">import</span> requests <span class="hljs-keyword">as</span> req
+<span class="hljs-keyword">import</span> pandas <span class="hljs-keyword">as</span> pd
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">conv_to_2d</span>(<span class="hljs-params">objct, parent=<span class="hljs-literal">None</span>, num=<span class="hljs-literal">None</span></span>):
+    <span class="hljs-keyword">for</span> key, vals <span class="hljs-keyword">in</span> objct.items():
+        <span class="hljs-comment"># keyの設定</span>
+        <span class="hljs-keyword">if</span> parent <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">and</span> num <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            abs_key = <span class="hljs-string">"{}.{}.{}"</span>.<span class="hljs-built_in">format</span>(parent, key, num)
+        <span class="hljs-keyword">elif</span> parent <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:
+            abs_key = <span class="hljs-string">"{}.{}"</span>.<span class="hljs-built_in">format</span>(parent, key)
+        <span class="hljs-keyword">else</span>:
+            abs_key = key
+
+        <span class="hljs-comment"># valsのタイプごとに処理を分岐</span>
+        <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(vals) <span class="hljs-keyword">is</span> <span class="hljs-built_in">dict</span>:
+            <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> conv_to_2d(objct=vals, parent=key)
+        <span class="hljs-keyword">elif</span> <span class="hljs-built_in">type</span>(vals) <span class="hljs-keyword">is</span> <span class="hljs-built_in">list</span>:
+            val_list = []
+            <span class="hljs-keyword">for</span> n, val <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(vals):
+                is_target = [<span class="hljs-built_in">type</span>(val) <span class="hljs-keyword">is</span> <span class="hljs-built_in">int</span>, <span class="hljs-built_in">type</span>(val) <span class="hljs-keyword">is</span> <span class="hljs-built_in">float</span>, <span class="hljs-built_in">type</span>(val) <span class="hljs-keyword">is</span> <span class="hljs-built_in">bool</span>]
+                <span class="hljs-keyword">if</span> <span class="hljs-built_in">type</span>(val) <span class="hljs-keyword">is</span> <span class="hljs-built_in">str</span>:
+                    <span class="hljs-keyword">if</span> val:
+                        val_list += [val]
+                <span class="hljs-keyword">elif</span> <span class="hljs-built_in">any</span>(is_target):
+                    num_str = <span class="hljs-built_in">str</span>(val)
+                    <span class="hljs-keyword">if</span> num_str:
+                        val_list += [num_str]
+                <span class="hljs-keyword">elif</span> <span class="hljs-built_in">type</span>(val) <span class="hljs-keyword">is</span> <span class="hljs-built_in">dict</span>:
+                    <span class="hljs-keyword">yield</span> <span class="hljs-keyword">from</span> conv_to_2d(objct=val, parent=abs_key, num=n)
+            <span class="hljs-keyword">if</span> val_list:
+                <span class="hljs-keyword">yield</span> abs_key, <span class="hljs-string">","</span>.join(val_list)
+        <span class="hljs-keyword">else</span>:
+            <span class="hljs-keyword">yield</span> abs_key, vals
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">get_json</span>(<span class="hljs-params">url</span>):
+    r = req.get(url)
+    <span class="hljs-keyword">return</span> r.json()
+
+<span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>():
+    base_url = <span class="hljs-string">"http://weather.livedoor.com/forecast/webservice/json/v1?city={}"</span>
+    city_id = [<span class="hljs-string">"400040"</span>, <span class="hljs-string">"290010"</span>, <span class="hljs-string">"270000"</span>, <span class="hljs-string">"190010"</span>, <span class="hljs-string">"130010"</span>, <span class="hljs-string">"015010"</span>, <span class="hljs-string">"473000"</span>, <span class="hljs-string">"350010"</span>]
+    url_list = [base_url.<span class="hljs-built_in">format</span>(id_) <span class="hljs-keyword">for</span> id_ <span class="hljs-keyword">in</span> city_id]
+
+    weather_table = []
+    <span class="hljs-keyword">for</span> url <span class="hljs-keyword">in</span> url_list:
+        res = get_json(url)
+        record = {key: val <span class="hljs-keyword">for</span> key, val <span class="hljs-keyword">in</span> conv_to_2d(res)}
+        weather_table.append(record)
+        time.sleep(<span class="hljs-number">1</span>)
+    df = pd.DataFrame(weather_table)
+    df.to_excel(<span class="hljs-string">"sample.xlsx"</span>, index=<span class="hljs-literal">False</span>)
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">"__main__"</span>:
+    main()
+</code></pre><p><br></p><h2 id="h6ae61e96eb">Processing Content</h2><h3 id="hdf531bb9c1">STEP1: Setting the URL</h3><p>In the main function, the entire program runs, so we will follow the processing in order from the main function. By inputting city_id after the '=' in <code>http://weather.livedoor.com/forecast/webservice/json/v1?city=</code>, you can obtain weather information for the city corresponding to city_id. We create a list with city_id inputs, and using list comprehension, the url_list variable generates a list of URLs with city_id embedded.<br></p><h3 id="h6c99723043">STEP2: Obtaining JSON</h3><p>Outside the for loop, we create an empty list <code>weather_table</code> to store the responses. We loop through url_list and use the get_json function to obtain JSON. The get_json function takes a URL as an argument, uses requests to send an HTTP GET request to the API to get the response, reads it as JSON, and returns the value to the main function.<br></p><h3 id="h92917775bb">STEP3: Flattening JSON</h3><p>This is the main topic of this post. We use a recursive function to extract key-value pairs from the obtained JSON. <code>conv_to_2d</code> is the function described here. Since <code>conv_to_2d</code> acts as a generator function, it sequentially obtains key-value pairs, allowing us to generate dictionary records using dictionary comprehension. A recursive function refers to a process where a function calls itself.<br></p><h4 id="hc3cb2d1b9d">Reason for Using Recursive Function</h4><p>The reason for using a recursive function this time is that, considering the use of other JSON data, the data volume is unknown and the level of nesting is unknown, we want to assume that it can be converted as long as it is properly formatted JSON. In that case, we need to handle N-level nesting, and recursive functions are the optimal way to achieve that processing.<br></p><h4 id="he873b16ad8">Stopping Condition for Recursive Function</h4><p>Since the conv_to_2d function calls itself, if executed unconditionally, conv_to_2d will be called infinitely, causing the process to not end (resulting in an error). Therefore, we need some condition to stop the function, and in this case, the stopping condition is until there are no more JSON values to read. I wrote it without using return, waiting for all values to be yielded, as that seems to make the process flow simpler.<br></p><h4 id="h2bbd84fdd4">Arguments and Usage of the Function</h4><table><tbody><tr><th colspan="1" rowspan="1"><p>Argument</p></th><th colspan="1" rowspan="1"><p>Description</p></th></tr><tr><td colspan="1" rowspan="1"><p>objct</p></td><td colspan="1" rowspan="1"><p>Dictionary-type object</p></td></tr><tr><td colspan="1" rowspan="1"><p>parent=None</p></td><td colspan="1" rowspan="1"><p>Value of the parent key</p></td></tr><tr><td colspan="1" rowspan="1"><p>num=None</p></td><td colspan="1" rowspan="1"><p>Index of the list</p></td></tr></tbody></table><p><br>The arguments consist of objct for reading the dictionary-type object, parent for reading the parent key value, and num for indicating the list index number. When calling the function for the first time, only objct is specified as an argument.<br></p><h4 id="hd834353ab5">Operation</h4><p>When calling the function, it reads the top layer of the dictionary, so there is no parent key or list index. Therefore, in the main function, we execute it by specifying only objct. After execution, we use a for loop and items() to break down the dictionary into keys and values and check them individually.<br></p><h5 id="h814796f74c">Key</h5><p>If there is a parent key or index number, it combines the parent information and the child key read in the for loop, separated by '.', to express the nested structure.<br></p><h5 id="h1ef6b169c7">Value</h5><p>The processing is divided based on whether the value is a dictionary, list, string, number, or boolean. If it is a dictionary, it calls <code>conv_to_2d</code> with the key to check the contents of the deeper dictionary layer. This realizes N-level for loop behavior. If it is a list, it obtains the list index number with enumerate while checking again whether it is a dictionary or string, etc. We are not considering lists within lists. If there is a dictionary within the list, it recursively calls <code>conv_to_2d</code> with the parent key and index number. When you want to obtain the value of the recursive function as a generator function, add <code>yield from</code> before the recursive call.<br></p><h3 id="hb70ec3c7d5">STEP4: Registering Records</h3><p><code><br></code></p><p>We store the read dictionary records in <code>weather_table</code>. Although it is a lightweight and small amount of processing, we wait for 1 second to avoid overloading the server.<br></p><h3 id="h82952b0a95">STEP5: Generating and Converting DataFrame</h3><p>After the for loop finishes, we load <code>weather_table</code> into Pandas and convert it to a DataFrame. It is structured as a two-dimensional list &gt; dictionary type, and even if the key configurations vary, it converts neatly into a table. Once converted to a DataFrame, you can perform normal Pandas operations like filtering or conversion, and convert it to formats such as Excel, CSV, TSV, Pickle, or HTML as desired.<br></p><h2 id="h043936e33f">Output Image</h2><p>※For data volume reasons, columns are significantly abbreviated.<br></p><table><tbody><tr><th colspan="1" rowspan="1"><p>pinpointLocations.name.0</p></th><th colspan="1" rowspan="1"><p>pinpointLocations.link.1</p></th><th colspan="1" rowspan="1"><p>pinpointLocations.name.1</p></th></tr><tr><td colspan="1" rowspan="1"><p>Ōmuta City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/4020300</p></td><td colspan="1" rowspan="1"><p>Kurume City</p></td></tr><tr><td colspan="1" rowspan="1"><p>Nara City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/2920200</p></td><td colspan="1" rowspan="1"><p>Yamatotakada City</p></td></tr><tr><td colspan="1" rowspan="1"><p>Osaka City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/2714000</p></td><td colspan="1" rowspan="1"><p>Sakai City</p></td></tr><tr><td colspan="1" rowspan="1"><p>Kōfu City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/1920500</p></td><td colspan="1" rowspan="1"><p>Yamanashi City</p></td></tr><tr><td colspan="1" rowspan="1"><p>Chiyoda Ward</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/1310200</p></td><td colspan="1" rowspan="1"><p>Chūō Ward</p></td></tr><tr><td colspan="1" rowspan="1"><p>Muroran City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/0121300</p></td><td colspan="1" rowspan="1"><p>Tomakomai City</p></td></tr><tr><td colspan="1" rowspan="1"><p>Miyakojima City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/4737500</p></td><td colspan="1" rowspan="1"><p>Tarama Village</p></td></tr><tr><td colspan="1" rowspan="1"><p>Shimonoseki City</p></td><td colspan="1" rowspan="1"><p>http://weather.livedoor.com/area/forecast/3520200</p></td><td colspan="1" rowspan="1"><p>Ube City</p></td></tr></tbody></table><p><br></p><h2 id="ha214098e44">Summary</h2><p>Nested JSON and recursive functions are no longer scary. I hope this helps with analysis and understanding recursive functions!

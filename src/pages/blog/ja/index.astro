@@ -1,0 +1,44 @@
+---
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import { LIMIT_PER_PAGE } from "@/lib/constants";
+
+const allBlogPosts: CollectionEntry<"blog_ja">[] =
+    await getCollection("blog_ja");
+
+const sortedPosts = allBlogPosts.sort((a, b) => {
+    const dateA = a.data.date ? a.data.date.getTime() : 0;
+
+    const dateB = b.data.date ? b.data.date.getTime() : 0;
+
+    return dateB - dateA;
+});
+
+const postsToShow: CollectionEntry<"blog_ja">[] = sortedPosts.slice(
+    0,
+    LIMIT_PER_PAGE
+);
+---
+
+<Layout>
+    <main>
+        <div class="pt-16"></div>
+
+        <ul>
+            {
+                postsToShow.map((post) => {
+                    return (
+                        <li>
+                            <a href={`/blog/ja/${post.slug}`}>
+                                {post.data.title}
+                            </a>
+                        </li>
+                    );
+                })
+            }
+        </ul>
+
+        {/* ページネーションリンクは別途実装が必要です */}
+    </main>
+</Layout>

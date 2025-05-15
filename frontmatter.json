@@ -6,15 +6,15 @@
     "frontMatter.content.pageFolders": [
         {
             "title": "blog_ja",
-            "path": "[[workspace]]/src/content/blog/ja"
+            "path": "[[workspace]]/src/content/blog_ja"
         },
         {
             "title": "blog_en",
-            "path": "[[workspace]]/src/content/blog/en"
+            "path": "[[workspace]]/src/content/blog_en"
         },
         {
             "title": "blog_ko",
-            "path": "[[workspace]]/src/content/blog/ko"
+            "path": "[[workspace]]/src/content/blog_ko"
         },
         {
             "title": "diary",
