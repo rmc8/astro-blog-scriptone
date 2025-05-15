@@ -2,12 +2,44 @@
 import { languages } from "../../i18n/ui";
 ---
 
-<ul>
-    {
-        Object.entries(languages).map(([lang, label]) => (
-            <li>
-                <a href={`/${lang}/`}>{label}</a>
-            </li>
-        ))
-    }
-</ul>
+<!-- 自動リダイレクトを削除 -->
+<div class="relative">
+    <button id="language-button" class="text-black font-bold rounded">
+        <span class="material-icons"> translate </span>
+    </button>
+    <ul
+        id="language-menu"
+        class="absolute mt-2 bg-white border rounded shadow hidden"
+    >
+        {
+            Object.entries(languages).map(([lang, label]) => (
+                <li>
+                    <a
+                        href={`/blog/${lang}`}
+                        onclick={`localStorage.setItem('selectedLang', '${lang}'); location.reload(); document.getElementById('language-menu').classList.add('hidden');`}
+                        class="px-4 py-2 hover:bg-gray-200 flex items-center"
+                    >
+                        <i class="material-icons mr-2">language</i> {label}
+                    </a>
+                </li>
+            ))
+        }
+    </ul>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const languageButton = document.getElementById("language-button");
+            if (languageButton) {
+                languageButton.addEventListener("click", function () {
+                    const menu = document.getElementById("language-menu");
+                    if (menu) {
+                        if (menu.classList.contains("hidden")) {
+                            menu.classList.remove("hidden");
+                        } else {
+                            menu.classList.add("hidden");
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</div>

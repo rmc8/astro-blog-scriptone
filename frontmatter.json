@@ -28,6 +28,7 @@
             "previewPath": "'blog'",
             "filePrefix": null,
             "clearEmpty": true,
+            "fileType": "mdx",
             "fields": [
                 {
                     "title": "Title",
