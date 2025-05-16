@@ -7,6 +7,7 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import PostDate from "@/components/blog/PostDate.astro";
 import CategoryTag from "@/components/blog/CategoryTag.astro";
+import ToC from "@/components/blog/ToC.astro";
 
 interface Props {
     singleBlog: CollectionEntry<"blog_ja">;
@@ -58,6 +59,9 @@ console.log(headings);
             )
         }
     </div>
+
+    <ToC headings={headings} />
+
     <div id="content">
         <Content />
     </div>
