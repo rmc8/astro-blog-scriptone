@@ -1,16 +1,162 @@
 ---
-
+import Layout from "@/layouts/Base.astro";
+import Profile from "@/components/prsk/Profile.astro";
+import Tools from "@/components/prsk/Tools.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="@rmc8Bok's Profile & Tools - Scriptone">
+    <h2 class="text-3xl font-bold mb-4">Profile & Tools</h2>
+    <Profile />
+
+    <h3 class="text-2xl font-bold my-4">Project Sekai</h3>
+    <ul style="padding:0;">
+        <li style="padding:0">
+            <h4 class="text-xl font-bold my-2">ツイ募</h4>
+            <p>
+                普段は36万編成で募集を以下のようにしています。SFもとくに気にせず適当に叩きながらスタンプをひたすら連打しているので、気楽にご一緒できましたらうれしいです！
+            </p>
+            <div>
+                <h4 class="text-xl font-bold my-2">マラソンイベ</h4>
+                <blockquote>
+                    おまかせ(選曲○)【room_number】＠４<br />主[leader_skill]%
+                    募☆4<br />#プロセカ募集 #プロセカ協力<br />
+                </blockquote>
+            </div>
+            <div>
+                <h4 class="text-xl font-bold my-2">チアフルイベ</h4>
+                <blockquote>
+                    [team_name]【room_number】＠４<br />主[leader_skill]% 募☆4<br
+                    />#プロセカ募集 #プロセカ協力<br />
+                </blockquote>
+            </div>
+        </li>
+        <li>
+            <h3 class="text-2xl font-bold my-2">支援編成</h3>
+            <p>
+                ツイ募支援が多めですがお声がけくださいましたらDiscordの周回にもお邪魔します。連勝用であればいろいろな総合力の調整に対応できます。
+            </p>
+            <ul class="decoration">
+                <li>160/690/38.4</li>
+                <li>160/760/35.4</li>
+                <li>150/750/21.4</li>
+                <li>100/700/19.6</li>
+                <li>150/710/16.7</li>
+            </ul>
+            <p></p>
+        </li>
+        <li>
+            <h3 class="text-2xl font-bold my-2">連勝</h3>
+            <p>
+                チアフルカーニバルイベントで固定メンバーやツイ募などでまったり連勝しています。1000連勝以上を目指した大型連勝も14か月しており1120連勝まで歩みを進められました。これからもツイボで色々な方々と連勝しながらときどき大型も楽しみたいです。以下は300連勝以上の記録です。
+            </p>
+            <ul id="winning_streak_record" class="decoration">
+                <li>金魚グループ「株式会社スイミーグループ」1120連勝</li>
+                <li>お散歩グループ「フレーミー財閥」1000連勝</li>
+                <li>しょうゆグループ「fantasista」816連勝</li>
+                <li>放送委員会グループ「（株）みんなでフルコンボ！」674連勝</li>
+                <li>みどりぷよグループ「fantasista」500連勝</li>
+                <li>サッカーグループ「浅瀬を遊泳中のニモ」456連勝</li>
+                <li>
+                    しっとりした曲グループ「もういちど希望をみんなに！」399連勝
+                </li>
+                <li>山グループ「Quintet」350連勝</li>
+                <li>金魚グループ「株式会社スイミーグループ」319連勝</li>
+                <li>金魚グループ「株式会社スイミーグループ」307連勝</li>
+                <li>お化け屋敷グループ「歌うよ！」302連勝</li>
+                <li>ミルクグループ「ミルタンクが倒せない」301連勝</li>
+            </ul>
+            <p></p>
+        </li>
+        <li>
+            <h3 class="text-2xl font-bold my-2">イベラン</h3>
+            <p>
+                ほぼほぼツイボランでXのTLをたびたび賑わせておりますが楽しくご一緒いただいてありがとうございます！
+            </p>
+            <ul id="event_rank" class="decoration">
+                <li>青空に願うユア・ハピネス！ 4位</li>
+                <li>MOREMOREMakingXmas 5位</li>
+                <li>POP IN MY HEART!! 13位</li>
+                <li>ハッピー・ラブリー・エブリデイ！ 23位</li>
+                <li>Legend still vivid 32位</li>
+                <li>Walk on and on 43位</li>
+                <li>Cast Spell on You 62位</li>
+                <li>お悩み聞かせて！わくわくピクニック 72位</li>
+                <li>Take the Best Shot！ 78位</li>
+                <li>TOP200~TOP1000 46回(2024-07-08時点)</li>
+            </ul>
+            <p></p>
+        </li>
+    </ul>
+
+    <section id="hobby">
+        <h2 class="text-3xl font-bold my-2">Hobby</h2>
+        <p>書ききれないぐらいに趣味がありますが5つ書きます。</p>
+        <ul>
+            <li>
+                <h3 class="text-2xl font-bold my-2">Coffee</h3>
+                <p>
+                    自宅で豆を焼いて挽いて飲むぐらいにはコーヒーが好きです。苦みや酸味・甘味・香りのバランスを考えて焼いたり、ブレンドして味のバランスを整えたり、いれ方を変えて味変したりで意外と奥が深いです。豆を選ぶ瞬間からコーヒーの楽しみが広がっていて長いこと楽しんでいます。メインはコーヒーですがお茶も好きで紅茶・緑茶・ブレンドなど国内外を問わずにいろいろと取り寄せて楽しんでいます。
+                </p>
+            </li>
+            <li>
+                <h3 class="text-2xl font-bold my-2">Stationery</h3>
+                <p>
+                    長時間の勉強や書写が好きで文房具にこっています。万年筆やガラスペンが好きでインク集めて勉強だったり趣味だったりでのんびり文字を書いています。ちなみに文字を書くときは左利きです。手から伝わる滑らかな感触やインクの色・匂い、文字や絵から得られる刺激や知識がいつまで経っても飽きないですし、実用性もあるので気に入っている趣味の1つです。
+                </p>
+            </li>
+            <li>
+                <h3 class="text-2xl font-bold my-2">Programming</h3>
+                <p>
+                    プログラムを書くのが好きで、Discord用のBotも作っています。得意な言語はPythonで、他にもHTMLやJavaScript、Rustなどもお遊び程度に使っています。お仕事でもプログラムを書いていて簡単なWebアプリの構築やデータ分析、学習モデルの構築、めんどくさい作業の自動化とかとても好きです。お仕事以外だとGoogle
+                    Apps
+                    Scriptでもよく遊んでいます。Discordでプログラミングをする開発鯖もあるのでご興味のある方はぜひお声がけください。
+                </p>
+            </li>
+            <li>
+                <h3 class="text-2xl font-bold my-2">Audio</h3>
+                <p>
+                    一番長く続いている趣味だと思います。イヤホン・ヘッドホン・スピーカーとなんでも好きで、イヤホン自体をつくったり、アンプやケーブルを作ったりしながら音響システム全体の音を整えていくのがいつまでたっても終わりがなく楽しめます。音楽を聴くこと自体もとても楽しいですが、1つの音楽でも音や音楽の表現が変わって何度聞いても楽しい気持ちになれます。とても長く続けていても新しい発見が音楽にも機材側にもでてくるので手をかけることがやめられません。
+                </p>
+            </li>
+            <li>
+                <h3 class="text-2xl font-bold my-2">Fragrance</h3>
+                <p>
+                    コーヒーと同様に匂いが好きなので意外とハマっている趣味です。といいつつご存じの通り香水は匂いやクセが強いものもあって私自身もそのあたりのものだったり、電車で遠くからも香るような強烈な感じだったりは得意ではないです。なので、やわらかく瑞々しく香る傾向のあるアクアディパルマの製品に好みが偏りがちです。
+                </p>
+            </li>
+        </ul>
+    </section>
+	<Tools />
+	<!--
+    <div class="container">
+        <Share
+            share_title="@k.rmc-8.comのプロフィール"
+            share_url={currentUrl}
+        />
+    </div> -->
+</Layout>
+
+<style>
+    ul,
+    li {
+        margin-left: 0px;
+        padding: 0;
+    }
+    ul li ul {
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+    ul li ul li,
+    #tools ul li {
+        margin-left: 8px;
+        padding-left: 16px;
+        padding-bottom: 0.75em;
+    }
+    ul.decoration li:before {
+        content: "✿";
+        position: absolute;
+        top: 0;
+        left: 0;
+        color: var(--accent1);
+    }
+</style>

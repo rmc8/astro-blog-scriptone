@@ -11,14 +11,27 @@
     --accent5: #609da2;
     --accent6: #58b7bd;
     --accent7: #004a50;
+    --border1: #d4cfc0;
+    --border2: #f0ece0;
 }
 
 html {
     font-size: 16px;
+    line-height: 1.7em;
 }
 
 @media (max-width: 600px) {
     html {
         font-size: 18px;
     }
+}
+
+blockquote,
+code {
+    background-color: var(--bg2);
+    padding: 12px 24px;
+    border-radius: 8px;
+    margin: 16px 0px;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+    font-family: monospace;
 }
