@@ -10,7 +10,7 @@ import ToC from "@/components/blog/ToC.astro";
         {Astro.props.singleBlog.data.title}
     </h2>
     <div class="flex flex-col items-center">
-        <div class="flex justify-center space-x-4 items-center py-2">
+        <div class="flex flex-wrap justify-center space-x-4 items-center py-2">
             <CategoryTag
                 categories={Astro.props.singleBlog.data.categories}
                 tags={Astro.props.singleBlog.data.tags}
