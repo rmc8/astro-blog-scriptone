@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+const { posts, lang_code = "ja" } = Astro.props as {
+    posts: CollectionEntry<"blog_ja">[];
+    lang_code?: string;
+};
+import CategoryTag from "./CategoryTag.astro";
+import PostDate from "./PostDate.astro";
+import PostTitle from "./PostTitle.astro";
+---
+
+<ul class="space-y-4">
+    {
+        posts.map((post) => {
+            return (
+                <li class="flex border-0 rounded-lg p-0 overflow-hidden shadow-sm bg-gradient-to-r from-bg1 to-bg2">
+                    <div class="flex-1 p-4">
+                        <PostTitle
+                            title={post.data.title}
+                            slug={post.slug}
+                            lang_code={lang_code}
+                        />
+                        <CategoryTag
+                            categories={post.data.categories}
+                            tags={post.data.tags}
+                            lang_code={lang_code}
+                        />
+                        <PostDate date={post.data.date} />
+                    </div>
+                    <div class="flex-shrink-0 preview-image">
+                        {post.data.preview && (
+                            <img
+                                src={post.data.preview}
+                                alt={post.data.title}
+                                class="w-32 h-full object-cover"
+                            />
+                        )}
+                    </div>
+                </li>
+            );
+        })
+    }
+</ul>
+<style>
+    @media (max-width: 640px) {
+        .preview-image {
+            display: none;
+        }
+    }
+</style>
