@@ -1,0 +1,223 @@
+---
+import Layout from "@/layouts/Base.astro";
+---
+
+<Layout>
+    <section id="efficiency">
+        <div class="container">
+            <h2 class="text-3xl font-bold mb-4">プロセカ楽曲効率</h2>
+            <p>
+                プロセカ楽曲の効率表です。Expertで出せるスコアを100%とした場合、同じ楽曲で異なる難易度のスコア効率が良いか悪いかを表にまとめています。低難易度でもスコアが落ちにくいもの・高難易度でスコアが伸びやすいものは「Y」、スコアが伸びにくい楽曲は「N」としています。標準的な効率の楽曲については効率を記載していません。また、未実装のAppend曲は薄い黒塗りで表示しています。低難易度の楽曲はスキルの影響を強く受けやすいため、スキルずれが起こりづらくスキル効果を最大限に活用できる1枠でのプレイがオススメです。また、MasterやAppendにおいては、効率の幅が狭くミスによるスコア低下の影響を受けやすいため、「N」判定は他の難易度より厳しくつけています。長時間の周回や1000連勝以上の達成など、ハイスコアを継続的に出したり、高難易度の適切な回避にも利用しやすくなっています。一部の楽曲では、MasterやExpertよりもHard以下でスコアが出やすい曲や、高難易度と同等のスコアが出る曲もあります。しかし、基本的にこの表はイベラン用にライフを残しつつイベントポイント（スコア）を稼ぐために使用されることが望ましいです。連勝や討伐などで高いスコアを求める場合には、この表だけに頼るのではなく自分なりに目的を持って検証し、正しい理解のもとで難易度を判断できるようにお願いいたします。
+            </p>
+            <div class="pt-8">
+                <p><b>(2024-08-24 18:00更新)</b></p>
+            </div>
+            <h3>楽曲効率表</h3>
+            <div id="loadingMessage">Loading...</div>
+            <div class="table-container">
+                <table id="efficiencyTable" style="display:none;">
+                    <thead>
+                        <tr id="tableHeaderRow"> </tr>
+                    </thead>
+                    <tbody id="tableBody"> </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<script>
+    // クライアントサイドで実行されるJavaScript
+    let columnsData = {}; // Svelteの columns に相当
+    let responseData = []; // Svelteの resData に相当
+    let isLoading = true; // Svelteの loading に相当
+    const excludedSongs = ["アサガオの散る頃に", "どんな結末がお望みだい？"]; // Svelteの exclude に相当
+
+    // DOM要素の取得
+    const loadingMessageElement = document.getElementById("loadingMessage");
+    const efficiencyTableElement = document.getElementById("efficiencyTable");
+    const tableHeaderRowElement = document.getElementById("tableHeaderRow");
+    const tableBodyElement = document.getElementById("tableBody");
+
+    // データ取得とレンダリングを行う非同期関数
+    async function fetchDataAndRenderTable() {
+        try {
+            const response = await fetch(
+                "https://script.google.com/macros/s/AKfycbzxi7hwpLKjmMWH0sfW0bbMo7hUILMLd36R3QPPcoMhWDVcThCEUNIthHzI3uaym9-E/exec"
+            );
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            const apiData = await response.json();
+
+            responseData = apiData.data;
+            columnsData = apiData.columns;
+            isLoading = false;
+        } catch (error) {
+            console.error("データの取得に失敗しました:", error);
+            loadingMessageElement.textContent =
+                "データの読み込みに失敗しました。ページを再読み込みしてください。";
+            isLoading = true; // エラー発生時もローディング状態のまま（またはエラー表示を維持）
+        }
+        renderContent(); // 取得結果（またはエラー）に基づいてコンテンツをレンダリング
+    }
+
+    // コンテンツのレンダリング関数
+    function renderContent() {
+        if (isLoading) {
+            loadingMessageElement.style.display = "block";
+            efficiencyTableElement.style.display = "none";
+        } else {
+            loadingMessageElement.style.display = "none";
+            efficiencyTableElement.style.display = ""; // テーブルを表示 (デフォルトのdisplay値に戻す)
+
+            // テーブルヘッダーのレンダリング
+            tableHeaderRowElement.innerHTML = ""; // 既存のヘッダーをクリア
+            const thName = document.createElement("th");
+            thName.textContent = columnsData.NAME || "楽曲名";
+            tableHeaderRowElement.appendChild(thName);
+
+            ["Easy", "Normal", "Hard", "Master", "Append"].forEach(
+                (difficultyKey) => {
+                    if (columnsData[difficultyKey]) {
+                        const th = document.createElement("th");
+                        th.textContent = columnsData[difficultyKey];
+                        th.style.width = "80px";
+                        tableHeaderRowElement.appendChild(th);
+                    }
+                }
+            );
+
+            // テーブルボディのレンダリング
+            tableBodyElement.innerHTML = ""; // 既存の行をクリア
+            responseData.forEach((music) => {
+                if (music.NAME && !excludedSongs.includes(music.NAME)) {
+                    const row = tableBodyElement.insertRow();
+
+                    const cellName = row.insertCell();
+                    cellName.textContent = music.NAME;
+
+                    ["Easy", "Normal", "Hard", "Master", "Append"].forEach(
+                        (difficultyKey) => {
+                            if (columnsData[difficultyKey]) {
+                                // ヘッダーが存在する難易度のみセルを作成
+                                const cell = row.insertCell();
+                                const value = music[difficultyKey];
+                                cell.textContent = value;
+                                cell.style.textAlign = "center";
+                                if (
+                                    value === "Y" ||
+                                    value === "N" ||
+                                    value === "U"
+                                ) {
+                                    cell.className = value; // クラス 'Y', 'N', 'U' を設定
+                                }
+                            }
+                        }
+                    );
+                }
+            });
+        }
+    }
+
+    // DOMContentLoadedイベントでデータ取得と初回レンダリングを実行
+    document.addEventListener("DOMContentLoaded", () => {
+        fetchDataAndRenderTable();
+    });
+</script>
+
+<style is:global>
+    /* Svelteのスタイルはスコープされていなかったため、is:globalを指定。
+       特定のセクションに限定したい場合は、各セレクタの先頭に #efficiency を追加するなどの工夫ができます。 */
+
+    #efficiency .container {
+        /* 必要に応じてコンテナのスタイルを追加 */
+        /*例: max-width: 1200px; margin: 0 auto; padding: 20px; */
+    }
+
+    #efficiency .pt-8 {
+        padding-top: 2rem; /* 32px (1rem = 16px 想定) */
+    }
+
+    #efficiency .pt-4 {
+        padding-top: 1rem; /* 16px */
+    }
+
+    #efficiency h3 {
+        margin-top: 1.5em;
+        margin-bottom: 0.8em;
+    }
+
+    #efficiency .table-container {
+        width: 100%;
+        overflow-x: auto; /* テーブルが親要素を超えた場合に横スクロールを許可 */
+        margin-top: 1em;
+    }
+
+    #efficiency table {
+        width: 100%;
+        min-width: 600px;
+        border-collapse: collapse;
+        border: 1px solid var(--border1);
+        border-radius: 8px;
+    }
+
+    #efficiency th {
+        text-align: center;
+        padding: 10px 8px;
+        color: white;
+        background-color: var(--accent1);
+        border: 1px solid var(--border1);
+    }
+
+    #efficiency td {
+        padding: 8px;
+        border: 1px solid var(--border1);
+    }
+
+    /* Svelteコンポーネントから持ってきたスタイル */
+    #efficiency td.N,
+    #efficiency td.Y {
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    #efficiency td.N {
+        background-color: #0088ff22; /* 青みがかった背景 */
+    }
+
+    #efficiency td.Y {
+        background-color: #ff4a5222; /* 赤みがかった背景 */
+    }
+
+    #efficiency td.U {
+        background-color: #0000002a; /* 薄い黒塗り */
+        color: transparent;
+        user-select: none;
+    }
+
+    #efficiency tbody tr:nth-child(even) td {
+        background-color: var(--bg2);
+    }
+    #efficiency tbody tr:nth-child(even) td.N {
+        background-color: #0088ff22;
+    }
+    #efficiency tbody tr:nth-child(even) td.Y {
+        background-color: #ff4a5222;
+    }
+    #efficiency tbody tr:nth-child(even) td.U {
+        background-color: #0000002a;
+        color: transparent;
+        user-select: none;
+    }
+
+    #efficiency tbody tr {
+        /* border-bottom: 1px solid #eeeeee; テーブルの各セルにborderを指定したので、こちらは不要な場合も */
+    }
+
+    #loadingMessage {
+        padding: 20px;
+        text-align: center;
+        font-size: 1.2em;
+    }
+</style>

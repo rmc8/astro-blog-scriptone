@@ -1,0 +1,253 @@
+---
+import Layout from "@/layouts/Base.astro";
+---
+
+<Layout>
+    <main>
+        <h2 class="text-3xl font-bold mb-4">Event Point Calculator</h2>
+        <p>
+            独りんぼエンヴィーでのイベントポイントの調整のための計算をします。炊きありの場合には小数点の切り捨ての関係で誤差が出る場合がありますため、最終的な調整は0炊きでお願いいたします。
+        </p>
+        <div class="calculator" style="padding-top:32px;">
+            <div class="form">
+                <p>獲得したいイベントポイントを数値で入力してください。</p>
+                <input
+                    class="event_point_input border border-gray-300 rounded-md"
+                    type="number"
+                    id="eventPointInput"
+                    placeholder="Input number"
+                />
+                <span
+                    id="paginationControls"
+                    class="pagination"
+                    style="padding-left: 16px;"
+                >
+                </span>
+            </div>
+            <div class="result">
+                <p id="errorMessage" class="error"></p>
+                <table id="resultTable" class="shj" style="display: none;">
+                    {/* 初期状態は非表示 */}
+                    <thead>
+                        <tr>
+                            <th>イベントボーナス</th>
+                            <th>炊き数</th>
+                            <th>スコア下限</th>
+                            <th>スコア上限</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody"> </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    // 状態変数
+    let inputNumber = null;
+    let jsonData = {};
+    let errorMessageText = ""; // errorMessageはDOM要素名と被るので変更
+    let currentPage = 1;
+    const pageSize = 8;
+    let filteredData = { records: [], totalCount: 0 };
+
+    // DOM要素の参照
+    const eventPointInputElement = document.getElementById("eventPointInput");
+    const errorMessageElement = document.getElementById("errorMessage");
+    const resultTableElement = document.getElementById("resultTable");
+    const resultBodyElement = document.getElementById("resultBody");
+    const paginationControlsElement =
+        document.getElementById("paginationControls");
+
+    // データ取得関数 (axiosの代わりにfetchを使用)
+    async function fetchData() {
+        try {
+            const response = await fetch(
+                "https://raw.githubusercontent.com/rmc8/prsk_event_point_calc/main/api/point_data_bp100.json"
+            );
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            jsonData = await response.json();
+        } catch (error) {
+            console.error("Failed to fetch data:", error);
+            errorMessageText =
+                "データの取得に失敗しました。ページを再読み込みしてみてください。";
+            updateErrorDisplay();
+        }
+    }
+
+    // ページ変更関数
+    function changePage(page) {
+        currentPage = page;
+        updateFilteredDataAndRender();
+    }
+
+    // 表示データ更新とレンダリング実行関数
+    function updateFilteredDataAndRender() {
+        const currentInputValue = eventPointInputElement.value;
+
+        if (currentInputValue === "") {
+            inputNumber = null;
+        } else {
+            const parsedNum = parseInt(currentInputValue, 10);
+            if (isNaN(parsedNum)) {
+                inputNumber = null; // 無効な数値の場合はnull扱い
+            } else {
+                inputNumber = parsedNum;
+            }
+        }
+
+        if (inputNumber === null) {
+            errorMessageText = "";
+            filteredData = { records: [], totalCount: 0 };
+        } else {
+            const raw = jsonData[String(inputNumber)]; // JSONのキーは文字列の場合がある
+            if (!raw) {
+                errorMessageText = "※該当のデータがありません";
+                filteredData = { records: [], totalCount: 0 };
+            } else {
+                errorMessageText = "";
+                const start = (currentPage - 1) * pageSize;
+                const end = start + pageSize;
+                filteredData.records = raw.slice(start, end);
+                filteredData.totalCount = raw.length;
+            }
+        }
+        render();
+    }
+
+    // テーブルレンダリング関数
+    function renderTable() {
+        resultBodyElement.innerHTML = ""; // 既存の行をクリア
+        if (errorMessageText === "" && filteredData.records.length > 0) {
+            resultTableElement.style.display = ""; // テーブルを表示
+            filteredData.records.forEach((data) => {
+                const row = resultBodyElement.insertRow();
+                const cell1 = row.insertCell();
+                cell1.textContent = data[0];
+                cell1.style.textAlign = "right";
+
+                const cell2 = row.insertCell();
+                cell2.textContent = data[1];
+                cell2.style.textAlign = "center";
+
+                const cell3 = row.insertCell();
+                cell3.textContent = data[2];
+                cell3.style.textAlign = "right";
+
+                const cell4 = row.insertCell();
+                cell4.textContent = data[3];
+                cell4.style.textAlign = "right";
+            });
+        } else {
+            resultTableElement.style.display = "none"; // テーブルを非表示
+        }
+    }
+
+    // ページネーションレンダリング関数
+    function renderPagination() {
+        paginationControlsElement.innerHTML = ""; // 既存のボタンをクリア
+        if (errorMessageText === "" && filteredData.totalCount > 0) {
+            const pageCount = Math.ceil(filteredData.totalCount / pageSize);
+            if (pageCount > 1) {
+                // 1ページのみの場合はページネーションを表示しない
+                for (let i = 1; i <= pageCount; i++) {
+                    const button = document.createElement("button");
+                    button.textContent = i;
+                    button.classList.add("pagination-btn");
+                    if (i === currentPage) {
+                        button.classList.add("active");
+                    }
+                    button.addEventListener("click", () => changePage(i));
+                    paginationControlsElement.appendChild(button);
+                }
+            }
+        }
+    }
+
+    // エラーメッセージ表示更新関数
+    function updateErrorDisplay() {
+        errorMessageElement.textContent = errorMessageText;
+    }
+
+    // 全体レンダリング関数
+    function render() {
+        updateErrorDisplay();
+        renderTable();
+        renderPagination();
+    }
+
+    // イベントリスナー設定
+    eventPointInputElement.addEventListener("input", () => {
+        currentPage = 1; // 入力値が変わったら1ページ目に戻す
+        updateFilteredDataAndRender();
+    });
+
+    // 初期化 (SvelteのonMountに相当)
+    document.addEventListener("DOMContentLoaded", async () => {
+        await fetchData(); // 最初にデータをフェッチ
+        updateFilteredDataAndRender(); // 初期表示（入力がなければ何も表示されない）
+    });
+</script>
+
+<style is:global>
+    .event_point_input {
+        width: 160px;
+        font-size: 20px;
+        padding: 8px;
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+
+    table {
+        max-width: 440px;
+        border-collapse: separate;
+        border-spacing: 0;
+        border-radius: 8px;
+        overflow: hidden;
+        border: solid 1px var(--border1);
+    }
+
+    table th,
+    table td {
+        padding: 8px;
+        border-bottom: solid 1px var(--border1);
+    }
+
+    table th {
+        color: white;
+        background-color: var(--accent1);
+    }
+
+    table tr:last-child td:first-child {
+        border-bottom-left-radius: 8px;
+    }
+
+    table tr:last-child td:last-child {
+        border-bottom-right-radius: 8px;
+    }
+    .error {
+        color: #822;
+        font-weight: bold;
+    }
+
+    .pagination button {
+        border: 0px;
+        background-color: var(--accent1);
+        color: white;
+        font-weight: bold;
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+        border-radius: 50%;
+    }
+    .pagination button.active {
+        background-color: var(--accent4);
+    }
+
+    .pagination {
+        padding-bottom: 24px;
+    }
+</style>
