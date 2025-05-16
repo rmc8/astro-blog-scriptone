@@ -4,13 +4,13 @@ import Header from "@/components/common/Header.astro";
 import Footer from "@/components/common/Footer.astro";
 import { getLangFromUrl } from "@/i18n/utils";
 const lang = getLangFromUrl(Astro.url);
-const { title = 'Scriptone' } = Astro.props;
+const { title = "Scriptone" } = Astro.props;
 ---
 
 <html lang={lang}>
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/svg+xml" href="/scriptone_logo_icon.png" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>

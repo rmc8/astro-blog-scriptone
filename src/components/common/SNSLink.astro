@@ -1,0 +1,67 @@
+---
+interface Props {
+    size?: number;
+    justify?: "left" | "center" | "right";
+}
+const { size = 24, justify = "left" } = Astro.props;
+
+type IconLink = {
+    iconPath: string;
+    url: string;
+};
+
+const linkIcons: IconLink[] = [
+    {
+        iconPath: "/skill/x.svg",
+        url: "https://x.com/rmc_km",
+    },
+    {
+        iconPath: "/skill/bluesky.svg",
+        url: "https://k.rmc-8.com",
+    },
+    {
+        iconPath: "/skill/github.svg",
+        url: "https://github.com/rmc8",
+    },
+    {
+        iconPath: "/skill/amazon.svg",
+        url: "https://www.amazon.co.jp/hz/wishlist/ls/EFSY7JHYBP5K?ref_=wl_share",
+    },
+];
+
+const getJustifyContent = (alignValue: "left" | "center" | "right") => {
+    switch (alignValue) {
+        case "left":
+            return "flex-start";
+        case "center":
+            return "center";
+        case "right":
+            return "flex-end";
+        default:
+            return "flex-start";
+    }
+};
+
+const justifyContentStyle = getJustifyContent(justify);
+
+const gapSize = size / 1.5;
+---
+
+<div
+    style={`display: flex; gap: ${gapSize}px; justify-content: ${justifyContentStyle};`}
+>
+    {
+        linkIcons.map((item) => (
+            <ako
+                href={item.url}
+                style={`width: ${size}px; height: ${size}px; display: block;`}
+            >
+                <img
+                    src={item.iconPath}
+                    alt={item.url}
+                    style="width: 100%; height: 100%; object-fit: contain;"
+                />
+            </ako>
+        ))
+    }
+</div>

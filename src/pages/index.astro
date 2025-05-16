@@ -1,5 +1,38 @@
 ---
+import Me from "@/components/home/Me.astro";
+import BlogLangs from "@/components/blog/BlogLangList.astro";
 import Base from "@/layouts/Base.astro";
 ---
 
-<Base> <h1 class="pt-16">Astro</h1></Base>
+<Base>
+    <Me />
+    <div class="p-4">
+        <div>
+            <h2 class="text-2xl font-bold mb-4">Blog</h2>
+            <BlogLangs isVertical={false} />
+        </div>
+        <div>
+            <h2 class="text-2xl font-bold my-4">Contents</h2>
+            <ul>
+                <li><a href="/about">About</a></li>
+                <li><a href="/project_sekai">プロジェクトセカイ</a></li>
+            </ul>
+        </div>
+    </div>
+</Base>
+
+<style>
+    ul {
+        padding-left: 2px;
+    }
+    li {
+        margin-bottom: 0.75rem;
+    }
+
+    ul li a {
+        text-decoration: underline;
+    }
+    ul li a:hover {
+        text-decoration: none;
+    }
+</style>

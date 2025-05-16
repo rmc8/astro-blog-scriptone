@@ -1,0 +1,28 @@
+---
+interface Props {
+    isVertical: boolean;
+}
+
+const { isVertical = true } = Astro.props;
+const langList = [
+    { name: "日本語", url: "/blog/ja" },
+    { name: "English", url: "/blog/en" },
+    { name: "한국어", url: "/blog/ko" },
+];
+---
+
+<ul
+    class={isVertical
+        ? "lang-list flex flex-col items-center"
+        : "lang-list flex flex-row items-center"}
+>
+    {
+        langList.map((lang) => (
+            <li class="lang-list__item border border-gray-400 rounded-lg p-2 m-1 w-18 text-center hover:bg-[var(--accent1)] hover:text-white duration-300">
+                <a href={lang.url} class="lang-list__link">
+                    {lang.name}
+                </a>
+            </li>
+        ))
+    }
+</ul>

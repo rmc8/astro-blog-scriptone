@@ -1,0 +1,21 @@
+---
+import Skills from "./Skills.astro";
+import ExternalLinks from "@/components/common/SNSLink.astro";
+---
+
+<div class="flex flex-wrap p-4">
+    <div class="flex-shrink-0">
+        <img src="/k.webp" alt="Avatar" class="w-32 h-32 rounded-full" />
+    </div>
+    <div class="flex flex-col justify-center p-4">
+        <h2 class="text-3xl font-bold mb-2">K</h2>
+        <p class="text-center">趣味でプログラミングをしています。</p>
+        <div class="pt-3">
+            <ExternalLinks />
+        </div>
+    </div>
+    <div class="w-full mt-4">
+        <h2 class="text-2xl font-bold my-4">Skills</h2>
+        <Skills />
+    </div>
+</div>

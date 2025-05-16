@@ -1,0 +1,101 @@
+---
+type Skill = {
+    name: string;
+    iconPath: string;
+    url: string;
+    type: "Lang" | "Framework";
+};
+
+const skills: Skill[] = [
+    {
+        name: "Astro",
+        iconPath: "/skill/astro.svg",
+        url: "https://astro.build",
+        type: "Framework",
+    },
+    {
+        name: "Python",
+        iconPath: "/skill/python.svg",
+        url: "https://www.python.org",
+        type: "Lang",
+    },
+    {
+        name: "TypeScript",
+        iconPath: "/skill/typescript.svg",
+        url: "https://www.typescriptlang.org",
+        type: "Lang",
+    },
+    {
+        name: "Svelte",
+        iconPath: "/skill/svelte.svg",
+        url: "https://svelte.dev",
+        type: "Framework",
+    },
+    {
+        name: "Tauri",
+        iconPath: "/skill/tauri.svg",
+        url: "https://tauri.app",
+        type: "Framework",
+    },
+    {
+        name: "TailwindCSS",
+        iconPath: "/skill/tailwindcss.svg",
+        url: "https://tailwindcss.com",
+        type: "Framework",
+    },
+    {
+        name: "LangChain",
+        iconPath: "/skill/langchain.svg",
+        url: "https://www.langchain.com",
+        type: "Framework",
+    },
+    {
+        name: "LangGraph",
+        iconPath: "/skill/langgraph.svg",
+        url: "https://www.langchain.com/langgraph",
+        type: "Framework",
+    },
+    {
+        name: "Flutter",
+        iconPath: "/skill/flutter.svg",
+        url: "https://flutter.dev",
+        type: "Framework",
+    },
+    {
+        name: "FastAPI",
+        iconPath: "/skill/fastapi.svg",
+        url: "https://fastapi.tiangolo.com",
+        type: "Framework",
+    },
+    {
+        name: "Ollama",
+        iconPath: "/skill/ollama.svg",
+        url: "https://ollama.ai",
+        type: "Framework",
+    },
+];
+---
+
+<ul class="flex flex-wrap list-none p-0">
+    {
+        [...skills]
+            .sort((a, b) => {
+                if (a.type === b.type) {
+                    return a.name.localeCompare(b.name);
+                }
+                return a.type === "Lang" ? -1 : 1;
+            })
+            .map((skill) => (
+                <li class="flex items-center mr-2 mb-2 px-2.5 py-0.5 border border-gray-300 rounded-full bg-[var(--bg2)] hover:bg-[var(--accent1)] text-black hover:text-white duration-300">
+                    <a href={skill.url} class="flex items-center no-underline">
+                        <img
+                            src={skill.iconPath}
+                            alt={skill.name}
+                            class="w-5 h-5 mr-1"
+                        />
+                        {skill.name}
+                    </a>
+                </li>
+            ))
+    }
+</ul>
