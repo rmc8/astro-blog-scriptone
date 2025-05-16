@@ -4,6 +4,7 @@
 :root {
     --bg1: #fffae8;
     --bg2: #fffcf4;
+    --bg3: #f5f2e8;
     --accent1: #00c2d1;
     --accent2: #86e3ed;
     --accent3: #009cac;
@@ -18,6 +19,8 @@
 html {
     font-size: 16px;
     line-height: 1.7em;
+    scrollbar-color: var(--accent1) var(--bg3);
+    overflow-x: hidden;
 }
 
 @media (max-width: 600px) {

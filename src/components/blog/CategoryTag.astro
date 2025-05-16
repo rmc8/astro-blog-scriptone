@@ -14,12 +14,15 @@ const {
     {
         categories.length > 0 &&
             categories.map((category: string) => (
-                <span class="inline-flex items-center px-1 py-0.5 rounded bg-[var(--accent3)]/90 hover:bg-[var(--accent3)]/75 text-white text-xs font-semibold duration-300">
+                <a
+                    href={`/blog/${lang_code}/categories/${category}`}
+                    class="inline-flex items-center px-1 py-0.5 rounded bg-[var(--accent3)]/90 hover:bg-[var(--accent3)]/75 text-white text-xs font-semibold duration-300"
+                >
                     <i class="material-icons icon-small mr-1 text-white">
                         folder
                     </i>{" "}
                     {category}
-                </span>
+                </a>
             ))
     }
     {

@@ -29,7 +29,7 @@ const { singleBlog } = Astro.props;
 const { Content, headings } = await singleBlog.render();
 ---
 
-<Layout>
+<Layout title=`${Astro.props.singleBlog.data.title} - Scriptone`>
     <div>
         <h2 class="font-bold text-3xl text-center">
             {Astro.props.singleBlog.data.title}
@@ -39,94 +39,97 @@ const { Content, headings } = await singleBlog.render();
                 <CategoryTag
                     categories={Astro.props.singleBlog.data.categories}
                     tags={Astro.props.singleBlog.data.tags}
-                    lang_code="en"
+                    lang_code="ja"
                 />
-            </div>
-            <PostDate date={Astro.props.singleBlog.data.date} />
-        </div>
-        {
-            Astro.props.singleBlog.data.preview && (
-                <div class="mb-4" id="eye_catch">
-                    <Image
-                        src={Astro.props.singleBlog.data.preview}
-                        alt="blog-image"
-                        height={500}
-                        width={1000}
-                    />
+                <div class="pt-1">
+                    <PostDate date={Astro.props.singleBlog.data.date} />
                 </div>
-            )
+            </div>
+            {
+                Astro.props.singleBlog.data.preview && (
+                    <div class="mb-4" id="eye_catch">
+                        <Image
+                            src={Astro.props.singleBlog.data.preview}
+                            alt="blog-image"
+                            height={500}
+                            width={1000}
+                        />
+                    </div>
+                )
+            }
+        </div>
+
+        <ToC headings={headings} />
+
+        <div id="content">
+            <Content />
+        </div>
+    </div>
+
+    <style is:global>
+        #content h1,
+        #content h2 {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 16px 0px;
         }
-    </div>
+        #content h3 {
+            font-size: 1.6em;
+            font-weight: bold;
+            padding: 12px 0px;
+        }
 
-    <ToC headings={headings} />
+        #content h4 {
+            font-size: 1.4em;
+            font-weight: bold;
+            padding: 8px 0px;
+        }
 
-    <div id="content">
-        <Content />
-    </div>
+        #content h5 {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 4px 0px;
+        }
+
+        #content h6 {
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 2px 0px;
+        }
+
+        #content code {
+            background-color: transparent;
+            padding: 0em 0.33em;
+            color: #881100;
+            box-shadow: 0 0 0 0;
+            background-color: var(--bg2);
+            border-radius: 2px;
+        }
+
+        #content pre code {
+            padding: 0;
+            background-color: transparent;
+            text-decoration: none;
+            color: white;
+        }
+
+        #content div.remark-code-container {
+            margin: 1.5em 0;
+        }
+
+        #content div.remark-code-container,
+        #content pre.astro-code {
+            border-radius: 8px;
+            scrollbar-y: hidden;
+        }
+
+        #content pre.astro-code {
+            padding: 8px 12px;
+        }
+
+        #eye_catch img,
+        #content img {
+            border-radius: 8px;
+        }
+    </style>
 </Layout>
-
-<style is:global>
-    #content h1,
-    #content h2 {
-        font-size: 1.8em;
-        font-weight: bold;
-        padding: 16px 0px;
-    }
-    #content h3 {
-        font-size: 1.6em;
-        font-weight: bold;
-        padding: 12px 0px;
-    }
-
-    #content h4 {
-        font-size: 1.4em;
-        font-weight: bold;
-        padding: 8px 0px;
-    }
-
-    #content h5 {
-        font-size: 1.2em;
-        font-weight: bold;
-        padding: 4px 0px;
-    }
-
-    #content h6 {
-        font-size: 1.1em;
-        font-weight: bold;
-        padding: 2px 0px;
-    }
-
-    #content code {
-        background-color: transparent;
-        padding: 0em 0.33em;
-        color: #881100;
-        box-shadow: 0 0 0 0;
-        background-color: var(--bg2);
-        border-radius: 2px;
-    }
-
-    #content pre code {
-        padding: 0;
-        background-color: transparent;
-        text-decoration: none;
-    }
-
-    #content div.remark-code-container {
-        margin: 1.5em 0;
-    }
-
-    #content div.remark-code-container,
-    #content pre.astro-code {
-        border-radius: 8px;
-        scrollbar-y: hidden;
-    }
-
-    #content pre.astro-code {
-        padding: 8px 12px;
-    }
-
-    #eye_catch img,
-    #content img {
-        border-radius: 8px;
-    }
-</style>

@@ -1,0 +1,16 @@
+---
+import Layout from "@/layouts/Base.astro";
+import BlogLangList from "@/components/blog/BlogLangList.astro";
+---
+
+<Layout title="Blog">
+    <h2 class="text-3xl font-bold mb-4">Blog</h2>
+    <BlogLangList isVertical={false} />
+    <div class="pl-2 pt-4">
+        <a
+            href="/"
+            class="bg-[var(--accent1)] text-white p-2 rounded hover:bg-[--accent7]"
+            >Home</a
+        >
+    </div>
+</Layout>

@@ -12,10 +12,12 @@ const { headings } = Astro.props;
         {
             headings.map((heading) => (
                 <li class={`ml-${(heading.depth - 2) * 5} hover:underline`}>
-                    {Array(heading.depth - 1)
-                        .fill("#")
-                        .join("")}{" "}
-                    <a href={`#${heading.slug}`}>{heading.text}</a>
+                    <a href={`#${heading.slug}`}>
+                        {Array(heading.depth - 1)
+                            .fill("#")
+                            .join("")}{" "}
+                        {heading.text}
+                    </a>
                 </li>
             ))
         }
@@ -26,5 +28,14 @@ const { headings } = Astro.props;
     li {
         margin-bottom: 0.5em;
         font-size: 1.1em;
+    }
+
+    a {
+        text-decoration: underline;
+        color: var(--accent3);
+    }
+
+    a:hover {
+        text-decoration: none;
     }
 </style>

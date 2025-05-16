@@ -30,20 +30,20 @@ const { singleBlog } = Astro.props;
 const { Content, headings } = await singleBlog.render();
 ---
 
-<Layout>
+<Layout title=`${Astro.props.singleBlog.data.title} - Scriptone`>
     <div>
         <h2 class="font-bold text-3xl text-center">
             {Astro.props.singleBlog.data.title}
         </h2>
         <div class="flex justify-center space-x-4">
-            <div class="pt-2">
-                <CategoryTag
-                    categories={Astro.props.singleBlog.data.categories}
-                    tags={Astro.props.singleBlog.data.tags}
-                    lang_code="ko"
-                />
+            <CategoryTag
+                categories={Astro.props.singleBlog.data.categories}
+                tags={Astro.props.singleBlog.data.tags}
+                lang_code="ja"
+            />
+            <div class="pt-1">
+                <PostDate date={Astro.props.singleBlog.data.date} />
             </div>
-            <PostDate date={Astro.props.singleBlog.data.date} />
         </div>
         {
             Astro.props.singleBlog.data.preview && (
@@ -110,6 +110,7 @@ const { Content, headings } = await singleBlog.render();
         padding: 0;
         background-color: transparent;
         text-decoration: none;
+        color: white;
     }
 
     #content div.remark-code-container {
