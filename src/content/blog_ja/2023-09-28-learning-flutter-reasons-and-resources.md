@@ -1,15 +1,13 @@
 ---
-title: Flutterを学びはじめた理由と学習のリソース
-slug: learning-flutter-reasons-and-resources
-description: Flutterを学びはじめるきっかけとなったエピソードや理由、学習のリソースを示します。
+title: "Flutterを学びはじめた理由と学習のリソース"
+slug: "learning-flutter-reasons-and-resources"
+description: "Flutterを学びはじめるきっかけとなったエピソードや理由、学習のリソースを示します。"
 date: 2023-09-28T23:06:21.913Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/FlutterEyecatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/FlutterEyecatch.webp"
 draft: false
 tags: ['Flutter', 'Dart']
 categories: ['Programming']
 ---
-
-# Flutterを学びはじめた理由と学習のリソース
 
 ## はじめに
 

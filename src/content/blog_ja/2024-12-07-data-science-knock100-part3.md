@@ -1,15 +1,13 @@
 ---
-title: データサイエンス100本ノックをPandas・Polars・SQLで解く(#21-#30)
-slug: data-science-knock100-part3
-description: Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問２１から問３０まで解答します。基本統計量の算出がメインの課題です。
+title: "データサイエンス100本ノックをPandas・Polars・SQLで解く(#21-#30)"
+slug: "data-science-knock100-part3"
+description: "Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問２１から問３０まで解答します。基本統計量の算出がメインの課題です。"
 date: 2024-12-07T03:50:22.460Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
 tags: ['Python', 'データサイエンス']
 categories: ['Programming']
 ---
-
-# データサイエンス100本ノックをPandas・Polars・SQLで解く(#21-#30)
 
 [前回のノック](/data-science-knock100-part2)に続いて、問21から問30までの10問をPandas/Polars/SQLでときます。
 

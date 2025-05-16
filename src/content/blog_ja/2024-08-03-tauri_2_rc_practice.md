@@ -1,15 +1,13 @@
 ---
-title: Tauri 2.0 (RC)でモバイルアプリを試し書きする
-slug: tauri_2_rc_practice
-description: Tauri 2.0のRC版が発表されましたので、モバイル向けにカウンターアプリをSvelteを使って試し書きします。TypeScriptさえわかればお好みのフレームワークでモバイルアプリを作れるので、ぜひTauriで遊んでいただけたら幸いです。
+title: "Tauri 2.0 (RC)でモバイルアプリを試し書きする"
+slug: "tauri_2_rc_practice"
+description: "Tauri 2.0のRC版が発表されましたので、モバイル向けにカウンターアプリをSvelteを使って試し書きします。TypeScriptさえわかればお好みのフレームワークでモバイルアプリを作れるので、ぜひTauriで遊んでいただけたら幸いです。"
 date: 2024-08-03T06:39:57.446Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/tauri_eycatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/tauri_eycatch.webp"
 draft: false
 tags: ['Tauri', 'Rust', 'Svelte', 'TypeScript']
 categories: ['Programming']
 ---
-
-# Tauri 2.0 (RC)でモバイルアプリを試し書きする
 
 Tauri2.0のリリース候補の[アナウンス](https://v2.tauri.app/blog/tauri-2-0-0-release-candidate/)がありました。Tauri2.0ではモバイル向けの機能も追加されていますので、スマートフォン向けのカウンターアプリを作りながら機能を試します。
 

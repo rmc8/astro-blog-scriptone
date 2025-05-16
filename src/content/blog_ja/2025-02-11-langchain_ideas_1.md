@@ -1,15 +1,13 @@
 ---
-title: 生成AI(LLM)はネットスーパーで買い物をできるのか？
-slug: langchain_ideas_1
-description: PythonでLangchainやPlaywrightを使い生成AIでネットスーパーにお遣いできるかを考えます。
+title: "生成AI(LLM)はネットスーパーで買い物をできるのか？"
+slug: "langchain_ideas_1"
+description: "PythonでLangchainやPlaywrightを使い生成AIでネットスーパーにお遣いできるかを考えます。"
 date: 2025-02-11T04:08:12.472Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/llm.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/llm.webp"
 draft: false
 tags: ['LangChain', 'LLM', 'Playwright', 'Python']
 categories: ['Programming']
 ---
-
-# 生成AI(LLM)はネットスーパーで買い物をできるのか？
 
 生成AI＋Playwight＋Fireを組み合わせてネットスーパーのお遣いをしてくれるロボットを実験的に作って遊びました。使用言語はPythonです。
 

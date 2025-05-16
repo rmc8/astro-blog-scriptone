@@ -1,15 +1,13 @@
 ---
-title: 【IFTTT】TwitterからMisskeyへ自動投稿する
-slug: twitter-to-misskey
-description: IFTTTの有料プランを活用してTwitterからMisskeyにTweetの内容をそのままノートする方法を記載しております。
+title: "【IFTTT】TwitterからMisskeyへ自動投稿する"
+slug: "twitter-to-misskey"
+description: "IFTTTの有料プランを活用してTwitterからMisskeyにTweetの内容をそのままノートする方法を記載しております。"
 date: 2023-07-10T13:32:56.828Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/twiToMisskeyEyecatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/twiToMisskeyEyecatch.webp"
 draft: false
 tags: ['GoogleAppsScript', 'Misskey', 'Twitter', 'IFTTT']
 categories: ['Programming']
 ---
-
-# 【IFTTT】TwitterからMisskeyへ自動投稿する
 
 TwitterのAPI制限の事件からMisskeyを使い始めました。Misskeyは個人開発・個人運営であるもののTreadよりも馴染みやすい雰囲気で、意外とプログラミング周りが楽しいプラットフォームであることも気づき気に入っています。しかしながら、自分の周りでMisskeyに移行した方がいない状態でほぼ一人の状態でノートしています。それも寂しいような気もするので、Twitterでゆるく投稿しながらMisskeyにも脈絡のある範囲でTweet内容をそのままNoteして、並行して運用していくことにしました。無差別に自動投稿すると脈絡のない状態でMisskeyに投稿することになってしまうのでその対策をしながら並行して使っていくことを目指します。コピペなどでの対応は可能ですが本記事にはJavaScriptによるプログラミングが含まれます。
 

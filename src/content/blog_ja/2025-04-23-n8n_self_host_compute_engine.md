@@ -1,15 +1,13 @@
 ---
-title: Compute Engineの無料枠にn8nをセルフホストする
-slug: n8n_self_host_compute_engine
-description: Compute Engineの無料枠を活用してn8nをセルフホストします。Docker Composeを使った手軽な手順でn8nの構築ができ生成AIも含めた多様な自動化を実現する環境が整います。
+title: "Compute Engineの無料枠にn8nをセルフホストする"
+slug: "n8n_self_host_compute_engine"
+description: "Compute Engineの無料枠を活用してn8nをセルフホストします。Docker Composeを使った手軽な手順でn8nの構築ができ生成AIも含めた多様な自動化を実現する環境が整います。"
 date: 2025-04-23T23:26:26.384Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/n8n.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/n8n.webp"
 draft: false
 tags: ['n8n', 'LLM']
 categories: ['Programming']
 ---
-
-# Compute Engineの無料枠にn8nをセルフホストする
 
 ## n8nを導入したきっかけ
 

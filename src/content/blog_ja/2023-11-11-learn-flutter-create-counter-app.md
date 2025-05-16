@@ -1,15 +1,13 @@
 ---
-title: Flutter入門 - カウンターアプリをつくる
-slug: learn-flutter-create-counter-app
-description: 初めてFlutterでアプリを作る方に向けた入門記事です。Flutterでカウンターアプリを作りながら、コードの理解を深めていきます。
+title: "Flutter入門 - カウンターアプリをつくる"
+slug: "learn-flutter-create-counter-app"
+description: "初めてFlutterでアプリを作る方に向けた入門記事です。Flutterでカウンターアプリを作りながら、コードの理解を深めていきます。"
 date: 2023-11-11T00:27:39.212Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/FlutterEyecatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/FlutterEyecatch.webp"
 draft: false
 tags: ['Flutter', 'Dart']
 categories: ['Programming']
 ---
-
-# Flutter入門 - カウンターアプリをつくる
 
 FlutterはiOSやAndroid、Windows、Mac、Web向けのアプリを1つのコードで作れるフレームワークです。外観の表示の定義も少ないコード量で定義でき、色や図形、アイコンの設定、行や列の構造や文字の表示などを簡単にできます。
 

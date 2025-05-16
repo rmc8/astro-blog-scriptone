@@ -1,15 +1,13 @@
 ---
-title: 【Python】睡眠時間をtogglに自動で記録する
-slug: record-sleeping-time-into-toggl
-description:  ""
+title: "【Python】睡眠時間をtogglに自動で記録する"
+slug: "record-sleeping-time-into-toggl"
+description: ""
 date: 2023-06-27T16:59:36.201Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/garmin_toggl.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/garmin_toggl.webp"
 draft: false
 tags: ['Python', 'toggl', 'API']
 categories: ['Programming']
 ---
-
-# 【Python】睡眠時間をtogglに自動で記録する
 
 <p>Pythonを使って、togglに睡眠時間を自動で書きだすプログラムをつくります。</p><h2 id="h9707d3a59a">概要</h2><p>自由な時間やゆっくりできる時間を絞り出すためにタスク管理ツールをいくつか使っています。メインツールとして<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/5316291686161534869?hl=ja#">TickTick</a>などをつかって、完了したタスクの内容は把握しています。一方で、それぞれにどれだけ時間を費やしたかInput量が見えづらいことに気付きました。<br>Inputが見えずらい点に関して、<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/5316291686161534869?hl=ja#">toggl</a>というツールを使うとストップウォッチのように手軽に時間を測りながら、やった作業内容をクイックに記録できます。APIもあるので、自動でデータを蓄積することもできます。加えて、CSV出力機能もついているので、データをためて分析するところまで手軽にできることになります。<br>手始めに、スマートウォッチに蓄積されている睡眠時間を自動でtogglに登録する処理を書き、APIに少しずつ慣れていきます。</p><h2 id="h18a86fe6b9">Inputデータ</h2><p>スマートウォッチはGarminのVenu 2を使います。</p><p>GarminはOfficialなAPIは公開されていませんが、<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/5316291686161534869?hl=ja#">APIを叩けるライブラリ</a>は存在します。これを使って、睡眠ログを取得して、toggl API用にデータを変換します。今回はGarminのウォッチを使いますが、Fitbitであれば<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/5316291686161534869?hl=ja#">OfficialなAPI</a>もあります。</p><p>他社製品なので、APIからのReturnは異なりますが睡眠の記録を取得できます。睡眠時間の記録に関しては、データ取得さえできればほかのウォッチでも良いと思われます。</p><p>また、データを変えれば睡眠に限らずにいろいろなデータを流し込めるので、他のAPIで運動時間など人の作業を記録したり、他に何か人に限らずとも時間を記録する用途で使うのも面白いかもしれません。</p><h2 id="h30fa20b7e1">コーディング</h2><p>今回書いたコードのRepositoryは以下のURLです。<br><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/5316291686161534869?hl=ja#">https://github.com/rmc8/Tool-for-transcribing-sleep-records-to-toggl</a></p><h3 id="h9e5ec7394d">Main</h3><p>メインの処理は<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/5316291686161534869?hl=ja#">main.py</a>に書きました。YAML形式のファイルやコマンドラインから設定を引き取りプログラムを実行します。</p><p>コマンドラインは以下のような構成です。</p><pre><code class="language-shell hljs">python <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.py</span> {さかのぼる日付数}
 </code></pre><p>コマンドラインでさかのぼる日数に<code>1</code>と入力すると、プログラム実行日から前日の範囲、<code>30</code>と入力すると同様に30日前までの範囲の睡眠記録をまとめて取得を試みます。引数を省略すると当日分のみを取得を試みます。日数指定できないのは不便な気もしますが、タスクスケジューラーで自動的に登録しておしまいにしたいので、かなり簡素化しています。</p><p>YAMLファイルは以下の通りです。</p><pre><code class="language-yaml hljs"><span class="hljs-attr">time_zone:</span> <span class="hljs-number">9</span>  

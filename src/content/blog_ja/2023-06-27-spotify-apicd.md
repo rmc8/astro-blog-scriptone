@@ -1,15 +1,13 @@
 ---
-title: Spotify APIを使ってCDのジャケット画像を取得する
-slug: spotify-apicd
-description:  ""
+title: "Spotify APIを使ってCDのジャケット画像を取得する"
+slug: "spotify-apicd"
+description: ""
 date: 2023-06-27T16:44:52.580Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/tunebrowser.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/tunebrowser.webp"
 draft: false
 tags: ['Python', 'JSON', 'API', 'Spotify']
 categories: ['Programming']
 ---
-
-# Spotify APIを使ってCDのジャケット画像を取得する
 
 <p>PythonでSpotify APIを使って、CDのジャケット画像の取得を試みます。</p><h2 id="h9707d3a59a">概要</h2><p>Windows 10で管理しているミュージックディレクトリを使って、Spotify APIのQueryを作成して、CDのジャケット画像のURLを取得します。ジャケット画像を取得することで、プレイヤーソフトでジャケットが表示されるようになります。手作業だと手間がかかる作業ですが、大部分を自動取得できるようにします。</p><p>Repository: <a href="https://github.com/rmc8/cd_jacket_scraper_for_spotify">https://github.com/rmc8/cd_jacket_scraper_for_spotify</a></p><h2 id="h255e3e779e">APIを使う準備</h2><p>ここでは、APIを使うためのキーの取得と、Pythonのライブラリの導入をします。</p><h3 id="he3e7f8020b">APIキーの取得</h3><p><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/6625944576452608577#">Developerページ</a>にログインします。Spotifyのアカウントでログインできます。アカウントがない場合には、Spotifyのアカウントを作成してください。</p><p>ログインできたら、［CREATE ANN APP］をクリックします。<br>「App name」には「CD Jacket scraper」などわかる名前を入力して、「App description」には「Get the CD jacket」などわかるような説明を入力します。その後、2つあるチェックボックスにチェックをします。チェックするとPermissionやGuidelineなどに同意することになります。入力内容に誤りがないことを確認して、［CREATE］ボタンをクリックします。</p><p>クリック後、APPが作成されダッシュボードが表示されます。ダッシュボード内にある、［SHO CLIENT SECRET］をクリックして、Client IDとClient SecretをWindowsの環境変数に登録します。</p><p>［FYI］<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/6625944576452608577#">環境変数の設定</a></p><p>Client IDは、変数名を「SPOTIFY_CLIENT_ID」にして、変数値にダッシュボードに表示されている値を貼り付けます。同様に、Client Secretは、変数名を「SPOTIFY_SECRET_ID」にして、変数値にダッシュボードの値を貼り付けます。変数の登録が完了したら、変数を使用できる状態にするため、<strong>PCを一度再起動してください</strong>。</p><h3 id="h0f9c9e996f">Pythonのライブラリを導入する</h3><p>pipなどで下記ライブラリを導入してください。</p><ul><li>spotipy</li><li>requests</li><li>PySimpleGUI</li></ul><pre><code class="hljs">pip <span class="hljs-keyword">install</span> spotipy requests PySimpleGUI
 </code></pre><h2 id="hfedbcd1844">大まかな動作内容</h2><p>プログラム（<a href="http://main.py">main.py</a>）を実行すると、インプットとなるディレクトリのファイルパスを選択するダイアログが表示されます。選択したディレクトリのパスをrootとして使い、<code>os.walk()</code>を使ってrootディレクトリの配下にあるディレクトリを探索します。ここでは以下のディレクトリ構造を例にします。</p><pre><code class="hljs">D:\

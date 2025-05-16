@@ -1,15 +1,13 @@
 ---
-title: DevToの最新1000記事からワードクラウドを作る
-slug: creating_wordcloud_from_devto
-description: DevToのAPIからPythonで記事を取得しワードクラウドを作る方法について解説しています。最新の1000記事からワードクラウドを作りその傾向を読み取ることでDevToの技術コミュニティの傾向を見るとともに、DevToなど海外の技術情報を得る便益について検討しています。
+title: "DevToの最新1000記事からワードクラウドを作る"
+slug: "creating_wordcloud_from_devto"
+description: "DevToのAPIからPythonで記事を取得しワードクラウドを作る方法について解説しています。最新の1000記事からワードクラウドを作りその傾向を読み取ることでDevToの技術コミュニティの傾向を見るとともに、DevToなど海外の技術情報を得る便益について検討しています。"
 date: 2024-08-11T06:36:37.547Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/devto_wordcloud_202407282354.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/devto_wordcloud_202407282354.webp"
 draft: false
 tags: ['Python', 'dev.to', 'API']
 categories: ['Programming']
 ---
-
-# DevToの最新1000記事からワードクラウドを作る
 
 前回にPython向けの[dev.toのAPIを操作するためのライブラリ](https://rmc-8.com/introduction_devtopy)を紹介しました。これを使いWordcloudを作って、直近1000記事の単語でWordcloudを作ります。  
   

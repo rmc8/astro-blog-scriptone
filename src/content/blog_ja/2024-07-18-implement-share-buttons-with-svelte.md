@@ -1,15 +1,13 @@
 ---
-title: 【Svelte】共有ボタンの実装
-slug: implement-share-buttons-with-svelte
-description: Svelteを使用して7つのSNS向け共有ボタンを実装する方法を解説。X、Bluesky、はてなブックマーク、Pocket、Threads、マストドン、Misskeyに対応したシンプルで軽量な共有機能の実装手順と各SNSの設定方法を詳細に紹介。
+title: "【Svelte】共有ボタンの実装"
+slug: "implement-share-buttons-with-svelte"
+description: "Svelteを使用して7つのSNS向け共有ボタンを実装する方法を解説。X、Bluesky、はてなブックマーク、Pocket、Threads、マストドン、Misskeyに対応したシンプルで軽量な共有機能の実装手順と各SNSの設定方法を詳細に紹介。"
 date: 2024-07-18T00:43:36.910Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/SharedButtons.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/SharedButtons.webp"
 draft: false
 tags: ['SNS', 'Svelte', 'TypeScript']
 categories: ['Programming']
 ---
-
-# 【Svelte】共有ボタンの実装
 
 Svelteを使って7つのツール向けに共有ボタンを実装しました。
 

@@ -1,15 +1,13 @@
 ---
-title: 【Python】Dev community (dev.to)からAPIで記事情報などを取得する
-slug: introduction_devtopy
-description: 海外の技術コミュニティdev.toからAPIを介して自動で記事を取得するPythonライブラリ「devtopy」の紹介。ライブラリの使用方法やAPIの機能を詳しく解説。また、GPT-4o miniとの組み合わせによる翻訳・要約の可能性についても言及。devtopyを活用することで、海外の技術情報へのアクセスが容易になり、プログラミングスキルの向上に貢献します。
+title: "【Python】Dev community (dev.to)からAPIで記事情報などを取得する"
+slug: "introduction_devtopy"
+description: "海外の技術コミュニティdev.toからAPIを介して自動で記事を取得するPythonライブラリ「devtopy」の紹介。ライブラリの使用方法やAPIの機能を詳しく解説。また、GPT-4o miniとの組み合わせによる翻訳・要約の可能性についても言及。devtopyを活用することで、海外の技術情報へのアクセスが容易になり、プログラミングスキルの向上に貢献します。"
 date: 2024-07-30T02:00:07.288Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/devto_eycatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/devto_eycatch.webp"
 draft: false
 tags: ['Python', 'dev.to', 'API']
 categories: ['Programming']
 ---
-
-# 【Python】Dev community (dev.to)からAPIで記事情報などを取得する
 
 海外の技術コミュニティの[dev.to](https://dev.to/)からAPIを介して自動で記事などを取得するためのライブラリを作りました。  
 

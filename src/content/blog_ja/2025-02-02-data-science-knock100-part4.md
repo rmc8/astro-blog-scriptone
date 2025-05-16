@@ -1,15 +1,13 @@
 ---
-title: データサイエンス100本ノックをPandas・Polars・SQLで解く(#31-#40)
-slug: data-science-knock100-part4
-description: Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問３１から問４０まで解答します。基本統計量の算出し、算出した値でフィルターをすることや一時テーブルの作成、テーブルの作成がメインの内容となります。
+title: "データサイエンス100本ノックをPandas・Polars・SQLで解く(#31-#40)"
+slug: "data-science-knock100-part4"
+description: "Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問３１から問４０まで解答します。基本統計量の算出し、算出した値でフィルターをすることや一時テーブルの作成、テーブルの作成がメインの内容となります。"
 date: 2025-02-02T02:54:15.860Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
 tags: ['Python', 'データサイエンス']
 categories: ['Programming']
 ---
-
-# データサイエンス100本ノックをPandas・Polars・SQLで解く(#31-#40)
 
 [前回のノック](/data-science-knock100-part3)に続いて、問31から問40までの10問をPandas/Polars/SQLでときます。
 

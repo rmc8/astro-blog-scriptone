@@ -1,15 +1,13 @@
 ---
-title: PythonにおけるLangChain Nimbleの使用例
-slug: langchain_nimble
-description: Nimble RetrieverがLangChainの統合されました。PythonでのNimble Retrieverの活用方法を紹介します。
+title: "PythonにおけるLangChain Nimbleの使用例"
+slug: "langchain_nimble"
+description: "Nimble RetrieverがLangChainの統合されました。PythonでのNimble Retrieverの活用方法を紹介します。"
 date: 2025-05-15T04:01:16.002Z
-preview: https://b.rmc-8.com/img/2025/05/15/2ec7f029f7700300b626a9c0293c80a6.jpg
+preview: "https://b.rmc-8.com/img/2025/05/15/2ec7f029f7700300b626a9c0293c80a6.jpg"
 draft: false
 tags: ['LangChain', 'Python', 'LangGraph']
 categories: ['Programming']
 ---
-
-# PythonにおけるLangChain Nimbleの使用例
 
 Nimble RetrieverがLangChainの統合されたとのことでしたが何のことかが分からなかったので、コードを書いて検証してみました。
 

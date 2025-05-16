@@ -1,15 +1,13 @@
 ---
-title: データサイエンス100本ノックをPandas・Polars・SQLで解く(#1-#10)
-slug: data-science-knock100-part1
-description: Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問１から問１０まで解答します。
+title: "データサイエンス100本ノックをPandas・Polars・SQLで解く(#1-#10)"
+slug: "data-science-knock100-part1"
+description: "Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問１から問１０まで解答します。"
 date: 2024-11-24T09:02:29.266Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
 tags: ['データサイエンス', 'Python']
 categories: ['Programming']
 ---
-
-# データサイエンス100本ノックをPandas・Polars・SQLで解く(#1-#10)
 
  データサイエンス100本ノックをPython(Pandas/Polars)とSQLで解きます。
 

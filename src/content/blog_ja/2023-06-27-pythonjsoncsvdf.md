@@ -1,15 +1,13 @@
 ---
-title: PythonでネストしたJSON(辞書型)をcsvやdfに変換する方法
-slug: pythonjsoncsvdf
-description:  ""
+title: "PythonでネストしたJSON(辞書型)をcsvやdfに変換する方法"
+slug: "pythonjsoncsvdf"
+description: ""
 date: 2023-06-27T16:36:48.821Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/python_logo.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/python_logo.webp"
 draft: false
 tags: ['JSON', 'Python', 'API']
 categories: ['Programming']
 ---
-
-# PythonでネストしたJSON(辞書型)をcsvやdfに変換する方法
 
 <p><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/1170695230331030502?hl=ja#">お天気WebサービスのAPI</a>よりJSONを取得して、入れ子になっているJSONの値を再帰関数を使い根こそぎ取得して、ExcelやCSV、Pandasのデータフレーム等に変換するコードを書きました。簡単に解説をします。<br></p><h2 id="hcf2b66e679">コード</h2><pre><code class="hljs"><span class="hljs-keyword">import</span> time
 

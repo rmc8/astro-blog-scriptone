@@ -1,15 +1,13 @@
 ---
-title: 【Flutter】簡単なビンゴゲームでflutter_riverpodに入門する
-slug: flutter_riverpod_practice
-description: Flutterの状態管理ライブラリflutter_riverpodの入門ガイド。簡単なビンゴゲームアプリを例ににしてriverpodの基本概念、実装方法、テスト手法を解説。コード生成を活用した効率的な状態管理の実現方法や、大規模開発におけるriverpodの利点を紹介。
+title: "【Flutter】簡単なビンゴゲームでflutter_riverpodに入門する"
+slug: "flutter_riverpod_practice"
+description: "Flutterの状態管理ライブラリflutter_riverpodの入門ガイド。簡単なビンゴゲームアプリを例ににしてriverpodの基本概念、実装方法、テスト手法を解説。コード生成を活用した効率的な状態管理の実現方法や、大規模開発におけるriverpodの利点を紹介。"
 date: 2024-07-17T06:21:25.128Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/riverpod.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/riverpod.webp"
 draft: false
 tags: ['riverpod', 'Flutter']
 categories: ['Programming']
 ---
-
-# 【Flutter】簡単なビンゴゲームでflutter_riverpodに入門する
 
 Flutterでの状態管理を行うライブラリのflutter_riverpodに入門します。簡単なビンゴゲームのアプリを使い解説を行います。
 

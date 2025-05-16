@@ -1,15 +1,13 @@
 ---
-title: 公式のNotion APIをPythonで叩く（Notion SDK for Python）
-slug: using-notion-api-with-python
-description:  ""
+title: "公式のNotion APIをPythonで叩く（Notion SDK for Python）"
+slug: "using-notion-api-with-python"
+description: ""
 date: 2023-06-27T16:48:20.257Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/notion.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/notion.webp"
 draft: false
 tags: ['Python', 'Notion', 'API']
 categories: ['Programming']
 ---
-
-# 公式のNotion APIをPythonで叩く（Notion SDK for Python）
 
 <p>PythonでNotion API(Public Beta)を叩いてみます。</p><h2 id="h9707d3a59a">概要</h2><p>2021年5月にNotionのAPIが公開されました。これ以前は<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/4117163140880046642#">notin-py</a>など非公式のAPIを使う他ありませんでした。Public Betaの段階ですが、公式APIを使ってNotionを操作するための日本語の情報が少ないため、簡単に記述していきます。詳細の確認は英語ですが公式ドキュメントがとても役立ちます。<br>現時点でNotionは日本語対応していないため、Notionの言語は英語の状態で手順を記載します。</p><ul><li><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/4117163140880046642#">Notion API</a></li><li><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/4117163140880046642#">Notion SDK for Python</a></li><li><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/4117163140880046642#">[FYI] notion-py</a></li></ul><h2 id="h31d727ccda">準備</h2><h3 id="h56d25f79e1">Installation</h3><p>pipなどで<code>notion-client</code>を導入します。</p><pre><code class="language-shell hljs">pip install notion-<span class="hljs-keyword">client</span>
 </code></pre><h3 id="h35695e9877">Integrations</h3><p><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/4117163140880046642#">https://www.notion.so/my-integrations</a>からIntegrationを作成します。<code>notion-client</code>で作成したIntegrationを使い、Notion APIを叩きます。</p><h4 id="h046876a126">手順</h4><ul><li><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/4117163140880046642#">ページ</a>にアクセスする</li><li>［New integration］をクリックする</li><li>フォームに値を入力する<ul><li>Integration名を入力する（e.g. myIntg）</li><li>アイコンを設定する（任意）</li><li>APIで操作するWorkspacesを選択する</li></ul></li><li>［Submit］をクリックする<br>一連の操作を終えると、Tokenが発行されます。［Secret］の<code>Internal Integration Token</code>のテキストボックスをクリックすると、Tokenを表示できます。もう一度、クリックしてTokenをCopyしてください。<br>コピーしたTokenは環境変数<code>NOTION_TOKEN</code>にセットするか、メモ帳などに貼り付けるかしてください。</li></ul><h3 id="h3d0309d9da">Integration Invitations（重要）</h3><p>Integrationを作成しましたが、作成したままの状態だとAPIを十分に使用できません。Workspacesにアクセスして、以下の手順で操作の準備をします。</p><ul><li>APIで操作したいページを選択する</li><li>画面上部のバーからShareをクリックする</li><li>［Invite］をクリックする</li><li>作成したIntegrationをクリックする</li><li>［Invite］をクリックする</li></ul><p>操作のあと、Shareの一覧に作成したIntegrationが表示されたら、そのページをAPI経由で操作できるようになります。</p><h3 id="hf1ecb3158c">PythonでAPIの認証をする</h3><p>PythonでAPIを操作する準備をします。以下のコードで認証します。</p><pre><code class="language-python hljs">import os

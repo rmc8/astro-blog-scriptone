@@ -1,15 +1,13 @@
 ---
-title: Topping PA5 IIの音質レビュー
-slug: topping_pa5ii_review
-description: Topping PA5 IIパワーアンプのレビュー。中国の人気オーディオブランドToppingの最新コンパクトアンプを実際に使用し、音質や特徴を詳しく解説。3万円台で手に入る高コスパな製品として、オーディオ初心者にもおすすめ。
+title: "Topping PA5 IIの音質レビュー"
+slug: "topping_pa5ii_review"
+description: "Topping PA5 IIパワーアンプのレビュー。中国の人気オーディオブランドToppingの最新コンパクトアンプを実際に使用し、音質や特徴を詳しく解説。3万円台で手に入る高コスパな製品として、オーディオ初心者にもおすすめ。"
 date: 2024-08-02T14:19:33.036Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/topping_pa5ii_1.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/topping_pa5ii_1.webp"
 draft: false
 tags: ['アンプ', 'Topping', 'FiiO']
 categories: ['Audio']
 ---
-
-# Topping PA5 IIの音質レビュー
 
 Toppingの[PA5 II](https://www.toppingaudio.com/product-item/pa5-ii-pa5-iiplus)をAmazon(に出品しているシンセンオーディオ)より購入しました。購入価格は33,700円です。簡単にレビューします。
 

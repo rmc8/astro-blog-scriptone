@@ -1,15 +1,13 @@
 ---
-title: 【Python】『ローマの休日』レビューのスクレイピング
-slug: eiga-com-scraping-practice
-description: 映画.comからPythonのBeautifulSoup4を使ってスクレイピングを行いました。
+title: "【Python】『ローマの休日』レビューのスクレイピング"
+slug: "eiga-com-scraping-practice"
+description: "映画.comからPythonのBeautifulSoup4を使ってスクレイピングを行いました。"
 date: 2024-05-06T11:27:46.583Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img%2Feyecatch%2Froma_scraping.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img%2Feyecatch%2Froma_scraping.webp"
 draft: false
 tags: ['Python', 'スクレイピング', 'BeautifulSoup4']
 categories: ['Programming']
 ---
-
-# 【Python】『ローマの休日』レビューのスクレイピング
 
 GWの休暇でQiitaを眺めていたところ以下の記事を拝見しました。
 

@@ -1,15 +1,13 @@
 ---
-title: SvelteKit＋highlight.jsでシンタックスハイライトを設定する
-slug: sveltekit-syntaxhighlight
-description: SvelteKitとhighlight.jsを使ってシンタックスハイライトを設定します。HTMLをスクレイピングしてコードブロックをシンタックスハイライトが設定済みの状態に置換します。
+title: "SvelteKit＋highlight.jsでシンタックスハイライトを設定する"
+slug: "sveltekit-syntaxhighlight"
+description: "SvelteKitとhighlight.jsを使ってシンタックスハイライトを設定します。HTMLをスクレイピングしてコードブロックをシンタックスハイライトが設定済みの状態に置換します。"
 date: 2023-07-07T11:32:25.200Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/highlightsyntax.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/highlightsyntax.webp"
 draft: false
 tags: ['JavaScript', 'highlight.js', 'SvelteKit']
 categories: ['Programming']
 ---
-
-# SvelteKit＋highlight.jsでシンタックスハイライトを設定する
 
 SvelteKitでコードブロックに対してシンタックスハイライトを割り当てていきます。ブログ構築の際にバックエンド側に使ったMicroCMSの記事を参考にしました。
 

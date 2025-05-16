@@ -1,15 +1,13 @@
 ---
-title: 岸田首相の3年分の「総理の一日」からワードクラウドを作る
-slug: kishida_pm_daily_schedule_wordcloud
-description: 岸田文雄氏の3年分の「総理の一日」をクローリング・スクレイピングして自然言語処理を行い、ワードクラウドを作ります。Pythonでできる自動化を幅広く学習しつつ、首相としての務めを技術的に見ていきます。
+title: "岸田首相の3年分の「総理の一日」からワードクラウドを作る"
+slug: "kishida_pm_daily_schedule_wordcloud"
+description: "岸田文雄氏の3年分の「総理の一日」をクローリング・スクレイピングして自然言語処理を行い、ワードクラウドを作ります。Pythonでできる自動化を幅広く学習しつつ、首相としての務めを技術的に見ていきます。"
 date: 2024-08-14T13:25:00.072Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/kishida_pm_wc.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/kishida_pm_wc.webp"
 draft: false
 tags: ['Python', 'スクレイピング', 'BeautifulSoup4', 'Playwright']
 categories: ['Programming']
 ---
-
-# 岸田首相の3年分の「総理の一日」からワードクラウドを作る
 
 岸田首相の退任のニュースがありましたので、総理の一日からワードクラウドを作ってみました。  
 ※新しい首相の選出により首相官邸ページが古くなる可能性が非常に高いのでコードは参考程度にしてください。  

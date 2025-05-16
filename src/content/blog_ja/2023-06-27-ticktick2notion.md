@@ -1,15 +1,13 @@
 ---
-title: TickTickで完了したタスクをNotionに自動登録する
-slug: ticktick2notion
-description:  ""
+title: "TickTickで完了したタスクをNotionに自動登録する"
+slug: "ticktick2notion"
+description: ""
 date: 2023-06-27T16:47:13.987Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/notion.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/notion.webp"
 draft: false
 tags: ['Python', 'JSON', 'Notion', 'API', 'TickTick']
 categories: ['Programming']
 ---
-
-# TickTickで完了したタスクをNotionに自動登録する
 
 <p>TickTickで完了したTaskを自動的にNotionのデータベースに登録する仕組みを構築します。</p><h2 id="h9707d3a59a">概要</h2><p>Notionはノートの作成やカンバンによる管理、データベースの構築などオールインワンに情報を管理できます。データベースを使ったGUIでフローを構築したり、情報をストックできたりする点にメリットがある一方で、特定の目的に特化したツールを使うほうが時には高い利便性を得られることもあります。<br>今回はToDoの管理をTickTickを用いつつ、完了したTaskをNotionに蓄積させて集計で振り返りができるように機能をつくります。</p><h2 id="h466509ec71">やること</h2><p>TickTickで完了したタスクをNotion上のデータベースに蓄積します。大まかな流れは以下の通りです。</p><ul><li>TickTickでタスクの完了をする</li><li>IFTTTでタスクの完了を検知してGASへWebhook(POST)</li><li>GASでNotionの認証と値の変換をしてWebhook(POST)</li><li>Notionのデータベースに完了したタスクを挿入する</li></ul><p>イベントの発火にはIFTTTのようなWebサービスをつなぐツールが便利なので、これを使います。IFTTTだけではWebhookのHeaderに認証情報を加えたり値を変換したりが難しいので、このギャップをGASで埋めます。</p><h2 id="hcf1b4f26d1">Notion APIを使う準備</h2><p><a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/2595771111680511772#">Integrations＞手順</a>を参考に、Notion側でAPIを使えるように準備します。</p><h2 id="h5f23fd791c">データベースの構築</h2><p></p><p></p><p>TickTickからIFTTTでWebhookにのせられる情報は上の通りです。すべてのデータを保持することに現状ではデメリットはないので、上の情報をストックできるデータベース（テーブル）をNotion上につくります。</p><p></p><p></p><p>日付系の列はDate型、TagはMultiSelect型、それ以外はString型に設定します。データベースの構築が完了したら、ページ右上のShareから作成したIntegrationsをInviteしてAPIを使えるようにしてください。</p><p>［FYI］<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/2595771111680511772#">https://www.notion.so/mikohei/TicktickToNotion-025088cb072748fbba1a1586346d108d#4377d6f1fc2b4efbad100d0b54c4a06f</a></p><h2 id="hdea9182d4e">GASの構築</h2><h3 id="h8f44530b0b">HTTP-POSTのテスト</h3><p>［FYI］<a href="https://draft.blogger.com/blog/post/edit/3231669075263956300/2595771111680511772#">IFTTTのWebhookをGASのPOSTで受け取るときのパラメータ覚書</a></p><p>上を参考にIFTTTからWebhookを受け取るコードをためしに書きます。Google Apps ScriptのEditorを開き、以下のコードを入力します。</p><pre><code class="language-jsx hljs"><span class="hljs-keyword">function</span> <span class="hljs-keyword">do</span><span class="hljs-constructor">Post(<span class="hljs-params">e</span>)</span> {
   var jsonString = e.postData.get<span class="hljs-constructor">DataAsString()</span>

@@ -1,15 +1,13 @@
 ---
-title: BS-8とFostex FE83NV2を使ってスピーカーを自作する
-slug: bs-8_fe83nv2_diy_speaker
-description: BS-8エンクロージャーとFostex FE83NV2ユニットを使用したDIYスピーカーの製作過程と音質レビュー。自作の背景、組み立て方法、使用パーツ、音質特性を詳しく解説。中音域の魅力や様々な音楽ジャンルでの相性、コストパフォーマンスにも言及。手軽に楽しめるオーディオシステムを求める方に参考になるかもしれません。
+title: "BS-8とFostex FE83NV2を使ってスピーカーを自作する"
+slug: "bs-8_fe83nv2_diy_speaker"
+description: "BS-8エンクロージャーとFostex FE83NV2ユニットを使用したDIYスピーカーの製作過程と音質レビュー。自作の背景、組み立て方法、使用パーツ、音質特性を詳しく解説。中音域の魅力や様々な音楽ジャンルでの相性、コストパフォーマンスにも言及。手軽に楽しめるオーディオシステムを求める方に参考になるかもしれません。"
 date: 2024-08-12T13:33:34.036Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/bs-8-eycatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/bs-8-eycatch.webp"
 draft: false
 tags: ['スピーカー', 'DIY', 'Topping', 'FiiO']
 categories: ['Audio']
 ---
-
-# BS-8とFostex FE83NV2を使ってスピーカーを自作する
 
 FOSTEXのFE83NV2とBS-8エンクロージャーを使ってスピーカーの自作をしました。
 

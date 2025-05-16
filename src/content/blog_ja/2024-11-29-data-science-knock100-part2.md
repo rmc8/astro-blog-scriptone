@@ -1,15 +1,13 @@
 ---
-title: データサイエンス100本ノックをPandas・Polars・SQLで解く(#11-#20)
-slug: data-science-knock100-part2
-description: Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問11から問20まで解答します。主にLIKE, endswith, startswith, 正規表現などを用いた文字列のパターン検出を行います。
+title: "データサイエンス100本ノックをPandas・Polars・SQLで解く(#11-#20)"
+slug: "data-science-knock100-part2"
+description: "Python(Polars/Pandas)とSQLでデータサイエンス100本ノックの問11から問20まで解答します。主にLIKE, endswith, startswith, 正規表現などを用いた文字列のパターン検出を行います。"
 date: 2024-11-29T22:11:45.861Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
 tags: ['データサイエンス', 'Python']
 categories: ['Programming']
 ---
-
-# データサイエンス100本ノックをPandas・Polars・SQLで解く(#11-#20)
 
 [前回のノック](/data-science-knock100-part1)に続いて、問11から問20までの10問をPandas/Polars/SQLでときます。
 

@@ -1,15 +1,13 @@
 ---
-title: 【IFTTT】TwitterからBlueskyへ自動投稿する
-slug: twitter-to-bluesky
-description: IFTTTとGoogle Apps Scriptを使いTwitterからBlueskyに投稿をする方法を記載します。複数のSNSを並行して活用しながら移行をしたり交流をしたりなどの活用ができます。
+title: "【IFTTT】TwitterからBlueskyへ自動投稿する"
+slug: "twitter-to-bluesky"
+description: "IFTTTとGoogle Apps Scriptを使いTwitterからBlueskyに投稿をする方法を記載します。複数のSNSを並行して活用しながら移行をしたり交流をしたりなどの活用ができます。"
 date: 2023-07-15T12:17:45.842Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/twiToBsky.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/twiToBsky.webp"
 draft: false
 tags: ['Bluesky', 'Twitter', 'IFTTT', 'GoogleAppsScript']
 categories: ['Programming']
 ---
-
-# 【IFTTT】TwitterからBlueskyへ自動投稿する
 
 [前回の記事](/twitter-to-misskey)で紹介したMisskeyに続いて、[Blueskyのアカウント](https://bsky.app/profile/k.rmc-8.com)も取得したので使い始めました。Misskeyよりも日本人ユーザーは少ないですが、日本人同士でゆるくつながりあっており、開発者の方も割と多くリアクションをいただけるため意外と楽しい場所です。いうならば初期の日本語対応以前から震災前のようなTwitterの雰囲気があり割と気に入っています。とはいえ、Twitterでないと交流できない方もいてあっさり移行というわけにはいかなかったので、Twitter・Misskey・Blueskyと並行して使いながらTLも楽しめるようにTwitterからBlueskyへと投稿する処理をIFTTTとGoogle Apps Scriptを使って書きました。コピペなどでの対応が可能ですが前回と同様にJavaScriptによるプログラミングが本記事に含まれます。
 

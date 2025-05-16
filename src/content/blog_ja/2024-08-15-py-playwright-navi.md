@@ -1,15 +1,13 @@
 ---
-title: 【Python】Playwrightに入門する(1) 導入編(Install, Pages, Navigator)
-slug: py-playwright-navi
-description: Python向けのPlaywrightの導入方法と使い方を簡単に学習します。Seleniumと比較しながらページの開き方やページ遷移の方法を中心に見ていきます。
+title: "【Python】Playwrightに入門する(1) 導入編(Install, Pages, Navigator)"
+slug: "py-playwright-navi"
+description: "Python向けのPlaywrightの導入方法と使い方を簡単に学習します。Seleniumと比較しながらページの開き方やページ遷移の方法を中心に見ていきます。"
 date: 2024-08-15T09:04:05.429Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/playwright_eycatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/playwright_eycatch.webp"
 draft: false
 tags: ['Python', 'Playwright']
 categories: ['Programming']
 ---
-
-# 【Python】Playwrightに入門する(1) 導入編(Install, Pages, Navigator)
 
 PythonでPlaywrightに入門します。
 
