@@ -2,7 +2,6 @@
 import { languages } from "@/i18n/ui";
 ---
 
-<!-- 自動リダイレクトを削除 -->
 <div class="relative">
     <button id="language-button" class="text-black font-bold rounded">
         <span class="material-icons"> translate </span>
@@ -15,12 +14,12 @@ import { languages } from "@/i18n/ui";
             Object.entries(languages).map(([lang, label]) => (
                 <li>
 <a
-    href={`/blog/${lang}`}
-                        onclick={`localStorage.setItem('selectedLang', '${lang}'); location.reload(); document.getElementById('language-menu').classList.add('hidden');`}
-                        class="px-4 py-2 hover:bg-gray-200 flex items-center"
-                    >
-                        <i class="material-icons mr-2">language</i> {label}
-                    </a>
+    href={`/blog/${lang}/${Astro.url.pathname.split('/').slice(3).join('/') || ''}`}
+    onclick={`localStorage.setItem('selectedLang', '${lang}'); location.reload(); document.getElementById('language-menu').classList.add('hidden');`}
+    class="px-4 py-2 hover:bg-gray-200 flex items-center"
+>
+    <i class="material-icons mr-2">language</i> {label}
+</a>
                 </li>
             ))
         }
