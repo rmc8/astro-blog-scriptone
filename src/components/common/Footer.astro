@@ -3,8 +3,11 @@ import ExternalLinks from "./SNSLink.astro";
 ---
 
 <footer>
-    <div class="py-6">
+    <div class="py-4">
         <ExternalLinks size={24} justify="center" />
+    </div>
+    <div class="py-4">
+        <a href="/privacy_policy">Privacy Policy</a>
     </div>
     <p>&copy; {new Date().getFullYear()} Scriptone. All rights reserved.</p>
 </footer>
@@ -13,5 +16,9 @@ import ExternalLinks from "./SNSLink.astro";
     footer {
         padding: 2rem;
         text-align: center;
+    }
+
+    a {
+        text-decoration: underline;
     }
 </style>
