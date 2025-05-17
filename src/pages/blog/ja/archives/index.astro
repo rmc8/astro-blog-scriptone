@@ -1,0 +1,23 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { getAggregatedData } from "@/lib/collections/data";
+import Layout from "@/layouts/Base.astro";
+import ItemCountList from "@/components/blog/ItemCountList.astro";
+
+const allBlogPosts: CollectionEntry<"blog_ja">[] =
+    await getCollection("blog_ja");
+
+const { archives }: { archives: Record<string, number> } =
+    getAggregatedData(allBlogPosts);
+const Archives: [string, number][] = Object.entries(archives).sort(
+    (a: [string, number], b: [string, number]) => {
+        return parseInt(b[0], 10) - parseInt(a[0], 10);
+    }
+);
+---
+
+<Layout title="アーカイブ - Scriptone">
+    <h2 class="text-3xl font-bold mb-4">アーカイブ</h2>
+    <ItemCountList items={Archives} baseUrl="/blog/ja/archives" />
+</Layout>

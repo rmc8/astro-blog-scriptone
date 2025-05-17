@@ -1,0 +1,29 @@
+---
+type ListItemData = [string, number][];
+
+interface Props {
+    items: ListItemData;
+    baseUrl: string;
+}
+
+const { items, baseUrl } = Astro.props;
+
+const cleanBaseUrl =
+    baseUrl.endsWith("/") || baseUrl === "" ? baseUrl : `${baseUrl}/`;
+---
+
+<ul class="tag-list flex flex-row flex-wrap">
+    {
+        items.map(([name, count]) => (
+            <li class="tag-list__item border border-gray-400 rounded-lg px-2 m-1 text-center hover:bg-[var(--accent1)] hover:text-white duration-300">
+                {" "}
+                <a
+                    href={`${cleanBaseUrl}${name}`}
+                    class="tag-list__link block w-full whitespace-nowrap"
+                >
+                    {name} ({count}){" "}
+                </a>
+            </li>
+        ))
+    }
+</ul>

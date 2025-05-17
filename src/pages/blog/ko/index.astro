@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import { LIMIT_PER_PAGE, SITE_NAME } from "@/lib/constants";
 import BlogList from "@/components/blog/BlogList.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
 
 const allBlogPosts: CollectionEntry<"blog_ko">[] =
     await getCollection("blog_ko");
@@ -21,11 +22,12 @@ const postsToShow: CollectionEntry<"blog_ko">[] = sortedPosts.slice(
 ---
 
 <Layout title={`${SITE_NAME} - Blog`}>
-    <BlogList posts={postsToShow} lang_code="ko" /></Layout
->
-
-<style is:global>
-    html {
-        font-family: "Noto Sans KR Variable", sans-serif;
-    }
-</style>
+    <BlogList posts={postsToShow} />
+    <BlogAggregationLists
+        allBlogPosts={allBlogPosts}
+        langCode="ko"
+        archiveLabel="아카이브"
+        categoryLabel="카테고리"
+        tagLabel="태그"
+    />
+</Layout>

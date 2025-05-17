@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { getAggregatedData } from "@/lib/collections/data";
+import Layout from "@/layouts/Base.astro";
+import ItemCountList from "@/components/blog/ItemCountList.astro";
+
+const allBlogPosts: CollectionEntry<"blog_ko">[] =
+    await getCollection("blog_ko");
+
+const { categories }: { categories: Record<string, number> } =
+    getAggregatedData(allBlogPosts);
+const sortedCategories: [string, number][] = Object.entries(categories).sort(
+    (a: [string, number], b: [string, number]) => {
+        if (b[1] === a[1]) return a[0].localeCompare(b[0]);
+        return b[1] - a[1];
+    }
+);
+---
+
+<Layout title="카테고리 - Scriptone">
+    <h2 class="text-3xl font-bold mb-4">카테고리</h2>
+    <ItemCountList items={sortedCategories} baseUrl="/blog/ko/categories" />
+</Layout>

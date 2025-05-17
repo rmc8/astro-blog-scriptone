@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { getAggregatedData } from "@/lib/collections/data";
+import Layout from "@/layouts/Base.astro";
+import ItemCountList from "@/components/blog/ItemCountList.astro";
+
+const allBlogPosts: CollectionEntry<"blog_en">[] =
+    await getCollection("blog_en");
+
+const { tags }: { tags: Record<string, number> } =
+    getAggregatedData(allBlogPosts);
+const sortedTags: [string, number][] = Object.entries(tags).sort(
+    (a: [string, number], b: [string, number]) => {
+        if (b[1] === a[1]) return a[0].localeCompare(b[0]);
+        return b[1] - a[1];
+    }
+);
+---
+
+<Layout title="Tags - Scriptone">
+    <h2 class="text-3xl font-bold mb-4">Tags</h2>
+    <ItemCountList items={sortedTags} baseUrl="/blog/en/tags" />
+</Layout>
