@@ -1,12 +1,18 @@
 ---
 import type { CollectionEntry } from "astro:content";
-const { posts, lang_code = "ja" } = Astro.props as {
-    posts: CollectionEntry<"blog_ja">[];
-    lang_code?: string;
-};
 import CategoryTag from "./CategoryTag.astro";
 import PostDate from "./PostDate.astro";
 import PostTitle from "./PostTitle.astro";
+
+type SupportedCollectionEntry =
+    | CollectionEntry<"blog_ja">
+    | CollectionEntry<"blog_en">
+    | CollectionEntry<"blog_ko">;
+
+const { posts, langCode } = Astro.props as {
+    posts: SupportedCollectionEntry[];
+    langCode: string;
+};
 ---
 
 <ul class="space-y-4">
@@ -18,12 +24,12 @@ import PostTitle from "./PostTitle.astro";
                         <PostTitle
                             title={post.data.title}
                             slug={post.slug}
-                            lang_code={lang_code}
+                            langCode={langCode}
                         />
                         <CategoryTag
                             categories={post.data.categories}
                             tags={post.data.tags}
-                            lang_code={lang_code}
+                            langCode={langCode}
                         />
                         <PostDate date={post.data.date} />
                     </div>

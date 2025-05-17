@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import BlogList from "@/components/blog/BlogList.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+
+export async function getStaticPaths() {
+    const allBlogPosts: CollectionEntry<"blog_en">[] =
+        await getCollection("blog_en");
+    const uniqueCategories = Array.from(
+        new Set(allBlogPosts.flatMap((post) => post.data.categories || []))
+    );
+    return uniqueCategories.map((category) => ({
+        params: { category },
+    }));
+}
+
+const { category } = Astro.params;
+const allBlogPosts: CollectionEntry<"blog_en">[] =
+    await getCollection("blog_en");
+const filteredPosts = allBlogPosts.filter((post) =>
+    post.data.categories?.includes(category)
+);
+---
+
+<Layout title={`Category: ${category} - Scriptone`}>
+    <h2 class="text-3xl font-bold mb-4">Category: {category}</h2>
+    {
+        filteredPosts.length > 0 ? (
+            <BlogList posts={filteredPosts} langCode="en" />
+        ) : (
+            <p>No posts found for this category.</p>
+        )
+    }
+
+    <BlogAggregationLists
+        allBlogPosts={allBlogPosts}
+        langCode="en"
+        archiveLabel="Archives"
+        categoryLabel="Categories"
+        tagLabel="Tags"
+    />
+</Layout>

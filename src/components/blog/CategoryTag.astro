@@ -2,11 +2,11 @@
 const {
     categories = [],
     tags = [],
-    lang_code = "ja",
+    langCode,
 } = Astro.props as {
     categories?: string[];
     tags?: string[];
-    lang_code?: string;
+    langCode: string;
 };
 ---
 
@@ -15,7 +15,7 @@ const {
         categories.length > 0 &&
             categories.map((category: string) => (
                 <a
-                    href={`/blog/${lang_code}/categories/${category}`}
+                    href={`/blog/${langCode}/categories/${category}`}
                     class="inline-flex items-center px-1 py-0.5 rounded bg-[var(--accent3)]/90 hover:bg-[var(--accent3)]/75 text-white text-xs font-semibold duration-300"
                 >
                     <i class="material-icons icon-small mr-1 text-white">
@@ -29,7 +29,7 @@ const {
         tags.length > 0 &&
             tags.map((tag: string) => (
                 <a
-                    href={`/blog/${lang_code}/tags/${tag}`}
+                    href={`/blog/${langCode}/tags/${tag}`}
                     class="inline-flex items-center px-1 pl-0.5 pr-1.5 rounded bg-[var(--accent3)]/15 text-[var(--accent7)] hover:bg-[var(--accent3)]/35 hover:text-[var(--accent7)] text-xs font-medium transition-colors duration-300"
                 >
                     <i class="material-icons icon-small mr-1 text-[var(--accent7)]">

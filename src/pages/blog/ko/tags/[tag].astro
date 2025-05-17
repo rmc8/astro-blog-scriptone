@@ -1,0 +1,44 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { getAggregatedData } from "@/lib/collections/data";
+import Layout from "@/layouts/Base.astro";
+import BlogList from "@/components/blog/BlogList.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+
+export async function getStaticPaths() {
+    const allBlogPosts: CollectionEntry<"blog_ko">[] =
+        await getCollection("blog_ko");
+    const { tags } = getAggregatedData(allBlogPosts);
+    const uniqueTags = Array.from(new Set(Object.keys(tags)));
+    return uniqueTags.map((tag) => ({
+        params: { tag },
+    }));
+}
+
+const { tag } = Astro.params;
+const allBlogPosts: CollectionEntry<"blog_ko">[] =
+    await getCollection("blog_ko");
+const filteredPosts = allBlogPosts.filter((post) =>
+    post.data.tags?.includes(tag)
+);
+---
+
+<Layout title={`태그: ${tag} - Scriptone`}>
+    <h2 class="text-3xl font-bold mb-4">태그: {tag}</h2>
+    {
+        filteredPosts.length > 0 ? (
+            <BlogList posts={filteredPosts} langCode="ko" />
+        ) : (
+            <p>이 태그가 달린 게시물이 없습니다.</p>
+        )
+    }
+
+    <BlogAggregationLists
+        allBlogPosts={allBlogPosts}
+        langCode="ko"
+        archiveLabel="아카이브"
+        categoryLabel="카테고리"
+        tagLabel="태그"
+    />
+</Layout>

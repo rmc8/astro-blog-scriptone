@@ -1,19 +1,15 @@
 ---
-const {
-    title,
-    slug,
-    lang_code = "ja",
-} = Astro.props as {
+const { title, slug, langCode } = Astro.props as {
     title: string;
     slug: string;
-    lang_code?: string;
+    langCode: string;
 };
 ---
 
 <div>
     <a
         class="font-bold text-3xl hover:underline"
-        href={`/blog/${lang_code}/${slug}`}
+        href={`/blog/${langCode}/${slug}`}
     >
         {title}
     </a>

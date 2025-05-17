@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import BlogList from "@/components/blog/BlogList.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+
+export async function getStaticPaths() {
+    const allBlogPosts: CollectionEntry<"blog_ko">[] =
+        await getCollection("blog_ko");
+    const archives = Array.from(
+        new Set(
+            allBlogPosts.map((post) => new Date(post.data.date).getFullYear())
+        )
+    );
+    return archives.map((archive) => ({
+        params: { archive: archive.toString() },
+    }));
+}
+
+const { archive } = Astro.params;
+const allBlogPosts: CollectionEntry<"blog_ko">[] =
+    await getCollection("blog_ko");
+const filteredPosts = allBlogPosts.filter(
+    (post) => new Date(post.data.date).getFullYear().toString() === archive
+);
+---
+
+<Layout title={`아카이브: ${archive} - Scriptone`}>
+    <h2 class="text-3xl font-bold mb-4">아카이브: {archive}</h2>
+    {
+        filteredPosts.length > 0 ? (
+            <BlogList posts={filteredPosts} langCode="ko" />
+        ) : (
+            <p>No posts found for this archive.</p>
+        )
+    }
+
+    <BlogAggregationLists
+        allBlogPosts={allBlogPosts}
+        langCode="ko"
+        archiveLabel="아카이브"
+        categoryLabel="카테고리"
+        tagLabel="태그"
+    />
+</Layout>

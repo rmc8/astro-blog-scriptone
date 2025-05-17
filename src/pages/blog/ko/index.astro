@@ -22,7 +22,7 @@ const postsToShow: CollectionEntry<"blog_ko">[] = sortedPosts.slice(
 ---
 
 <Layout title={`${SITE_NAME} - Blog`}>
-    <BlogList posts={postsToShow} />
+    <BlogList posts={postsToShow} langCode="ko" />
     <BlogAggregationLists
         allBlogPosts={allBlogPosts}
         langCode="ko"
