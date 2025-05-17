@@ -91,6 +91,11 @@ import ToC from "@/components/blog/ToC.astro";
         color: white;
     }
 
+    #content code,
+    #content pro code {
+        font-family: "Source Han Code JP Regular", monospace !important;
+    }
+
     #content div.remark-code-container {
         margin: 1.5em 0;
     }
@@ -108,5 +113,9 @@ import ToC from "@/components/blog/ToC.astro";
     #eye_catch img,
     #content img {
         border-radius: 8px;
+    }
+
+    #content iframe {
+        margin: 8px 0;
     }
 </style>

@@ -1,25 +1,23 @@
 ---
-title: 데이터 과학 100본 노크를 Pandas·Polars·SQL로 풀기(#21-#30)
-slug: data-science-knock100-part3
-description: Python(Polars/Pandas)과 SQL로 데이터 과학 100본 노크의 문제 21부터 30까지를 해결합니다. 기본 통계량 계산이 주요 과제입니다.
+title: "데이터 사이언스 100본 노크를 Pandas·Polars·SQL로 풀기(#21-#30)"
+slug: "data-science-knock100-part3"
+description: "Python(Polars/Pandas)과 SQL로 데이터 사이언스 100본 노크의 문제 21부터 30까지 해결합니다. 기본 통계량 계산이 주요 과제입니다."
 date: 2024-12-07T03:50:22.460Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
-tags: ['Python', '데이터 과학']
+tags: ['Python', '데이터 사이언스']
 categories: ['Programming']
 ---
-
-# 데이터 과학 100본 노크를 Pandas·Polars·SQL로 풀기(#21-#30)
 
 [이전 노크](/data-science-knock100-part2)에 이어, 문제 21부터 30까지를 Pandas/Polars/SQL로 풀어보겠습니다.
 
 ## 문제
 
-문제를 풀기 전에 반드시 첫 번째 코드 셀을 실행하세요. 실행하지 않으면 변수가 정의되지 않아 데이터 처리 문제가 발생할 수 있습니다. 잊지 말고 실행해 주세요.
+문제를 풀기 전에 첫 번째 코드 셀을 반드시 실행하세요. 실행하지 않으면 변수가 정의되지 않아 데이터 처리 문제가 발생할 수 있습니다. 잊지 말고 실행해 주세요.
 
 ### 문제 21
 
-> P-021: 레시트 상세 데이터(df_receipt)에 대해, 항목 수를 카운트하세요.
+> P-021: 레시피 상세 데이터(df_receipt)에 대해, 항목 수를 세어보세요.
 
 ```python
 # Pandas
@@ -40,7 +38,7 @@ SELECT COUNT(*) FROM receipt
 
 ### 문제 22
 
-> P-022: 레시트 상세 데이터(df_receipt)의 고객 ID(customer_id)에 대해, 유니크 항목 수를 카운트하세요.
+> P-022: 레시피 상세 데이터(df_receipt)의 고객 ID(customer_id)에 대해, 유니크한 항목 수를 세어보세요.
 
 ```python
 # Pandas
@@ -61,7 +59,7 @@ SELECT COUNT(DISTINCT customer_id) FROM receipt
 
 ### 문제 23
 
-> P-023: 레시트 상세 데이터(df_receipt)에 대해, 매장 코드(store_cd)별로 판매 금액(amount)과 판매 수량(quantity)을 합산하세요.
+> P-023: 레시피 상세 데이터(df_receipt)에 대해, 상점 코드(store_cd)별로 판매 금액(amount)과 판매 수량(quantity)을 합산하세요.
 
 ```python
 # Pandas
@@ -92,7 +90,7 @@ GROUP BY
 
 ### 문제 24
 
-> P-024: 레시트 상세 데이터(df_receipt)에 대해, 고객 ID(customer_id)별로 가장 최근 판매 연월일(sales_ymd)을 구하고, 10건을 표시하세요.
+> P-024: 레시피 상세 데이터(df_receipt)에 대해, 고객 ID(customer_id)별로 가장 최근 판매 연월일(sales_ymd)을 구하고, 10건 표시하세요.
 
 ```python
 # Pandas
@@ -121,7 +119,7 @@ LIMIT
 
 ### 문제 25
 
-> P-025: 레시트 상세 데이터(df_receipt)에 대해, 고객 ID(customer_id)별로 가장 오래된 판매 연월일(sales_ymd)을 구하고, 10건을 표시하세요.
+> P-025: 레시피 상세 데이터(df_receipt)에 대해, 고객 ID(customer_id)별로 가장 오래된 판매 연월일(sales_ymd)을 구하고, 10건 표시하세요.
 
 ```python
 # Pandas
@@ -150,7 +148,7 @@ LIMIT
 
 ### 문제 26
 
-> P-026: 레시트 상세 데이터(df_receipt)에 대해, 고객 ID(customer_id)별로 가장 최근 판매 연월일(sales_ymd)과 가장 오래된 판매 연월일을 구하고, 둘 다 다른 데이터를 10건 표시하세요.
+> P-026: 레시피 상세 데이터(df_receipt)에 대해, 고객 ID(customer_id)별로 가장 최근 판매 연월일(sales_ymd)과 가장 오래된 판매 연월일을 구하고, 둘 다 다른 데이터를 10건 표시하세요.
 
 ```python
 # Pandas
@@ -187,7 +185,7 @@ LIMIT 10
 
 ### 문제 27
 
-> P-027: 레시트 상세 데이터(df_receipt)에 대해, 매장 코드(store_cd)별로 판매 금액(amount)의 평균을 계산하고, 내림차순으로 TOP 5를 표시하세요.
+> P-027: 레시피 상세 데이터(df_receipt)에 대해, 상점 코드(store_cd)별로 판매 금액(amount)의 평균을 계산하고, 내림차순으로 TOP5를 표시하세요.
 
 ```python
 # Pandas
@@ -218,7 +216,7 @@ LIMIT
 
 ### 문제 28
 
-> P-028: 레시트 상세 데이터(df_receipt)에 대해, 매장 코드(store_cd)별로 판매 금액(amount)의 중앙값을 계산하고, 내림차순으로 TOP 5를 표시하세요.
+> P-028: 레시피 상세 데이터(df_receipt)에 대해, 상점 코드(store_cd)별로 판매 금액(amount)의 중앙값을 계산하고, 내림차순으로 TOP5를 표시하세요.
 
 ```python
 # Pandas
@@ -251,7 +249,7 @@ LIMIT
 
 ### 문제 29
 
-> P-029: 레시트 상세 데이터(df_receipt)에 대해, 매장 코드(store_cd)별로 상품 코드(product_cd)의 최빈값을 구하고, 10건을 표시하세요.
+> P-029: 레시피 상세 데이터(df_receipt)에 대해, 상점 코드(store_cd)별로 상품 코드(product_cd)의 최빈값을 구하고, 10건 표시하세요.
 
 ```python
 # Pandas
@@ -282,7 +280,7 @@ LIMIT
 
 ### 문제 30
 
-> P-030: 레시트 상세 데이터(df_receipt)에 대해, 매장 코드(store_cd)별로 판매 금액(amount)의 분산을 계산하고, 내림차순으로 5건을 표시하세요.
+> P-030: 레시피 상세 데이터(df_receipt)에 대해, 상점 코드(store_cd)별로 판매 금액(amount)의 분산을 계산하고, 내림차순으로 5건 표시하세요.
 
 ```python
 # Pandas
@@ -321,6 +319,6 @@ LIMIT 5;
 
 20문제까지는 정규 표현식을 사용한 문자열 처리 등이 중심이었지만, 문제 30까지는 기본 통계량을 사용한 데이터 수치화가 주요 내용이었습니다. SQL, Pandas, Polars에서 언어에 내장된 함수나 프레임워크의 메서드를 사용하여 쉽게 작성할 수 있음을 확인할 수 있었습니다.
 
-또한, Polars는 Pandas보다 간단한 처리에서도 약간 길어지는 경향이 있지만, 기본 통계량 처리에서는 Polars다운 작성 방식을 유지하면서도 길이가 비슷하거나 안정적이었고, Pandas보다 간단하게 작성할 수 있는 경우도 있었습니다. 좋든 나쁘든 일정량의 처리가 필요하지만, 복잡해져도 비슷한 절차로 작성할 수 있고 매우 빠른 속도로 데이터 처리를 할 수 있다는 점에서 Polars의 매력을 다시 발견할 수 있었습니다. Pandas는 Polars 이전에 거의 유일한 선택지로 널리 오랫동안 사용되었기 때문에 익숙한 사람이 많고 정보도 많아서 쉽게 사용할 수 있을 것입니다.
+또한, Polars는 Pandas보다 간단한 처리에서도 약간 길어지는 경향이 있지만, 기본 통계량 처리에서는 Polars다운 작성 방식을 유지하면서도 길이가 비슷하거나 안정적이었고, Pandas보다 간단하게 작성할 수 있는 경우도 있었습니다. 좋든 나쁘든 일정량의 처리가 필요하지만, 복잡해져도 비슷한 절차로 작성할 수 있고 매우 빠른 속도로 데이터 처리를 할 수 있다는 점에서 Polars의 매력을 다시 발견할 수 있었습니다. Pandas는 Polars 이전에 거의 유일한 선택지로 널리 오랫동안 사용되어 왔기 때문에 익숙한 사람이 많고 정보도 많아서 쉽게 사용할 수 있을 것입니다.
 
-대규모 데이터를 고속으로 처리해야 할 경우에는 Polars가 유력하지만, 그 외의 많은 경우에는 Pandas도 여전히 강력한 선택지입니다.
+대규모 데이터를 고속으로 처리해야 할 때는 Polars가 유리하지만, 그 외의 많은 경우에는 Pandas도 여전히 강력한 선택지입니다.

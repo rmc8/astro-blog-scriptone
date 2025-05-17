@@ -1,21 +1,19 @@
 ---
-title: Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#31-#40)
-slug: data-science-knock100-part4
-description: This article solves questions 31 through 40 of Data Science 100 Knocks using Python (Polars/Pandas) and SQL. The main content includes calculating basic statistics, filtering based on those values, creating temporary tables, and creating tables.
+title: "Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#31-#40)"
+slug: "data-science-knock100-part4"
+description: "This article solves questions 31 through 40 of Data Science 100 Knocks using Python (Polars/Pandas) and SQL. The main content includes calculating basic statistics, filtering based on those values, creating temporary tables, and creating tables."
 date: 2025-02-02T02:54:15.860Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
 tags: ['Python', 'Data Science']
 categories: ['Programming']
 ---
 
-# Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#31-#40)
-
-Continuing from the previous knocks [/data-science-knock100-part3], we will solve questions 31 through 40 using Pandas, Polars, and SQL.
+Continuing from the previous knock ([/data-science-knock100-part3]), we solve questions 31 through 40 using Pandas/Polars/SQL.
 
 ## Problems
 
-Before starting to solve the problems, make sure to execute the first code cell. If you don't, variables will be undefined, and errors will occur during data processing, so please don't forget to run it.
+Before starting to solve the problems, please make sure to execute the first code cell. If you do not execute it, variables will be undefined, and you will encounter errors during data processing, so please do not forget to run it.
 
 ### Question 31
 
@@ -84,7 +82,7 @@ FROM
 
 ### Question 33
 
-> P-033: For the receipt details data (df_receipt), calculate the average sales amount (amount) for each store code (store_cd), and extract those with an average of 330 or more.
+> P-033: For the receipt details data (df_receipt), calculate the average sales amount (amount) for each store code (store_cd), and extract those that are 330 or more.
 
 ```python
 # Pandas
@@ -115,7 +113,7 @@ HAVING
 
 ### Question 34
 
-> P-034: For the receipt details data (df_receipt), calculate the total sales amount (amount) for each customer ID (customer_id), then find the average across all customers. However, exclude those with customer IDs starting with "Z" as they represent non-members.
+> P-034: For the receipt details data (df_receipt), calculate the total sales amount (amount) for each customer ID (customer_id), then find the average across all customers. However, exclude those with customer ID starting with "Z" as they represent non-members.
 
 ```python
 # Pandas
@@ -150,7 +148,7 @@ SELECT AVG(revenue) FROM customer_revenue_totals
 
 ### Question 35
 
-> P-035: For the receipt details data (df_receipt), calculate the total sales amount (amount) for each customer ID (customer_id), then find the average across all customers, and extract customers whose total is at or above the average. Display 10 records. However, exclude those with customer IDs starting with "Z" as they represent non-members.
+> P-035: For the receipt details data (df_receipt), calculate the total sales amount (amount) for each customer ID (customer_id), then find the average across all customers, and extract customers who have spent more than the average. Display 10 records. However, exclude those with customer ID starting with "Z" as they represent non-members.
 
 ```python
 # Pandas
@@ -199,7 +197,7 @@ LIMIT
 
 ### Question 36
 
-> P-036: Perform an inner join on the receipt details data (df_receipt) and store data (df_store), and display all items from the receipt details data along with the store name (store_name) for 10 records.
+> P-036: Inner join the receipt details data (df_receipt) and store data (df_store), and display all items from the receipt details data along with the store name (store_name) for 10 records.
 
 ```python
 # Pandas
@@ -227,7 +225,7 @@ LIMIT
 
 ### Question 37
 
-> P-037: Perform an inner join on the product data (df_product) and category data (df_category), and display all items from the product data along with the category small name (category_small_name) for 10 records.
+> P-037: Inner join the product data (df_product) and category data (df_category), and display all items from the product data along with the category small name (category_small_name) for 10 records.
 
 ```python
 # Pandas
@@ -266,7 +264,7 @@ LIMIT
 
 ### Question 38
 
-> P-038: From the customer data (df_customer) and receipt details data (df_receipt), calculate the total sales amount for each customer, and display 10 records. However, set the sales amount to 0 for customers with no sales history. Target only customers with gender code (gender_cd) of 1 (female), and exclude non-members (customer IDs starting with "Z").
+> P-038: From the customer data (df_customer) and receipt details data (df_receipt), calculate the total sales amount for each customer, and display 10 records. However, treat customers with no sales as 0 for sales amount. Target only customers with gender code (gender_cd) as female (1), and exclude non-members (customer ID starting with "Z").
 
 ```python
 # Pandas
@@ -303,7 +301,7 @@ LIMIT
 
 ### Question 39
 
-> P-039: From the receipt details data (df_receipt), create data for the top 20 customers by number of sales days and the top 20 customers by total sales amount, then perform a full outer join on these two datasets. However, exclude non-members (customer IDs starting with "Z").
+> P-039: From the receipt details data (df_receipt), create data for the top 20 customers by number of sales days and the top 20 customers by total sales amount, then perform a full outer join on these two datasets. However, exclude non-members (customer ID starting with "Z").
 
 ```python
 # Pandas
@@ -375,7 +373,7 @@ FROM
 
 ### Question 40
 
-> P-040: I want to create data that combines all stores and all products. Perform a Cartesian product on the store data (df_store) and product data (df_product), and calculate the number of records.
+> P-040: We want to create data that combines all stores and all products. Perform a Cartesian product of the store data (df_store) and product data (df_product), and calculate the number of records.
 
 ```python
 # Pandas
@@ -406,4 +404,4 @@ FROM
 
 ## Reflections on Questions up to 40
 
-After calculating basic statistics, we performed more complex processing such as filtering based on those values, saving aggregation results in temporary tables for further processing, and so on. As a result, SQL tends to have more code compared to Pandas or Polars. Pandas can still write processes relatively concisely, and there are no particular performance issues up to this point. Polars tends to be longer than Pandas, but its method chaining and expression-based data processing provide a consistent feel, making it an attractive option for pure data processing. Additionally, joins like outer joins, inner joins, and cross joins have appeared, which are important concepts for properly linking various data in data processing. It's good to understand the differences in join methods along with the code, as they relate to data shaping in data analysis and machine learning, including how to handle data omissions and NaN values.
+After calculating basic statistics, we performed more complex processing such as filtering based on those values, saving aggregation results in temporary tables for further processing, and more. Consequently, SQL tends to have more code compared to Pandas or Polars. Pandas can still write processes relatively concisely, and there are no particular performance issues up to this point. Polars may result in longer code than Pandas, but its consistent style of method chaining and expressions makes it an attractive option for pure data processing. Additionally, various joins like outer joins, inner joins, and cross joins have appeared, which are important concepts for appropriately linking different data in data processing. Understanding the differences in join methods, along with the code, is useful for data shaping in data analysis and machine learning, including how to handle data omissions and NaN values.

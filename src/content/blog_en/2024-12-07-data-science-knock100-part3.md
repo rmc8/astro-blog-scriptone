@@ -1,21 +1,19 @@
 ---
-title: Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#21-#30)
-slug: data-science-knock100-part3
-description: Solving Data Science 100 Knocks questions 21 to 30 with Python (Polars/Pandas) and SQL. The main task is calculating basic statistics.
+title: "Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#21-#30)"
+slug: "data-science-knock100-part3"
+description: "This article provides solutions to questions 21 through 30 of Data Science 100 Knocks using Python (Polars/Pandas) and SQL. The main focus is on calculating basic statistics."
 date: 2024-12-07T03:50:22.460Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
-tags: ['Python', 'データサイエンス']
+tags: ['Python', 'Data Science']
 categories: ['Programming']
 ---
 
-# Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#21-#30)
-
-Continuing from the previous knocks ([previous knocks](/data-science-knock100-part2)), we will solve questions 21 to 30 using Pandas, Polars, and SQL.
+Continuing from the previous knocks ([previous knocks](/data-science-knock100-part2)), this section solves questions 21 through 30 using Pandas, Polars, and SQL.
 
 ## Problems
 
-Before starting to solve the problems, make sure to execute the first code cell. If you do not execute it, variables will be undefined, and you will encounter errors during data processing, so please do not forget to run it.
+Before starting to solve the problems, make sure to execute the first code cell. If you don't, variables will be undefined, and you may encounter errors during data processing, so please don't forget to run it.
 
 ### Question 21
 
@@ -319,8 +317,8 @@ LIMIT 5;
 
 ## Reflections on Questions up to 30
 
-The first 20 questions focused mainly on string processing using regular expressions, but up to question 30, the content centered on numerical data processing using basic statistics. We confirmed that these can be easily implemented using built-in functions or methods in SQL, Pandas, and Polars.
+The first 20 questions focused mainly on string processing using regular expressions, but up to question 30, the emphasis was on numerical data processing using basic statistics. It was confirmed that these can be easily implemented using built-in functions or methods in SQL, Pandas, and Polars.
 
-Additionally, while Polars tends to result in slightly longer code for some simple processes compared to Pandas, for basic statistical processing, it maintains its characteristic style and length, and in some cases, it can be written more simply than Pandas. It requires a certain amount of code description, both positively and negatively, but it allows for very fast data processing even with complex operations, which highlights Polars' appeal. Since Pandas has been widely used as the almost exclusive choice before Polars, many people are familiar with it, and there is a lot of information available, making it easy to use.
+Additionally, while Polars tends to require slightly longer code for simple processing compared to Pandas, for basic statistical operations, it maintains its characteristic style and remains stable in length. In some cases, it can even be written more simply than Pandas. Although it requires a certain amount of code whether for better or worse, and follows a similar structure even for complex tasks, Polars offers the advantage of very fast data processing. On the other hand, Pandas, as a long-standing and widely used framework before Polars, has a large user base and abundant resources, making it convenient for many users.
 
 For cases requiring high-speed processing of large-scale data, Polars is a strong option, but for many other scenarios, Pandas remains a solid choice.

@@ -1,17 +1,15 @@
 ---
-title: SvelteKit＋highlight.js로 구문 강조를 설정하는 방법
-slug: sveltekit-syntaxhighlight
-description: SvelteKit과 highlight.js를 사용하여 구문 강조를 설정합니다. HTML을 스크래핑하여 코드 블록을 구문 강조가 설정된 상태로 대체합니다.
+title: "SvelteKit과 highlight.js로 구문 강조를 설정하는 방법"
+slug: "sveltekit-syntaxhighlight"
+description: "SvelteKit과 highlight.js를 사용하여 구문 강조를 설정합니다. HTML을 스크래핑하여 코드 블록을 구문 강조가 설정된 상태로 대체합니다."
 date: 2023-07-07T11:32:25.200Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/highlightsyntax.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/highlightsyntax.webp"
 draft: false
 tags: ['JavaScript', 'highlight.js', 'SvelteKit']
 categories: ['Programming']
 ---
 
-# SvelteKit＋highlight.js로 구문 강조를 설정하는 방법
-
-SvelteKit에서 코드 블록에 구문 강조를 할당합니다. 블로그 구축 시 백엔드에서 사용한 MicroCMS의 기사를 참고했습니다.
+SvelteKit에서 코드 블록에 구문 강조를 적용합니다. 블로그 구축 시 백엔드에서 사용한 MicroCMS의 기사를 참고했습니다.
 
 ## 설치
 
@@ -28,7 +26,7 @@ npm install cheerio highlight.js
 
 ```svelte
 <script lang="ts">
- import type { PageData } from './$types'; // microCMS에서 기사 데이터를 가져오기 위해 작성
+import type { PageData } from './$types'; // microCMS에서 기사 데이터를 가져오기 위해 작성
  import { load } from 'cheerio'; // cheerio를 직접 import하는 것은 비추천, load라는 이름도 일반적이므로 주의
  import hljs from 'highlight.js';
 
@@ -40,7 +38,7 @@ npm install cheerio highlight.js
   cheerio$(elm).html(result.value); // 설정한 코드로 대체
   cheerio$(elm).addClass('hljs'); // hljs 클래스를 추가
  });
- const article = cheerio$.html(); // 대체한 HTML을 저장
+ const article = cheerio$.html(); // 대체 완료된 HTML을 저장
  export { article }; // HTML로 출력할 수 있도록 함
 </script>
 ```
@@ -158,4 +156,4 @@ code {
 }
 ```
 
-highlight.js에서는 hljs.highlightAuto로 언어를 자동으로 판단하여 구문 강조를 설정해줍니다. 개별 언어를 추가하거나 설정할 필요가 없기 때문에 코드가 적고 도입하기 쉽다는 장점이 있습니다. 구문 강조 설정이 잘 안 될 때나 쉽게 설정하고 싶을 때는 꼭 시도해보세요.
+highlight.js에서는 hljs.highlightAuto로 언어를 자동으로 판단하여 구문 강조를 설정해줍니다. 개별 언어를 추가하거나 설정할 필요가 없어 코드가 간단하고 도입하기 쉽다는 장점이 있습니다. 구문 강조 설정이 잘 안 되거나 쉽게 설정하고 싶다면 꼭 시도해보세요.

@@ -1,25 +1,23 @@
 ---
-title: Trying to Write a Mobile App with Tauri 2.0 (RC)
-slug: tauri_2_rc_practice
-description: The RC version of Tauri 2.0 has been announced, so I'll try writing a counter app for mobile using Svelte. As long as you understand TypeScript, you can create mobile apps with your preferred framework, so I hope you'll have fun with Tauri.
+title: "Trying to Write a Mobile App with Tauri 2.0 (RC)"
+slug: "tauri_2_rc_practice"
+description: "The RC version of Tauri 2.0 has been announced, so I'll try writing a counter app for mobile using Svelte. As long as you understand TypeScript, you can create mobile apps with your preferred framework, so please try playing with Tauri."
 date: 2024-08-03T06:39:57.446Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/tauri_eycatch.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/tauri_eycatch.webp"
 draft: false
 tags: ['Tauri', 'Rust', 'Svelte', 'TypeScript']
 categories: ['Programming']
 ---
 
-# Trying to Write a Mobile App with Tauri 2.0 (RC)
-
-The release candidate for Tauri 2.0 was [announced](https://v2.tauri.app/blog/tauri-2-0-0-release-candidate/). Since Tauri 2.0 adds features for mobile, I'll try out the functions by creating a counter app for smartphones.
+The release candidate for Tauri 2.0 was [announced](https://v2.tauri.app/blog/tauri-2-0-0-release-candidate/). Tauri 2.0 adds mobile features, so I'll try out the functions by creating a counter app for smartphones.
 
 ## About Tauri 2.0
 
 Tauri 2.0 RC was announced on August 1, 2024, and a stable release is planned for the end of August. Tauri allows you to build desktop apps using TypeScript or WebAssembly, and you can also use Rust for the backend. It is being developed as a migration path from Electron.
 
-In Tauri 2.0, mobile features have been enhanced, enabling the creation of apps for iOS or Android using TypeScript and its frameworks, not just desktop apps. There are also changes such as separating core plugins, improving the Rust API, and strengthening security. It can be said that this is a version upgrade that enhances functionality as a cross-platform development framework.
+In Tauri 2.0, mobile features have been enhanced, enabling the creation of apps for iOS or Android using TypeScript and its frameworks, not just desktop apps. Changes include separation of core plugins, improvements to Rust API, and enhanced security. It can be said that this is a version upgrade that strengthens functionality as a cross-platform development framework.
 
-Since the stable release is scheduled for the end of the month, I'll try a simple mobile development with Tauri 2.0 ahead of time.
+Since the stable release is scheduled for the end of the month, I'll try mobile development with Tauri 2.0 a bit early.
 
 ## Development
 
@@ -33,7 +31,7 @@ I'll actually build an app with Tauri 2.0.
   
 ### Starting Development with Tauri
 
-Follow the official documentation for setup. You can check the documentation at the following link:  
+Follow the official documentation for setup. You can check the documentation at the following link.  
 <https://v2.tauri.app/start/>
 
 First, create the project with the following commands. Once the stable version is released, you can remove the `--rc` option.
@@ -43,7 +41,7 @@ cargo install create-tauri-app
 cargo create-tauri-app --rc
 ```
 
-An example of input after running create-tauri-app is as follows:
+An example of input after running create-tauri-app is as follows.
 
 ```shell
 ✔ Project name · practice
@@ -68,15 +66,15 @@ For iOS development, run:
   npm run tauri ios dev
 ```
 
-The project name can be anything. For the frontend language, you can use JS/TS, as well as Rust or '.NET'. Choose the language you're comfortable with. For the package manager, select the one you usually use. UI template options will be displayed based on the language. I'll try with Svelte this time, but you can choose your preferred framework.  
+The project name can be anything. For the frontend language, you can use JS/TS, Rust, or ".NET". Choose your preferred language. For the package manager, select the one you usually use. UI template options are displayed based on the language. I'll try with Svelte this time, but you can choose your preferred framework.  
 
-Once you select the options as prompted, the Tauri project will be created accordingly. After the template is created, enter `cd {project_name}`, move to the template folder, and run `npm install`. Then, run the `npm run tauri dev` command to display the web page as a Tauri app. You can also connect your smartphone to your PC for Android or iOS testing, so try commands like `npm run tauri android dev` as well.
+By selecting options according to the questions, the Tauri project will be created. After the template is created, enter `cd {project_name}`, move to the template folder, and run `npm install`. Then, run the `npm run tauri dev` command to display the web page as a Tauri app. Connect your smartphone to your PC for Android or iOS testing, and also try commands like `npm run tauri android dev`.
 
 ![dev](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/tauri2.0_rc_practice/tauri_hello_world.webp)
 
 ### Project Structure
 
-When you move to the project created with Svelte, there are roughly the following folders:
+When you move to the project created with Svelte, there are roughly the following folders.
 
 ```
 src
@@ -84,11 +82,11 @@ src-tauri
 static
 ```
 
-`src` is the project composed of Svelte and SvelteKit, where you can edit frontend and SvelteKit-based backend processing. `src-tauri` is used for building Rust backend processing, invoking system operations via Tauri, or setting app icons and permissions. Think of it as handling settings other than UI and routing construction. `static` is a folder for placing files used in Svelte.
+`src` is the project composed of Svelte and SvelteKit, where you can edit frontend and backend processing using SvelteKit. `src-tauri` is used for building backend processing with Rust, invoking system processing via Tauri, and setting app icons or permissions. Think of it as handling settings other than UI and routing construction. `static` is a folder for placing files used in Svelte.
 
 ### Creating a Counter App
 
-Next, I'll create a counter app using Svelte. The structure inside `src` is as follows:
+Next, I'll create a counter app using Svelte. The structure inside `src` is as follows.
 
 ```text
 src
@@ -98,7 +96,7 @@ src
     └── +page.svelte
 ```
 
-`app.html` is the base HTML that receives output from SvelteKit and displays it. By creating `+page.svelte` in `routes`, you can handle routing and page creation. Simply creating a folder in `routes` and placing `+page.svelte` inside it enables page and routing processing. For this simple counter app, I'll edit `+page.svelte`.
+`app.html` is the base HTML that receives output from SvelteKit and displays it. By creating `+page.svelte` in `routes`, you can handle routing and page creation. You can easily set up pages and routing by creating a folder in `routes` and placing `+page.svelte` inside it. For this simple counter app, I'll edit `+page.svelte`.
 
 ### Removing Unnecessary Code
 
@@ -154,17 +152,17 @@ Open `+page.svelte` and remove unnecessary code.
 
 The initial code includes `import { invoke } from "@tauri-apps/api/core";`, which is a library for using Rust features in the frontend. Since we're just building a simple app, we'll remove it.  
 
-Svelte itself is composed of three blocks: TypeScript (JavaScript), HTML, and CSS, and processes are reflected on a per-module basis. Unlike React with JSX or TSX, it's straightforward if you can read HTML, CSS, and JavaScript.
+Svelte is composed of three blocks: TypeScript (JavaScript), HTML, and CSS, and processes are reflected on a per-module basis. Unlike React with JSX or TSX, if you can read HTML, CSS, and JavaScript, you'll understand it to some extent.  
 
 ### Editing app.html to Prevent Zooming
 
-Tauri runs a browser-like environment to turn web framework apps into desktop or mobile apps. As a result, users can zoom in like in a browser, which might feel more like using a browser than a native app. For this purpose, zooming is unnecessary, so add the following line to edit app.html:
+Tauri runs a browser-like environment to turn web framework apps into desktop or mobile apps. As a result, users can zoom like in a browser, which makes it feel more like using a browser than a normal app. For this purpose, zooming is unnecessary, so add the following line to edit app.html.
 
 ```html
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 ```
 
-The overall result will be like this:
+The overall result is as follows.
 
 ```html
 <!doctype html>
@@ -184,7 +182,7 @@ The overall result will be like this:
 
 ### Writing the Counter App
 
-First, write the functionality for the counter app. The counter starts from 0. The buttons will increment by 1 when '+' is pressed and decrement by 1 when '-' is pressed, assuming the value is always 0 or more. There will also be a reset button to set it back to 0. In TypeScript, it would be as follows:
+First, write the functionality for the counter app. The counter starts from 0. The buttons will increase by 1 when + is pressed and decrease by 1 when - is pressed, assuming the counter value is 0 or more. There will also be a reset button that sets it back to 0. In TypeScript, this is as follows.
 
 ```svelte
 <script lang="ts">
@@ -206,7 +204,7 @@ First, write the functionality for the counter app. The counter starts from 0. T
 </script>
 ```
 
-The HTML can be written as follows to create a simple counter:
+HTML is written as follows to create a simple counter.
 
 ```html
 <div class="container">
@@ -223,9 +221,9 @@ The HTML can be written as follows to create a simple counter:
 </div>
 ```
 
-You can pass the functions defined in TypeScript by using the {} brackets in the on:click attribute and writing the function name inside. The counter value is embedded by writing the variable name in curly braces.
+You can pass functions by writing the function name inside {} in the on:click attribute. The counter value is embedded by writing the variable name in curly braces.
 
-The CSS is written as follows:
+CSS is written as follows.
 
 ```css
 <style>
@@ -287,9 +285,9 @@ The CSS is written as follows:
 </style>
 ```
 
-You can use regular CSS, or frameworks like Tailwind CSS or PostCSS. Feel free to design it as you like with your preferred framework.
+You can use regular CSS, or frameworks like Tailwind CSS or PostCSS. Customize the design as you like.
 
-The completed code for `+page.svelte` is as follows:
+The completed code for `+page.svelte` is as follows.
 
 ```svelte
 <script lang="ts">
@@ -382,18 +380,18 @@ The completed code for `+page.svelte` is as follows:
 </style>
 ```
 
-For iOS execution, first run `npm run tauri ios init` to prepare the app, then execute `npm run tauri ios dev` for emulator or real device testing. For Android, replace 'ios' with 'android'. The execution result is as follows:
+For iOS execution, first run `npm run tauri ios init` to prepare the app, then `npm run tauri ios dev` for emulator or real device testing. For Android, replace "ios" with "android". The execution result is as follows.
 
 ![app](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/tauri2.0_rc_practice/tauri_counter.webp)
 
 ### Build
 
-After the app is completed, you can build it with `npm run tauri android build` or `npm run tauri ios build`. Building allows for installation on real devices or distribution.
+After the app is complete, you can build it with `npm run tauri android build` or `npm run tauri ios build`. Building allows installation or distribution on real devices.
 
-### Svelte Behavior Compared to Beta Version
+### Comparison of Svelte Behavior with Beta Version
 
-Regarding Svelte, unlike the Beta version, it now supports not only SPAs but also routing with SvelteKit, making it more user-friendly for Svelte developers. Compared to Flutter or React Native, Tauri is still immature with a smaller community, so future growth is anticipated.
+Regarding Svelte, unlike the Beta version, it now supports not only SPA but also routing with SvelteKit, making it easier for Svelte developers to use. Compared to Flutter or React Native, Tauri is still immature with a smaller community, so future development is expected.
 
 ## Summary
 
-I created a mobile app with Tauri 2.0 (RC). With knowledge of TypeScript and web technologies, you can build GUIs and create mobile apps based on that. For motivated developers, you can also incorporate Rust for backend processing to build more complex and stable apps. Although it's still developing as an alternative to Electron, I look forward to future updates.
+I created a mobile app with Tauri 2.0 (RC). If you have knowledge of web technologies like TypeScript, you can build the GUI and create mobile apps based on that. For motivated developers, you can also combine backend processing with Rust to make more complex and stable apps. Although it's still in development as an alternative to Electron, future updates are anticipated.

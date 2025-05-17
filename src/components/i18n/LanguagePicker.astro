@@ -8,7 +8,7 @@ import { languages } from "@/i18n/ui";
     </button>
     <ul
         id="language-menu"
-        class="absolute mt-2 bg-white border rounded shadow hidden"
+        class="absolute mt-2 bg-[var(--bg2)] border rounded shadow hidden"
     >
         {
             Object.entries(languages).map(([lang, label]) => (
@@ -16,7 +16,7 @@ import { languages } from "@/i18n/ui";
 <a
     href={`/blog/${lang}/${Astro.url.pathname.split('/').slice(3).join('/') || ''}`}
     onclick={`localStorage.setItem('selectedLang', '${lang}'); location.reload(); document.getElementById('language-menu').classList.add('hidden');`}
-    class="px-4 py-2 hover:bg-gray-200 flex items-center"
+    class="px-4 py-2 hover:bg-[var(--accent2)]/35 flex items-center"
 >
     <i class="material-icons mr-2">language</i> {label}
 </a>

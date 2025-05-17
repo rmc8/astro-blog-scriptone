@@ -1,25 +1,23 @@
 ---
-title: Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#11-#20)
-slug: data-science-knock100-part2
-description: This article solves questions 11 through 20 of Data Science 100 Knocks using Python (Polars/Pandas) and SQL. It mainly focuses on string pattern detection using LIKE, endswith, startswith, and regular expressions.
+title: "Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#11-#20)"
+slug: "data-science-knock100-part2"
+description: "Solve questions 11 to 20 of Data Science 100 Knocks using Python (Polars/Pandas) and SQL. Mainly perform string pattern detection using LIKE, endswith, startswith, and regular expressions."
 date: 2024-11-29T22:11:45.861Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/df.png"
 draft: false
 tags: ['Data Science', 'Python']
 categories: ['Programming']
 ---
 
-# Solving Data Science 100 Knocks with Pandas, Polars, and SQL (#11-#20)
-
-Continuing from the previous knocks [/data-science-knock100-part1], this section solves questions 11 through 20 using Pandas, Polars, and SQL.
+Continuing from the previous knock [/data-science-knock100-part1], solve questions 11 to 20 using Pandas/Polars/SQL.
 
 ## Problems
 
-Before starting to solve the problems, make sure to execute the first code cell. If you don't, variables will be undefined, and you may encounter errors during data processing, so please don't forget to run it.
+Before starting to solve the problems, please execute the first code cell. If you do not, variables will be undefined, and errors may occur during data processing, so please do not forget to run it.
 
 ### Question 11
 
-> P-011: From the customer data (df_customer), extract all records where the customer ID (customer_id) ends with '1' and display 10 records.
+> P-011: From the customer data (df_customer), extract all items where the customer ID (customer_id) ends with 1, and display 10 items.
 
 ```python
 # Pandas
@@ -46,7 +44,7 @@ LIMIT 10
 
 ### Question 12
 
-> P-012: From the store data (df_store), display all records where the address (address) contains '横浜市'.
+> P-012: From the store data (df_store), display all items where the address (address) contains "横浜市".
 
 ```python
 # Pandas
@@ -72,7 +70,7 @@ WHERE
 
 ### Question 13
 
-> P-013: From the customer data (df_customer), extract all records where the status code (status_cd) starts with an alphabet from A to F, and display 10 records.
+> P-013: From the customer data (df_customer), extract all items where the status code (status_cd) starts with an alphabet from A to F, and display 10 items.
 
 ```python
 # Pandas
@@ -100,7 +98,7 @@ LIMIT
 
 ### Question 14
 
-> P-014: From the customer data (df_customer), extract all records where the status code (status_cd) ends with a digit from 1 to 9, and display 10 records.
+> P-014: From the customer data (df_customer), extract all items where the status code (status_cd) ends with a digit from 1 to 9, and display 10 items.
 
 ```python
 # Pandas
@@ -127,7 +125,7 @@ LIMIT 10
 
 ### Question 15
 
-> P-015: From the customer data (df_customer), extract all records where the status code (status_cd) starts with an alphabet from A to F and ends with a digit from 1 to 9, and display 10 records.
+> P-015: From the customer data (df_customer), extract all items where the status code (status_cd) starts with an alphabet from A to F and ends with a digit from 1 to 9, and display 10 items.
 
 ```python
 # Pandas
@@ -154,7 +152,7 @@ LIMIT
 
 ### Question 16
 
-> P-016: From the store data (df_store), display all records where the phone number (tel_no) is in the format of 3 digits-3 digits-4 digits.
+> P-016: From the store data (df_store), display all items where the phone number (tel_no) is in the format of 3 digits-3 digits-4 digits.
 
 ```python
 # Pandas
@@ -180,7 +178,7 @@ WHERE
 
 ### Question 17
 
-> P-017: Sort the customer data (df_customer) by birth date (birth_day) in descending order (oldest first) and display the first 10 records for all columns.
+> P-017: Sort the customer data (df_customer) by birth date (birth_day) in descending order (oldest first), and display the first 10 items for all columns.
 
 ```python
 # Pandas
@@ -208,7 +206,7 @@ LIMIT
 
 ### Question 18
 
-> P-018: Sort the customer data (df_customer) by birth date (birth_day) in ascending order (youngest first) and display the first 10 records for all columns.
+> P-018: Sort the customer data (df_customer) by birth date (birth_day) in ascending order (youngest first), and display the first 10 items for all columns.
 
 ```python
 # Pandas
@@ -236,7 +234,7 @@ LIMIT
 
 ### Question 19
 
-> P-019: For the receipt details data (df_receipt), rank the sales amount per transaction (amount) in descending order and display the top 10 records. Display customer ID (customer_id), sales amount (amount), and the assigned rank. If sales amounts (amount) are equal, assign the same rank.
+> P-019: For the receipt details data (df_receipt), assign ranks based on sales amount (amount) in descending order, and display the first 10 items. Show customer ID (customer_id), sales amount (amount), and the assigned rank. If sales amounts (amount) are equal, assign the same rank.
 
 ```python
 # Pandas
@@ -268,7 +266,7 @@ LIMIT
 
 ### Question 20
 
-> P-020: For the receipt details data (df_receipt), rank the sales amount per transaction (amount) in descending order and display the top 10 records. Display customer ID (customer_id), sales amount (amount), and the assigned rank. If sales amounts (amount) are equal, assign distinct ranks.
+> P-020: For the receipt details data (df_receipt), assign ranks based on sales amount (amount) in descending order, and display the first 10 items. Show customer ID (customer_id), sales amount (amount), and the assigned rank. If sales amounts (amount) are equal, assign different ranks.
 
 ```python
 # Pandas
@@ -296,15 +294,14 @@ LIMIT
   10
 ```
 
-## Reflections on Questions 1 through 20
+## Thoughts on Questions 1 to 20
 
-There are slight differences in syntax between Pandas and Polars, but up to this point, I didn't find it too difficult to write. Both frameworks follow certain rules and have many commonalities, so with continued practice, I can handle both effectively.
+There are slight differences in syntax between Pandas and Polars, but up to this point, I could write them without much discomfort. Both frameworks follow certain rules and have many commonalities, so continuing to write them should allow me to handle both frameworks without issues.
 
-Additionally, from Question 10 in the previous section and Questions 11 onward, there are many instances of string pattern checks using LIKE, startswith, endswith, and regular expressions (regex). Among these, regular expressions are a highly abstract and versatile way to replace LIKE, startswith, and endswith. They can be used not only in data analysis but also in web scraping for data formatting or extracting specific patterns from strings. As a powerful tool for string processing, it's hard to avoid in string-based data analysis. If you're not comfortable with it, this is a good opportunity to challenge yourself with regular expressions.
+Additionally, from Question 10 in the previous set and Questions 11 onward, there are many cases involving string pattern checks using LIKE, startswith, endswith, and regular expressions (regex). Among these, regular expressions are a very abstract and convenient way to replace LIKE, startswith, and endswith, and can be used for data shaping in data analysis as well as extracting characters from specific patterns in web scraping. They are a powerful tool for string processing, so it is difficult to avoid them in data analysis involving strings. If you are not good at them, this is a good opportunity to challenge yourself with regular expressions.
 
-The following book is a drill-based resource for learning regular expression writing:
+The following book is a drill-based resource for learning how to write regular expressions.
 
-* [Regular Expression Writing Drills with Repetitive Learning Software (WEB+DB PRESS plus)](https://amzn.to/3Zv710T)
+* [Regular Expressions Writing Drill with Repetitive Learning Software (WEB+DB PRESS plus)](https://amzn.to/3Zv710T)
 
-Regular expressions themselves haven't changed much in terms of specifications, so even though this book was released on December 22, 2010, its usefulness remains today, 14 years later. While there aren't many new books on the topic, older ones are still perfectly fine, so feel free to explore with your preferred resources.
-
+Regular expressions themselves have not changed much in specification, so even though this book was released on December 22, 2010, its usefulness remains today, 14 years later. There are not many new books available, but older ones are fine, so feel free to try with your preferred book.

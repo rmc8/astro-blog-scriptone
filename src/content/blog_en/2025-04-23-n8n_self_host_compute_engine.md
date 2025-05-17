@@ -1,31 +1,29 @@
 ---
-title: Self-hosting n8n on Compute Engine's Free Tier
-slug: n8n_self_host_compute_engine
-description: Leverage Compute Engine's free tier to self-host n8n. Using Docker Compose, you can easily set up n8n and create an environment for various automations, including generative AI.
+title: "Self-Hosting n8n on Compute Engine's Free Tier"
+slug: "n8n_self_host_compute_engine"
+description: "Utilize Compute Engine's free tier to self-host n8n. This easy process using Docker Compose allows you to set up n8n and create an environment for various automations, including generative AI."
 date: 2025-04-23T23:26:26.384Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/n8n.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/n8n.webp"
 draft: false
 tags: ['n8n', 'LLM']
 categories: ['Programming']
 ---
 
-# Self-hosting n8n on Compute Engine's Free Tier
+## Reasons for Introducing n8n
 
-## Reason for Introducing n8n
+n8n is an open-source software that automates workflows similar to IFTTT. It competes with IFTTT from a workflow perspective, so it was already known among some engineers, but with the addition of features like integration with generative AI and MCP client/server functionality, it has become a very powerful option as an AI-based automation tool.
 
-n8n is an open-source software that automates workflows like IFTTT. It competes with IFTTT from a workflow perspective, so it was known among some engineers, but with the addition of generative AI integration and MCP client/server functions, it has become a very powerful option as an AI-based automation tool.
+Personally, I have been running Dify on my MacBook to automate processes using generative AI, but I felt limitations with Dify, such as difficulties in API-based automation or starting processes on a trigger basis. Additionally, I had been using IFTTT, but due to price increases and restrictions on the paid plan, I became a free user, and I was looking for a tool to fill these gaps.
 
-I myself am already running Dify on my MacBook to automate processes using generative AI, but I felt inconvenienced by Dify's limitations in API-based automation or trigger-based process initiation. Additionally, I used to use IFTTT, but due to price increases and restrictions on the paid plan, I became a free user, and I was looking for a tool to fill those gaps.
+In this context, I learned about [n8n 100 Knocks](https://zenn.dev/qinritukou/books/n8n_100_knocks) from a Zenn book, which was my first introduction to n8n. After researching, I found that n8n could address the issues I mentioned, so I decided to self-host it on an existing Google Cloud Platform instance that was only running a Bluesky Bot and not being used as a web server. I chose to utilize its free tier for this purpose.
 
-In that context, I learned about [n8n 100 Knocks](https://zenn.dev/qinritukou/books/n8n_100_knocks) from a Zenn book, and that's how I first heard about n8n. Upon researching n8n, I found it useful for filling the gaps mentioned above, so I decided to self-host n8n on an instance in Google Cloud Platform that was only used for running a Bluesky Bot and not as a web server, utilizing its free tier.
+## Introduction Procedure
 
-## Installation Procedure
-
-For the Compute Engine instance, I think about 1GB of memory is sufficient. So, I'm using `e2-micro`. The OS is Debian. Connect to the instance via SSH from a browser or terminal and run commands. For n8n, using Docker makes self-hosting easy, so I'll take advantage of that.
+For the Compute Engine instance, I think about 1GB of memory is sufficient. So, I am using the `e2-micro` machine type. The OS is Debian. You will connect to the instance via SSH from a browser or terminal and run commands. Since n8n can be easily self-hosted using Docker, I will make use of that.
 
 ### Install Docker
 
-First, update existing packages.
+First, update the existing packages.
 
 ```shell
 sudo apt update
@@ -57,13 +55,13 @@ Install Docker Engine.
 sudo apt install -y docker-ce docker-ce-cli containerd.io
 ```
 
-Confirm that Docker is installed and running.
+Verify that Docker is installed and running.
 
 ```shell
 sudo systemctl status docker
 ```
 
-If it shows `active(running)`, it's successful. Finally, add the current user to the docker group so you can run docker commands without sudo.
+If it shows `active(running)`, it is successful. Finally, add the current user to the docker group so you can run docker commands without sudo.
 
 ```shell
 sudo usermod -aG docker $USER
@@ -119,7 +117,7 @@ services:
     restart: always
 ```
 
-Next, create the `Caddyfile`.
+Then, create the `Caddyfile`.
 
 ```shell
 sudo nano Caddyfile
@@ -132,15 +130,14 @@ Write the following text into it.
 # Caddyfile configuration for example.com
 # ===================================
 
-# In the following line, accurately describe the domain name specified in N8N_HOST in docker-compose.yml.
+# In the following line, accurately specify the domain name set in N8N_HOST in docker-compose.yml.
 # Caddy will listen for requests to this domain name.
-# Caddy will automatically use Let's Encrypt for HTTPS (port 443) by default,
-# and redirect HTTP (port 80) access to HTTPS.
+# By default, Caddy uses Let's Encrypt to automatically enable HTTPS (on port 443) and redirect HTTP (on port 80) to HTTPS.
 example.com {
 
   # The reverse_proxy directive forwards received requests to another server.
   # Here, it forwards to port 5678 of the n8n service (container) in the same Docker Compose network.
-  # In docker-compose, the service name (n8n) can be used as the internal hostname.
+  # In docker-compose, the service name (n8n) can be used as an internal hostname.
   reverse_proxy n8n:5678
 
   # ===================================
@@ -160,16 +157,16 @@ example.com {
     X-XSS-Protection "1; mode=block";
   }
 
-  # Enable gzip compression (optional) - This can reduce the transfer amount of text-based content and improve performance.
+  # Enable gzip compression (optional) - This can reduce the transfer size of text-based content and improve performance.
   # encode gzip
 }
 ```
 
-Once the two files are prepared, running `docker compose up -d` will allow you to self-host.
+Once the two files are ready, running `docker compose up -d` will allow you to self-host.
 
 ### Network Settings
 
-After `docker compose up -d`, it may take a little time for the page to become accessible. In the meantime, configure the firewall to allow access via HTTP and HTTPS, and open ports 80 and 443. Also, as needed, create a DNS A record using the instance's external IP and set up the domain. Once you can access the self-hosted n8n from the specified domain, the setup is complete.
+After `docker compose up -d`, it may take a little time for the page to become accessible. During that time, configure the firewall to allow access via HTTP and HTTPS, and open ports 80 and 443. Also, as needed, use the instance's external IP to create a DNS A record and set up the domain. Once you can access the self-hosted n8n via the specified domain, the setup is complete.
 
 ### Updating n8n
 
@@ -182,4 +179,4 @@ docker compose up -d
 
 ## Future Plans
 
-With Dify, you can embed Python code for external integration, but executing trigger-based processes is difficult, and there are limitations on API usage. Additionally, since MCP, which is currently hot, can be used as both a server and a client, it enables fully automated processes integrated with various triggers, external tools, and processes written in Python or JavaScript. So, I want to study n8n while gradually building automations that make it easy to get domestic and international information in Japanese or simplify daily life. As for n8n 100 Knocks, it's only 5 books as of today, so I'll watch it slowly and consider purchasing it when I want to acquire new knowledge.
+With Dify, you can embed Python code for external integration, but it is difficult to execute trigger-based processes, and there are limitations on API usage. Additionally, since MCP, which is currently hot, can be used as both a server and a client, it enables fully automated processes integrated with various triggers, external tools, and processes written in Python or JavaScript. So, I want to gradually build automations that make it easy to obtain domestic and international information in Japanese or simplify daily life, while learning how to use n8n. As of today, n8n 100 Knocks has only 5 entries, so I plan to watch it slowly and consider purchasing it when I need new knowledge.

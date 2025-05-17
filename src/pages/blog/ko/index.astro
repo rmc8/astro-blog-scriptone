@@ -23,3 +23,9 @@ const postsToShow: CollectionEntry<"blog_ko">[] = sortedPosts.slice(
 <Layout title={`${SITE_NAME} - Blog`}>
     <BlogList posts={postsToShow} lang_code="ko" /></Layout
 >
+
+<style is:global>
+    html {
+        font-family: "Noto Sans KR Variable", sans-serif;
+    }
+</style>

@@ -1,17 +1,15 @@
 ---
-title: "[IFTTT] Automatically Post from Twitter to Bluesky"
-slug: twitter-to-bluesky
-description: This article describes how to post from Twitter to Bluesky using IFTTT and Google Apps Script. You can leverage multiple SNS platforms in parallel for migration, interaction, and more.
+title: "Using IFTTT to Automatically Post from Twitter to Bluesky"
+slug: "twitter-to-bluesky"
+description: "This article describes how to post from Twitter to Bluesky using IFTTT and Google Apps Script. You can leverage multiple SNS platforms in parallel for migration, interaction, and more."
 date: 2023-07-15T12:17:45.842Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/twiToBsky.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/twiToBsky.webp"
 draft: false
 tags: ['Bluesky', 'Twitter', 'IFTTT', 'GoogleAppsScript']
 categories: ['Programming']
 ---
 
-# [IFTTT] Automatically Post from Twitter to Bluesky
-
-Following the previous article ([/twitter-to-misskey](/twitter-to-misskey)), I also obtained a [Bluesky account](https://bsky.app/profile/k.rmc-8.com) and started using it. While there are fewer Japanese users compared to Misskey, it's a relaxed space where Japanese users connect, and many developers respond, making it surprisingly enjoyable. It's reminiscent of the pre-Japanese-support era of Twitter, before the earthquake, which I quite like. However, since some people can only interact on Twitter, I couldn't switch over completely. So, I set up a process to post from Twitter to Bluesky using IFTTT and Google Apps Script, allowing me to enjoy timelines across Twitter, Misskey, and Bluesky in parallel. This involves programming in JavaScript, similar to the previous article, so you can copy and paste as needed.
+Following the previous article ([/twitter-to-misskey](/twitter-to-misskey)), I obtained a [Bluesky account](https://bsky.app/profile/k.rmc-8.com) and started using it. There are fewer Japanese users compared to Misskey, but it's a relaxed space where Japanese users connect, and there are many developers who respond actively, making it surprisingly enjoyable. It's reminiscent of the pre-Japanese support era, like Twitter before the earthquake, which I quite like. However, since there are people I can only interact with on Twitter, I couldn't switch over completely. So, I set up a process to post from Twitter to Bluesky using IFTTT and Google Apps Script, allowing me to enjoy timelines across Twitter, Misskey, and Bluesky in parallel. While you can handle this with copy-paste, similar to last time, this article includes JavaScript programming.
 
 ## Preparation
 * IFTTT Pro (a paid plan)
@@ -20,16 +18,16 @@ Following the previous article ([/twitter-to-misskey](/twitter-to-misskey)), I a
 
 ## Procedure
 
-The overall procedure involves publishing an API with Google Apps Script to automatically post to your Bluesky account. When you post a tweet from your own Twitter account, IFTTT sends the tweet via Webhook to the API, which then posts the content to Bluesky. Once Bluesky receives the data, it posts the tweet content to your owned Bluesky account. I'll detail the steps one by one below.
+The general procedure involves publishing an API with Google Apps Script to automatically post to your Bluesky account. When you post a tweet from your Twitter account, IFTTT sends the tweet via Webhook to that API, which then sends the data to the Bluesky API. Once Bluesky receives the data, it posts the tweet content to your owned Bluesky account. I'll detail the steps one by one below.
 
 ### Obtain App Password
 Go to [Bluesky settings](https://bsky.app/settings) and click on App Passwords. Click [Add App Password], give it a name, and then click [Create App Password] to generate the app password.
 
 ![app pass](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/twiToBluesky/apppass2.webp)
 
-Store the generated app password in a safe place, like a notepad.
+Store the generated app password in a safe place like a notepad.
 
-### Write API Processing in Google Apps Script
+### Write the API Processing in Google Apps Script
 
 * Access the [Google Apps Script homepage](https://script.google.com/)
 * Click [New Project]
@@ -47,6 +45,7 @@ const EMAIL = "Email address for login";
 const APP_PASS = "Paste your App password here";
 const SECRET = "HOGE"; // Enter any string for authentication on the IFTTT side
 ```
+
 
 In main.gs, write the code to receive posts from IFTTT and post the tweet content to Bluesky:
 
@@ -153,15 +152,15 @@ Click [Deploy] in the top right of the screen and select [New deployment].
 
 ![publish](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/misskey/gas.webp)
 
-* Select "Web app" from the deployment type
-* Enter a recognizable description like "iftttToMisskey"
+* Select "Web app" from the type options
+* Write a recognizable description like "iftttToMisskey"
 * For "Execute as," select "Me"
 * For "Who has access," select "Anyone"
 * Click [Deploy]
 
 ![deploy](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/misskey/deploy.webp)
 
-Once deployment is complete, click the copy icon next to the web app URL. You'll use this URL in IFTTT.
+Once deployment is complete, click the copy icon next to the web app URL. You'll use this copied URL in IFTTT.
 
 ## IFTTT Settings
 
@@ -169,39 +168,39 @@ In IFTTT, set up to detect tweets from your own account and send data to the dep
 
 ### Detection Settings
 * Access IFTTT and click [Add]
-* Search for "Twitter" in Search Service
-* Click Twitter from the search results
+* In Search Service, enter "Twitter"
+* From the search results, click Twitter
 * Click [New tweet by you]
 * Fill in the form:
   * Select your Twitter account for Twitter account detection
     * If not connected, follow the prompts to log in and authenticate
   * Uncheck Include normally
-    * Checking it will also post Retweets or replies to Bluesky
+    * Checking it will also post Retweets and replies to Bluesky
     * Click [Create trigger]
 
 ### Send Data to the API
 ![make a webhook](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/misskey/fin.webp)
 
 * Click [Add] in Then That
-* Search for "Webhooks" in Search Service
-* Click Webhooks from the search results
+* In Search Service, enter "Webhooks"
+* From the search results, click Webhooks
 * Click [Make a web request]
-* Paste the URL copied from Google Apps Script into URL
+* Paste the URL you copied from Google Apps Script into URL
 * Change Method to POST
 * Set Content Type to application/json
 * Set Body to "{'tweet': '{{text}}', 'secret': 'Paste the SECRET value from local.gs here'}"
 * Click [Create action]
 * Click [Continue]
-* Enter a recognizable name in Applet Title, like "When @rmc_km makes a new tweet, note it to @<k.bsky.app>"
+* In Applet Title, enter a recognizable name like "When @rmc_km makes a new tweet, note it to @<k.bsky.app>"
 
 Click [Finish]
 
-## Operation Check
+## Verification
 
-Once you've completed the steps above, the setup is done. Simply post a tweet from the configured Twitter account, and if the content appears as a post on your Bluesky account, it's successful. However, on Bluesky, embeds and decorations are required, and URLs or images will appear as plain text, resulting in a simple appearance. For better results, you could add processing like scraping to fetch necessary data and include embeds in the payload via HTTP POST.
+Once you've completed the steps above, the setup is done. Now, post a tweet from the configured Twitter account, and if the content appears as a post on your Bluesky account, it's successful. However, on Bluesky, embeds and decorations are required, and URLs or images will appear as plain text, resulting in a simple appearance. To improve this, you could add processing like scraping to fetch necessary data and include embeds in the payload via HTTP POST.
 
 Bluesky sample: <https://bsky.app/profile/k.rmc-8.com/post/3k2keq2kus72w>
 
 ## Summary
 
-This article explained how to send tweets to Google Apps Script using IFTTT and automatically post them to Bluesky. With IFTTT Pro, you can reuse settings for multiple Twitter accounts and post to Bluesky, allowing parallel use even if users haven't migrated. Even if your followers haven't moved to Bluesky, this enables easy parallel operation and may create opportunities for new interactions alongside existing ones. However, since it's automated, consider filtering unnecessary posts or preventing Retweets and Replies from being reposted. By using it effectively, you can monitor Twitter trends while easing the transition. We hope you find this useful.
+This article explained how to send tweets to Google Apps Script using IFTTT and automatically post them to Bluesky. With IFTTT Pro, you can reuse settings for multiple Twitter accounts and post to Bluesky, allowing parallel use even if users haven't migrated. Even if your followers haven't moved to Bluesky, this enables easy parallel operation and may create opportunities for new interactions alongside existing ones. However, since it's automated, you should consider filtering unnecessary posts and ensuring Retweets or Replies aren't reposted. By using it effectively, you can monitor Twitter trends while creating a smooth migration environment. We hope you find this useful.

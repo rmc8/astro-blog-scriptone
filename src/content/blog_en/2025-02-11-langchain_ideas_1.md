@@ -1,33 +1,31 @@
 ---
-title: Can Generative AI (LLM) Shop at Online Supermarkets?
-slug: langchain_ideas_1
-description: Using Python with LangChain and Playwright to explore if generative AI can handle online supermarket errands.
+title: "Can Generative AI (LLM) Shop at an Online Supermarket?"
+slug: "langchain_ideas_1"
+description: "Using Python with Langchain and Playwright to consider if Generative AI can run errands at an online supermarket."
 date: 2025-02-11T04:08:12.472Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/llm.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/llm.webp"
 draft: false
 tags: ['LangChain', 'LLM', 'Playwright', 'Python']
 categories: ['Programming']
 ---
 
-# Can Generative AI (LLM) Shop at Online Supermarkets?
+I experimentally created a robot that combines Generative AI, Playwright, and Fire to handle shopping at an online supermarket. The programming language used is Python.
 
-I experimentally created a robot that combines generative AI, Playwright, and Fire to handle errands at an online supermarket. The programming language used is Python.
+## Why I Experimented with AI for Online Supermarket Shopping
 
-## Why I Experimented with an AI for Online Supermarket Errands
+Generative AI has the ability to think, judge, and respond in place of humans based on natural language. Since it can be called via APIs, apps combining Generative AI and programming are now being developed. For example, you can have Generative AI generate SQL and execute queries with a program, or create reports from data read from a database. You can also inform Generative AI of executable functions and ask it to perform tasks, allowing the AI to judge and execute processes as needed. Additionally, in elections, it's possible to analyze and cluster voter opinions using AI, then identify trends in opinions for each group and name them. By incorporating Generative AI, you can easily achieve automation that involves judgment beyond what simple programming can do.
 
-Generative AI has the ability to think, judge, and respond based on natural language, acting as a substitute for humans. Since generative AI can be called via APIs, apps that combine it with programming are now being developed. For example, you can have generative AI generate SQL and then execute queries with a program, or create reports from data read from a database. You can also inform generative AI of executable functions and ask it to perform tasks, allowing the AI to judge and execute processes as needed. Additionally, in elections, it's possible to analyze and cluster voter opinions using AI, then identify trends for each group and name them. By incorporating generative AI, you can easily achieve automation that involves judgment beyond what simple programming can do.
-
-Because it can make judgments and inferences, frameworks have emerged that allow browser automation through natural language instructions, such as `browser-use` or `Stagehand`. I recently learned about these, and while I thought they seemed convenient from articles, I didn't feel motivated to use them and let it pass. However, after seeing introductions to these frameworks multiple times and considering the regular hassle of buying groceries in my daily life, the idea of using generative AI for online supermarket shopping came up. If it were possible, I'd want to use it a lot, and I think it would be convenient for users of online supermarkets as well. With a strong belief that it could be made, I decided to experiment.
+Because it can make judgments and inferences, frameworks have emerged that allow browser automation to be instructed in natural language, such as `browser-use` or `Stagehand`, which I recently learned about. I thought they seemed convenient when I saw articles about these frameworks, but I didn't feel like using them and let it pass. On the other hand, as I encountered these framework introduction articles multiple times and regularly faced the hassle of buying groceries in my daily life, the idea of whether Generative AI could shop at an online supermarket came up. If it were possible, I'd want to use it a lot, and I think it would be convenient for users of online supermarkets as well. With a strong belief that it could probably be made, I decided to experiment.
 
 ## Details of the Idea
 
-Here, I won't write about specific platforms or actual code, but I'll outline the concept and implementation methods. First, the program will be written entirely in Python and use Fire to run it as a CLI app. Users will give instructions via CLI for what they want to buy.
+Here, I won't write about specific platforms or actual code, but I'll describe the concept and implementation methods. First, the program itself will be written entirely in Python and use Fire to run it as a CLI app. Users will instruct it via CLI on what they want to buy.
 
 ```shell
 python main.py --query "Buy the ingredients for Bolognese. Also, get diapers and milk since we're out."
 ```
 
-When the user runs the Python script via CLI and provides instructions, the program receives them.
+When the user runs Python via CLI and gives instructions, the program receives them.
 
 ```python
 import fire
@@ -42,7 +40,7 @@ if __name__ == "__main__":
     main()
 ```
 
-From the query, use LangChain and generative AI to create a shopping list. Combining it with Pydantic makes it very convenient for handling structured data.
+From the query, use Langchain and Generative AI to create a shopping list. Combining it with Pydantic makes it very convenient for handling structured data.
 
 ```python
 from typing import Any, Dict, Union, List
@@ -80,7 +78,7 @@ class OtukAI:
             return shopping_list.items
 ```
 
-For a user instruction like '"Buy the ingredients for Bolognese. Also, get diapers and milk since we're out."', running the get_item_list method in the above code would likely result in something like this:
+The user's instruction is `"Buy the ingredients for Bolognese. Also, get diapers and milk since we're out."`, so running the get_item_list method in the above code would likely result in the following:
 
 ```python
 oai =  OtukAI(
@@ -95,7 +93,7 @@ print(shopping_list)
 # ["Tomato", "Ground beef", "Onion", "Olive oil", "Pasta (dry)", "Milk", "Diapers"]
 ```
 
-After creating the shopping list, the errand AI goes to the online supermarket. This can be done similarly to traditional crawling using Playwright or Selenium to access the URL. You might handle login processes or use cookies to maintain login information. Once logged in, the AI can shop. It then reads through the list sequentially.
+After creating the shopping list, the errand AI goes to the online supermarket. This can be done similarly to traditional crawling using Playwright or Selenium to access the URL. You might handle login processes or use cookies to maintain login information. Once logged in, the errand AI can shop. Here, it reads the list sequentially.
 
 ```python
 for item in shopping_list:
@@ -104,15 +102,15 @@ for item in shopping_list:
     self.page.goto(url)
 ```
 
-For each item in the shopping list, various processes can be performed. For example, use generative AI to create search keywords from the item and perform a search, or use it to determine the category and create/access the category URL. This narrows down the product list to some extent, allowing the LLM to match each product and judge if it matches the shopping list item. If APIs or databases exist, using that information would be more efficient than crawling.
-Once the target product is found, add it to the cart; if not, do nothing, and record details like whether it was added, price, quantity, and product name.
+As it reads the shopping list sequentially, it can perform operations for each item. For example, use Generative AI to create search keywords from the item and search, or determine the category from the item with Generative AI and create/access the category URL. This narrows down the product list to some extent, allowing the LLM to match each product and judge if it matches the shopping list item. If APIs or databases exist, using that information would be more efficient than crawling.
+Once the target product is found, add it to the cart; if not, do nothing, and record whether it was added, the price, quantity, product name, etc.
 
-If all products are processed this way and the results are returned to the user for approval before purchase, that would be sufficient for automation. This can be achieved by combining Python's automated browser operations with LangChain (LLM). In other words, generative AI can be used to shop at online supermarkets.
+If all products are processed this way and the results are returned to the user for approval before purchase, that would be sufficient for automation. This can be achieved by combining Python's automated browser operations with Langchain (LLM). In other words, Generative AI can be used to shop at an online supermarket.
 
 ## Reasons Not to Use It in Practice
 
-While implementation is possible, it would be an unintended use for online supermarkets. Naturally, considerations to avoid overloading the system are necessary, but from a legal risk perspective, I'm keeping it as an experiment. On the other hand, since daily shopping takes time, I think it would be convenient if online supermarkets implemented this kind of errand AI service, allowing users to request shopping from AI. If applied to physical stores, it might rely on humans like a spouse or children, or robots making similar judgments, so I believe online supermarkets have potential in terms of AI utilization. If such a service were available for a monthly fee of 500 yen, I'd want to use it continuously to make online shopping easier (though physical stores might have different demands).
+While implementation is possible, it would be an unintended use for online supermarkets. Of course, considerations like not overloading the system are necessary, but from a legal risk perspective, I'm keeping it as an experiment. On the other hand, since I feel that daily shopping takes time, I think it would be convenient if online supermarkets implemented an errand AI service, allowing users to request shopping from AI. If this were done in physical stores, it might rely on humans like spouses or children, or robots making similar judgments, so I believe online supermarkets have potential in terms of AI utilization. If such a service were available for a monthly fee of 500 yen, I'd want to use it continuously to make online supermarket shopping easier (though physical stores might have different demands).
 
 ## Summary
 
-By combining generative AI with programming, you can replace human judgment and inference, evolving program behavior into more complex and dynamic forms. As a result, we've seen that it's possible to enable shopping at online supermarkets. Similarly, in gubernatorial elections, voter opinions can be visualized using generative AI, making program operations more complex and enriching people's lives, daily routines, and leisure. I hope errand AI gets implemented by retailers as a service, and through this, I've shared some ideas on automation using generative AI's capabilities.
+By combining Generative AI with programming, you can replace human judgment and inference, evolving program behavior into something more complex and dynamic. As a result, we've seen that it's possible to enable shopping at online supermarkets. Similarly, in gubernatorial elections, voter opinions can be visualized using Generative AI, making program behavior more complex and accessible, enriching people's lives, daily routines, and leisure. I hope that shopping AI gets implemented by retailers as a service, and through this, I've shared some ideas on automation using Generative AI's capabilities.

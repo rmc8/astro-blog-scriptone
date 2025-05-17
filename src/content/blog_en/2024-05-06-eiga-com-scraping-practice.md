@@ -1,21 +1,19 @@
 ---
-title: '[Python] Scraping Reviews of "Roman Holiday"'
-slug: eiga-com-scraping-practice
-description: Performed scraping from Eiga.com using Python's BeautifulSoup4.
+title: "【Python】Roman Holiday Review Scraping"
+slug: "eiga-com-scraping-practice"
+description: "Scraped from Eiga.com using Python's BeautifulSoup4."
 date: 2024-05-06T11:27:46.583Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img%2Feyecatch%2Froma_scraping.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img%2Feyecatch%2Froma_scraping.webp"
 draft: false
 tags: ['Python', 'Scraping', 'BeautifulSoup4']
 categories: ['Programming']
 ---
 
-# [Python] Scraping Reviews of "Roman Holiday"
-
 During the GW holiday, I was browsing Qiita and came across the following article.
 
 **Movie Review and Rating Scraping 1:** <https://qiita.com/AzukiImo/items/3356af25fe3e7d496e75>
 
-I usually work with Selenium for scraping or crawling, or use Requests for API operations, but I felt like reviewing BeautifulSoup. I borrowed the topic and code from the article and added some implementations.
+I usually perform scraping or crawling with Selenium, or operate APIs using Requests, but I felt like reviewing BeautifulSoup. I borrowed the topic and code from the article and added some implementations.
 
 ## Repository
 
@@ -61,7 +59,7 @@ def _scrape(bs: BeautifulSoup) -> List[Dict[str, Optional[str]]]:
                 title = None
 
             # Review text
-            # NOTE: The structure differs for regular reviews and spoiler reviews, so check both elements for the presence of a review
+            # NOTE: The structure differs for regular and spoiler reviews, so check both elements
             review_text_element = review_elm.find("p", class_="short")
             hidden_review_text_element = review_elm.find("p", class_="hidden")
             review_text: Optional[str]
@@ -96,7 +94,7 @@ def _get_last_page_num(bs: BeautifulSoup) -> Optional[int]:
             return None
 
         review_count = int(match.group(1))
-        # NOTE: Subtract 1 and add back to ensure page number displays correctly for multiples of 20
+        # NOTE: Subtract 1 and add back to handle multiples of 20 correctly
         last_page_num = (review_count - 1) // REVIEW_COUNT_BY_PAGE + 1
         return last_page_num
 
@@ -125,20 +123,20 @@ def _get_last_page_num(bs: BeautifulSoup) -> Optional[int]:
 
 ### Class Implementation
 
-The original article used procedural processing in sequence. In the rewritten code, I used classes to divide the processing into private methods and made it possible to extract reviews for other works by changing the URL ID. The class takes the movie ID at instantiation and returns the scraping results as a Pandas DataFrame.
+The original article used procedural processing, but in the rewritten code, I used a class with private methods to separate the processing and make it flexible for other movies by changing the URL ID. The class accepts the movie ID on instantiation and returns the scraping results as a Pandas DataFrame.
 
 ### URL Formatting
 
-For the review pages, I used the format `https://eiga.com/movie/{movie_id}/review/all/{{page_num}}/`, even for the first page. Many systems with paging handle the first page in the same format, and this scraping was no exception, so I kept the code simple by using the same format.
+For review pages, I used the format `https://eiga.com/movie/{movie_id}/review/all/{{page_num}}/`, even for the first page. Many systems with pagination work this way, and this scraping case was no exception, so I kept the code simple by using the same format.
 
 ### Generating the Last Page Number
 
-The original article required manual input of the page number, but I added the `_get_last_page_num` method to automate it. The number of reviews is displayed in the `p.result-number` element. I extract the number using regular expressions, convert it to a numeric value, and calculate the page number. It increments page_num by 1 each time until the last page is reached.
+The original article required manual page number input, but I added the `_get_last_page_num` method to automate it. The number of reviews is displayed in the `p.result-number` element. I extract the count using regular expressions, convert it to a number, and calculate the pages. It increments page_num by 1 until the last page is reached.
 
-### Dividing the Scraping Process
+### Splitting the Scraping Process
 
-The actual scraping process using BeautifulSoup is divided into the `_scrape` method. The scraping content itself hasn't changed, but by storing data as dictionaries in a list instead of creating separate lists for each column, I reduced the amount of code needed to generate the Pandas DataFrame.
+The actual scraping with BeautifulSoup is handled in the `_scrape` method. The content itself didn't change much, but by storing data as dictionaries in a list, I reduced the code needed to generate the Pandas DataFrame.
 
 ## Overall Evaluation
 
-It was a fun holiday revisiting BeautifulSoup4. The code is slightly more compact than Selenium, and since it can be used with requests or combined with Selenium, it's very convenient. By automating the review extraction process and abstracting it for use with other works, I can efficiently search for highly rated works. Collecting information with minimal effort allows for efficient access to high-quality works, making it a fun way to optimize leisure time.
+It was a fun holiday revisiting BeautifulSoup4. The code is slightly more compact than Selenium, and since it works with requests or even combined with Selenium, it's very convenient. By automating the review extraction and abstracting it for other works, I can efficiently search for highly rated movies. This allows me to collect information with minimal effort, making it easier to access high-quality works and optimize my leisure time.

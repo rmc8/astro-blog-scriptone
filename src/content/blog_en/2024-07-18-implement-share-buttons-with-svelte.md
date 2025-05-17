@@ -1,30 +1,28 @@
 ---
-title: "[Svelte] Implementing Share Buttons"
-slug: implement-share-buttons-with-svelte
-description: Explains how to implement share buttons for 7 SNS using Svelte. Covers X, Bluesky, Hatena Bookmark, Pocket, Threads, Mastodon, and Misskey with a simple and lightweight sharing feature, including detailed implementation steps and settings for each SNS.
+title: "Implementing Share Buttons with Svelte"
+slug: "implement-share-buttons-with-svelte"
+description: "Explains how to implement share buttons for 7 SNS platforms using Svelte. Covers X, Bluesky, Hatena Bookmark, Pocket, Threads, Mastodon, and Misskey with a simple and lightweight implementation process, including detailed setup for each SNS."
 date: 2024-07-18T00:43:36.910Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/SharedButtons.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/SharedButtons.webp"
 draft: false
 tags: ['SNS', 'Svelte', 'TypeScript']
 categories: ['Programming']
 ---
 
-# [Svelte] Implementing Share Buttons
-
-Implemented share buttons for 7 services using Svelte.
+I implemented share buttons for 7 tools using Svelte.
 
 ## Why I Implemented It
 
-Originally, I thought share buttons were unnecessary. This site is updated sporadically and doesn't have enough high-quality content to consistently appear in Google searches. As a result, I didn't prioritize sharing and aimed to keep the site as streamlined as possible for curious visitors, avoiding any unnecessary elements. The main reason was that it didn't make much sense to invest effort in implementation under these circumstances.
+Originally, I didn't think share buttons were necessary. This site is updated very sporadically, and it doesn't have enough high-quality content to appear prominently in Google searches. Therefore, I didn't prioritize sharing and aimed to keep the site as streamlined as possible for curious visitors, avoiding unnecessary elements like share buttons. The main reason was that it didn't make much sense to invest the effort in implementation under these circumstances.
 
-However, I've noticed that web tools I've created for smartphone games on this site are being shared on X (Twitter) or personal Discord servers, even without share buttons. Given that, I decided there might be some value in adding buttons. By doing so, it could encourage a positive cycle of creating shareable content and helping users make the most of the site, so I finally decided to implement it.
+However, I've noticed that the web tools I've created for smartphone games on this site are being shared on X (Twitter) or personal Discord servers, even without share buttons. Given that, I decided there might be some value in adding buttons. By doing so, it could encourage a positive cycle of creating shareable content and helping users make the most of the site, so I finally got around to implementing it.
 
-## Framework Used
+## Using the Framework
 
-This site is built with Svelte and SvelteKit, so the explanation focuses on Svelte. Svelte's modules are structured with TypeScript, HTML, and styles, and while it includes some unique Svelte syntax, it's relatively readable for those familiar with web programming. Additionally, I'm using PostCSS as a supplement, but the main focus is on button implementation.
+This site is built with Svelte and SvelteKit, so the explanation will focus on Svelte. Svelte is structured with TypeScript, HTML, and styles, and while it includes some unique Svelte syntax, it's relatively readable if you're familiar with web programming. Additionally, I'm using PostCSS as a supplement, but the main focus will be on implementing the buttons.
 
 ## Structure
-```
+```text
 .
 ├── Share.svelte
 └── img
@@ -133,30 +131,30 @@ const shareIcons: ShareIcon[] = [
 
 ### TypeScript
 
-In the initial import statements, images from the img folder are imported into Svelte to obtain paths for img tags. The 'export' statements act like function parameters, receiving the page title and URL as string types from external sources. The received strings are passed through the encodeURIComponent function to ensure they are properly encoded for URLs. Additionally, for X and Bluesky, newline characters are encoded to include line breaks in the post text.
+In the initial import statements, images from the img folder are loaded into Svelte. This allows us to obtain the paths for the img tags. The 'export' statements act like function parameters, receiving the page title and URL as string types from external sources. The received strings are passed through the encodeURIComponent function to ensure they are properly encoded for use in URLs. Additionally, for platforms like X and Bluesky, a newline character is encoded to include line breaks in the post text.
 
-Subsequently, URLs are constructed in the format required for sharing on each platform, which will be explained in detail later. Finally, a list of objects (shareIcons) is created, containing the URL, icon path, and alt text, completing the preparation for sharing data.
+Next, URLs are constructed in the format required for sharing on each platform via HTTP requests. These will be explained in detail later. Finally, a list of objects (shareIcons) is created, containing the URL, icon path, and alt text, completing the preparation for sharing data.
 
 ### HTML
 
-The HTML section handles the actual display of the icons with links. It uses Svelte's unique syntax, similar to a for-each loop, to iterate through shareIcons and define the SNS link, icon, and alt text for each.
+The HTML section handles the actual display of the icons with links. It uses a somewhat unique Svelte syntax, similar to a for-each loop, to iterate through shareIcons and define the SNS links, icons, and alt texts.
 
 ### CSS
 
-CSS mainly handles layout, color schemes, and effects to make images appear white. This results in each SNS icon being displayed in white within a turquoise-like circle.
+The CSS mainly handles layout, color schemes, and effects to make the images appear white. This results in each SNS icon being displayed in white within a turquoise-like circle.
 
-## How to Use
+## How to Use It
 
-Import the module like `import Share from 'path/to/Share.svelte';`. Then, pass values in the format `<Share share_title={title} share_url={currentUrl} />` to automatically generate share buttons for each page. In Svelte, you can obtain the current page URL with code like this:
+Import the module like this: `import Share from 'path/to/Share.svelte';`. Then, pass the values in the format `<Share share_title={title} share_url={currentUrl} />` to automatically generate share buttons for each page. In Svelte, you can obtain the current page URL with code like this:
 
 ```svelte
 import { page } from '$app/stores';
 $: currentUrl = $page.url.href;
 ```
 
-## Settings for Each SNS URL
+## Setup for Each SNS URL
 
-This implementation covers share buttons for the following 7 SNS:
+This implementation covers share buttons for the following 7 SNS platforms:
 
 * X (Twitter)
 * Bluesky
@@ -172,7 +170,7 @@ X uses the format `https://twitter.com/intent/tweet?text=${encodedText}&url=${en
 
 ### Bluesky
 
-Bluesky is simpler: `https://bsky.app/intent/compose?text=${encodedText}`. However, it's still developing, and this link may not work perfectly with the app version. It works well with the web version. This format is limited to `bsky.app`, so self-hosted instances may require a different approach.
+Bluesky is simpler: `https://bsky.app/intent/compose?text=${encodedText}`. However, it's still developing, and this link may not work perfectly with the app version. It works well on the web version. This format only works with `bsky.app`, so self-hosted instances may require a different approach.
 
 ### Hatena Bookmark
 
@@ -180,7 +178,7 @@ Hatena Bookmark uses `https://b.hatena.ne.jp/add?url=${encodedUrl}`. Changing 'a
 
 ### Pocket
 
-Pocket uses `https://getpocket.com/edit?url=${encodedUrl}&title=${encodedTitle}`, which immediately stocks the item when the link is clicked.
+Pocket uses `https://getpocket.com/edit?url=${encodedUrl}&title=${encodedTitle}`, which immediately saves the item when the link is clicked.
 
 ### Threads
 
@@ -188,12 +186,12 @@ Threads uses `https://www.threads.net/intent/post?text=${encodedText}`. As an SN
 
 ### Mastodon
 
-Mastodon can be handled with `https://donshare.net/share.html?text=${encodedText}`. With various instances available, using a sharing hub service makes it easier to implement.
+Mastodon can be handled with `https://donshare.net/share.html?text=${encodedText}`. With various instances available, using a sharing hub service makes it easier to support.
 
 ### Misskey
 
-Misskey, like Mastodon, has multiple instances, so it uses a hub: `https://misskey-hub.net/share?text=${encodedTitle}&url=${encodedUrl}`. This creates a sharing text, and the destination instance is set in the link for actual sharing.
+Misskey, like Mastodon, has multiple instances, so a hub is used. The format `https://misskey-hub.net/share?text=${encodedTitle}&url=${encodedUrl}` creates a sharing text, and the destination instance is set on the link page for actual sharing.
 
 ## Summary
 
-With Svelte, you can implement share buttons for multiple services in less than 100 lines of code, making it straightforward. This feature is highly useful for both site visitors and users who want to utilize the site. Since it's just about creating linked images, it's lightweight and convenient in Svelte. I hope this serves as a reference for those wanting to add sharing functionality to their pages.
+With Svelte, you can implement share buttons for multiple services in less than 100 lines of code, making it straightforward. This feature is highly useful for both site visitors and users who want to utilize the site. Since the code simply creates linked images, it's lightweight and convenient in Svelte. I hope this serves as a helpful reference for those looking to add sharing functionality to their pages.

@@ -1,21 +1,19 @@
 ---
-title: Creating a Word Cloud from the Latest 1000 Articles on DevTo
-slug: creating_wordcloud_from_devto
-description: This article explains how to fetch articles from the DevTo API using Python and create a word cloud. By generating a word cloud from the latest 1000 articles and analyzing its trends, we can observe the tendencies of the DevTo tech community and consider the benefits of accessing international tech information.
+title: "Creating a Word Cloud from the Latest 1000 Articles on DevTo"
+slug: "creating_wordcloud_from_devto"
+description: "This explains how to obtain articles from DevTo's API using Python and create a word cloud. By creating a word cloud from the latest 1000 articles and interpreting its trends, we examine the tendencies of the DevTo tech community and the benefits of obtaining tech information from overseas sources like DevTo."
 date: 2024-08-11T06:36:37.547Z
-preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/devto_wordcloud_202407282354.webp
+preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/devto_wordcloud_202407282354.webp"
 draft: false
 tags: ['Python', 'dev.to', 'API']
 categories: ['Programming']
 ---
 
-# Creating a Word Cloud from the Latest 1000 Articles on DevTo
-
-In the previous article, I introduced a [library for operating the dev.to API with Python](https://rmc-8.com/introduction_devtopy). Using this, I will create a WordCloud from the most recent 1000 articles.
+Previously, I introduced a [library for operating dev.to's API with Python](https://rmc-8.com/introduction_devtopy). Using this, we'll create a WordCloud from the most recent 1000 articles.
 
 ## Repository
 
-The GitHub repository is as follows:  
+The GitHub repository is as follows:
 <https://github.com/rmc8/devto_wordcloud>
 
 ## How to Run the Code
@@ -28,14 +26,14 @@ cd devto-word-cloud-generator
 pip install -r requirements.txt
 ```
 
-Once the libraries are installed successfully, the program is ready to use. The program is located in the src directory and is designed to be run via CLI.
+Once the libraries are installed successfully, the program is ready to use. The program is in the src directory, and it's designed to be run via CLI.
 
 ```shell
 cd src
 python main.py --article_count=25
 ```
 
-The article_count parameter sets the number of articles to fetch for creating the WordCloud. The maximum value is 1000.
+The article_count sets the number of articles to fetch for creating the WordCloud. The maximum value is 1000.
 
 ## Code Explanation
 
@@ -43,14 +41,14 @@ In devto_wordcloud, the following processes are mainly performed:
 
 * Fetch the latest articles list from DevTo
 * Extract article IDs from the list and fetch the actual article data
-* Remove unnecessary words or convert them to their base English form
-* Count the processed words
-* Specify areas where the WordCloud cannot be created using a mask image
-* Generate the WordCloud with the mask image applied
+* Remove unnecessary words or get the base form of English words
+* Count the words after processing
+* Specify areas where WordCloud cannot be created using a mask image
+* Create the WordCloud with the mask image reflected
 
-### Extracting the Article List
+### Extracting Article List
 
-Articles can be easily fetched using the library. An API key is required for instantiation, and once provided, the library handles the request process.
+Articles can be easily extracted using the library. An API key is required for instantiation, and once you have the key, the library handles the request process.
 
 ```python
 def fetch_articles(dt: DevTo, article_count: int) -> List[Dict]:
@@ -60,9 +58,9 @@ def fetch_articles(dt: DevTo, article_count: int) -> List[Dict]:
     return articles
 ```
 
-### Fetching Articles
+### Obtaining Articles
 
-Fetching articles is also automated by the library for API handling.
+Fetching articles is also automated by the library for API processing.
 
 ```python
 def process_article(dt: DevTo, article: Dict) -> str:
@@ -73,11 +71,11 @@ def process_article(dt: DevTo, article: Dict) -> str:
     return process_text(article_data.body_markdown)
 ```
 
-This may involve multiple requests, and considering API limits, a 1-second sleep is added after each request, similar to scraping. After fetching the article, basic natural language processing is performed on the markdown content.
+In cases where there are many requests, and considering API limits, a 1-second sleep is added after requests, similar to scraping. After obtaining the article, simple natural language processing is performed on the markdown format.
 
 ### Natural Language Processing
 
-Language processing on the fetched articles is done using nltk.
+Language processing for the obtained articles is done using nltk, etc.
 
 ```python
 def download_nltk_resources():
@@ -87,11 +85,11 @@ def download_nltk_resources():
     logger.info("NLTK resources downloaded successfully")
 ```
 
-For English processing, unnecessary words are removed using stopwords. In Japanese, words like 'desu' or 'wa' are low-priority for aggregation. Additionally, English verbs can change forms, so they are converted back to their base form using wordnet. Punkt is used for sentence segmentation. After these processes, word_tokenize is used to convert to lowercase and split into words.
+We prepare the necessary data with nltk. In English processing, there are unnecessary words, so we use stopwords to remove them. Even in Japanese, there are words like 'desu' or 'wa' that are low in importance for aggregation. We remove such words. Also, for English, verbs change forms, so we need to revert them to their base form. We obtain the vocabulary information for that from wordnet. Punkt is used for sentence segmentation. After these processes, we perform word tokenization in lowercase using word_tokenize.
 
-### Creating the WordCloud
+### Creating the Word Cloud
 
-To create the WordCloud, libraries such as PIL for images, matplotlib for plots, numpy for computations, and the wordcloud library are used.
+For creating the word cloud, we use image libraries like PIL, matplotlib for charts, numpy for mask image processing, and the wordcloud library.
 
 ```python
 def create_wordcloud(word_counter: Dict[str, int]) -> None:
@@ -122,16 +120,16 @@ def save_wordcloud_image() -> None:
     logger.info(f"WordCloud image saved to: {output_path}")
 ```
 
-A grayscale image can be used as a mask. Words are displayed on the black areas of the image and not on the white areas. The image is opened and converted to a numpy array to create the mask. By passing the mask to WordCloud, it applies the mask. The generated WordCloud is then plotted with matplotlib and saved.
+You can use a black and white grayscale image as a mask image. This allows masking to display words only in the black areas of the image and not in the white areas. Open the image, convert it to a numpy array to create the mask. By passing the mask when creating the WordCloud, you can create a WordCloud with the mask reflected. Draw it with matplotlib and save it to complete the WordCloud.
 
-## Actual WordCloud
+## Actual Word Cloud
 
-At 18:00 on August 9, I fetched 1000 articles and created the following WordCloud.
+At 18:00 on August 9, we fetched 1000 articles and created the following word cloud.
 
 ![word cloud](https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/article/wordcloud/wordcloud_202408091835.png)
 
-The prominent words include http, account, data, use, and application. In terms of languages or frameworks, python, javascript, and react are present. Words like API are also included, suggesting a strong focus on web development topics. Web development is a rapidly evolving field with quick trends, while the emergence of TypeScript and excellent web frameworks, along with backend languages like Python or Go, makes it easy to handle data delivery, processing, and AI integration. Web technologies are versatile across OS and devices, and you can create APIs for smartphone apps. Thus, it appears strong in web-related areas. If you're unsure what to build, trying JavaScript, TypeScript, or Python for their versatility and demand might be a good idea.
+Looking at the words, "http", "account", "data", "use", "application" stand out. For languages or frameworks, "python", "javascript", "react", etc., are present. Words like "API" are also included, giving the impression that topics around web development are highly related. While the web field is one where development and trends change very quickly, with the advent of TypeScript and excellent web frameworks, and easy languages like Python or Go for the backend, it's possible to easily deliver, process data, and use AI. Web allows handling across various OS and devices, and you can create APIs for smartphone apps, so web-related technologies seem strong. I think it's good to create what you want with your favorite language or framework, but if you're unsure what to make, it's worth trying JavaScript, TypeScript, or Python from the perspectives of versatility and high demand.
 
 ## Summary
 
-In this article, I fetched a large number of articles from devto and created a WordCloud. It shows current interest in web and data-related areas, and DevTo makes it easy to gather information on versatile mechanisms. While I created a WordCloud here, I've already set up a system using generative AI to deliver Japanese summaries on Discord. Models like GPT 4o-mini or Gemini 1.5 Flash are affordable and practical, making access to international tech information easier in the future. As a follow-up to this article, I'll soon explain information gathering using LLMs.
+In this article, we extracted a large number of articles from devto and created a Wordcloud. It seems that there is current interest in areas related to web and data, and DevTo makes it easy to gather information on highly versatile mechanisms, which I find enjoyable. We've already set up a system using generative AI to deliver Japanese summaries to Discord. With very affordable yet practical models like GPT 4o-mini or Gemini 1.5 Flash emerging, access to overseas tech information will become even easier in the future. As a follow-up to this article, I'll soon explain information gathering using LLMs.
