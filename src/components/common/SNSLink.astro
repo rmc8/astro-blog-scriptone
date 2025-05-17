@@ -52,7 +52,7 @@ const gapSize = size / 1.3;
 >
     {
         linkIcons.map((item) => (
-            <ako
+            <a
                 href={item.url}
                 style={`width: ${size}px; height: ${size}px; display: block;`}
             >
@@ -61,7 +61,14 @@ const gapSize = size / 1.3;
                     alt={item.url}
                     style="width: 100%; height: 100%; object-fit: contain;"
                 />
-            </ako>
+            </a>
         ))
     }
 </div>
+
+<style>
+    a:hover {
+        opacity: 0.8;
+        transition: opacity 0.3s ease-in-out;
+    }
+</style>
