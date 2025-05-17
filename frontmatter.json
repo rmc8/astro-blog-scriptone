@@ -1,60 +1,71 @@
 {
-    "$schema": "https://frontmatter.codes/frontmatter.schema.json",
-    "frontMatter.framework.id": "astro",
-    "frontMatter.preview.host": "http://localhost:4321",
-    "frontMatter.content.publicFolder": "public",
-    "frontMatter.content.pageFolders": [
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+  "frontMatter.framework.id": "astro",
+  "frontMatter.preview.host": "http://localhost:4321",
+  "frontMatter.content.publicFolder": "public",
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "blog_ja",
+      "path": "[[workspace]]/src/content/blog_ja"
+    },
+    {
+      "title": "blog_en",
+      "path": "[[workspace]]/src/content/blog_en"
+    },
+    {
+      "title": "blog_ko",
+      "path": "[[workspace]]/src/content/blog_ko"
+    },
+    {
+      "title": "diary",
+      "path": "[[workspace]]/src/content/diary"
+    }
+  ],
+  "frontMatter.taxonomy.contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "previewPath": null,
+      "fields": [
         {
-            "title": "blog_ja",
-            "path": "[[workspace]]/src/content/blog_ja"
+          "title": "Title",
+          "name": "title",
+          "type": "string"
         },
         {
-            "title": "blog_en",
-            "path": "[[workspace]]/src/content/blog_en"
+          "title": "Description",
+          "name": "description",
+          "type": "string"
         },
         {
-            "title": "blog_ko",
-            "path": "[[workspace]]/src/content/blog_ko"
+          "title": "Publishing date",
+          "name": "date",
+          "type": "datetime",
+          "default": "{{now}}",
+          "isPublishDate": true
         },
         {
-            "title": "diary",
-            "path": "[[workspace]]/src/content/diary"
+          "title": "Content preview",
+          "name": "preview",
+          "type": "image"
+        },
+        {
+          "title": "Is in draft",
+          "name": "draft",
+          "type": "draft"
+        },
+        {
+          "title": "Tags",
+          "name": "tags",
+          "type": "tags"
+        },
+        {
+          "title": "Categories",
+          "name": "categories",
+          "type": "categories"
         }
-    ],
-    "frontMatter.taxonomy.contentTypes": [
-        {
-            "name": "default",
-            "pageBundle": false,
-            "previewPath": "'blog'",
-            "filePrefix": null,
-            "clearEmpty": true,
-            "fileType": "mdx",
-            "fields": [
-                {
-                    "title": "Title",
-                    "name": "title",
-                    "type": "string",
-                    "single": true
-                },
-                {
-                    "title": "Description",
-                    "name": "description",
-                    "type": "string"
-                },
-                {
-                    "title": "Publishing date",
-                    "name": "pubDate",
-                    "type": "datetime",
-                    "default": "{{now}}",
-                    "isPublishDate": true
-                },
-                {
-                    "title": "Content preview",
-                    "name": "heroImage",
-                    "type": "image",
-                    "isPreviewImage": true
-                }
-            ]
-        }
-    ]
+      ]
+    }
+  ],
+  "frontMatter.panel.openOnSupportedFile": false
 }

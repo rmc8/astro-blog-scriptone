@@ -27,7 +27,11 @@ const { singleBlog } = Astro.props;
 const { Content, headings } = await singleBlog.render();
 ---
 
-<Layout title=`${singleBlog.data.title} - Scriptone` }>
+<Layout
+    title=`${singleBlog.data.title} - Scriptone`
+    }
+    description={singleBlog.data.description}
+>
     <Article
         LANG_CODE={LANG_CODE}
         Content={Content}
