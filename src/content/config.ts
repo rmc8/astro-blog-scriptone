@@ -1,5 +1,4 @@
 import { z, defineCollection } from "astro:content";
-import { glob } from "astro/loaders";
 
 const blogSchema = z.object({
     title: z.string(),
@@ -22,9 +21,14 @@ const blog_ko = defineCollection({
     type: "content",
     schema: blogSchema,
 });
+const diary = defineCollection({
+    type: "content",
+    schema: blogSchema,
+});
 
 export const collections = {
     blog_ja,
     blog_en,
     blog_ko,
+    diary,
 };

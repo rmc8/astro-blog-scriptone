@@ -1,0 +1,18 @@
+---
+import Layout from "@/layouts/Base.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import DiaryList from "@/components/diary/DiaryList.astro";
+// import { LIMIT_PER_PAGE, SITE_NAME } from "@/lib/constants";
+
+const allBlogPosts: CollectionEntry<"diary">[] = await getCollection("diary");
+const sortedPosts = allBlogPosts.sort((a, b) => {
+    const dateA = a.data.date ? a.data.date.getTime() : 0;
+    const dateB = b.data.date ? b.data.date.getTime() : 0;
+    return dateB - dateA;
+});
+---
+
+<Layout title="Diary - Scriptone">
+    <DiaryList posts={sortedPosts} />
+</Layout>

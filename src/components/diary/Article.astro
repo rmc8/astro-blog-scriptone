@@ -1,42 +1,24 @@
 ---
-import { Image } from "astro:assets";
-import PostDate from "@/components/blog/PostDate.astro";
-import CategoryTag from "@/components/blog/CategoryTag.astro";
-import ToC from "@/components/blog/ToC.astro";
+import PostDate from "@/components/diary/PostDate.astro";
 ---
 
 <article>
-    <h2 class="font-bold text-3xl text-center">
-        {Astro.props.singleBlog.data.title}
-    </h2>
-    <div class="flex flex-col items-center">
-        <div class="flex flex-wrap justify-center space-x-4 items-center py-2">
-            <CategoryTag
-                categories={Astro.props.singleBlog.data.categories}
-                tags={Astro.props.singleBlog.data.tags}
-                lang_code={Astro.props.LANG_CODE}
-            />
-            <div class="pb-1">
-                <PostDate date={Astro.props.singleBlog.data.date} />
+    <div class="border-b border-gray-300">
+        <h2 class="font-bold text-3xl text-center">
+            {Astro.props.singleBlog.data.title}
+        </h2>
+        <div class="flex flex-col items-center">
+            <div
+                class="flex flex-wrap justify-center space-x-4 items-center py-2"
+            >
+                <div class="pb-1">
+                    <PostDate date={Astro.props.singleBlog.data.date} />
+                </div>
             </div>
         </div>
-        {
-            Astro.props.singleBlog.data.preview && (
-                <div class="mb-4" id="eye_catch">
-                    <Image
-                        src={Astro.props.singleBlog.data.preview}
-                        alt="blog-image"
-                        height={500}
-                        width={1000}
-                    />
-                </div>
-            )
-        }
     </div>
 
-    <ToC headings={Astro.props.headings} />
-
-    <div id="content">
+    <div id="content" class="pt-4">
         <Astro.props.Content />
     </div>
 </article>
@@ -125,6 +107,10 @@ import ToC from "@/components/blog/ToC.astro";
 
     #content iframe {
         margin: 8px 0;
+    }
+
+    #content p {
+        padding: 0.75em 0;
     }
 
     #content ul,

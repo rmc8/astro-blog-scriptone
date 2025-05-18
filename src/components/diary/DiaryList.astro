@@ -1,0 +1,72 @@
+---
+import type { CollectionEntry } from "astro:content";
+import PostDate from "./PostDate.astro";
+
+type SupportedCollectionEntry = CollectionEntry<"diary">;
+
+const { posts } = Astro.props as {
+    posts: SupportedCollectionEntry[];
+};
+
+function truncateAndStripHtml(html: string, maxLength: number = 160): string {
+    const text = html.replace(/<[^>]*>/g, "");
+    const withoutHeadings = text.replace(/<h[1-6].*?<\/h[1-6]>/g, "");
+    return withoutHeadings.length > maxLength
+        ? withoutHeadings.slice(0, maxLength) + "..."
+        : withoutHeadings;
+}
+---
+
+<main>
+    <ul class="space-y-4">
+        {
+            posts.map((post) => {
+                return (
+                    <li class="flex flex-col border-0 rounded-lg p-0 overflow-hidden shadow-sm bg-gradient-to-r from-bg1 to-bg2">
+                        <div class="pt-4 pr-4 pl-4">
+                            <PostDate date={post.data.date} />
+                        </div>
+                        <div class="pt-4 pr-4 pl-4">
+                            <div class="pb-4 border-b border-gray-300">
+                                <a
+                                    class="font-bold text-3xl hover:underline"
+                                    href={`/diary/${post.slug}`}
+                                >
+                                    {post.data.title}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="pt-6 pr-4 pb-4 pl-4">
+                            {truncateAndStripHtml(post.body)}
+                        </div>
+                        <div class="pl-4 pb-4 pr-4">
+                            <a href={`/diary/${post.slug}`} class="read_more">
+                                続きを読む
+                            </a>
+                        </div>
+                    </li>
+                );
+            })
+        }
+    </ul>
+</main>
+
+<style>
+    .read_more {
+        color: var(--accent3);
+        border: var(--accent3) 1px solid;
+        padding: 0.2em 0.4em;
+        border-radius: 4px;
+        transition: all 300ms ease;
+    }
+    .read_more:hover {
+        background-color: var(--accent3);
+        color: white;
+        /* color: var(--bg1); */
+    }
+    @media (max-width: 640px) {
+        .preview-image {
+            display: none;
+        }
+    }
+</style>

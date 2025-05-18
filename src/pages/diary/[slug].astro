@@ -1,0 +1,49 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import Article from "@/components/diary/Article.astro";
+
+interface Props {
+    singleBlog: CollectionEntry<"diary">;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const allBlogs = await getCollection("diary");
+    const pathData = allBlogs.map((singleBlog) => ({
+        params: {
+            slug: singleBlog.slug,
+        },
+        props: {
+            singleBlog: singleBlog,
+        },
+    }));
+    return pathData;
+};
+
+const { singleBlog } = Astro.props;
+const { Content, headings } = await singleBlog.render();
+---
+
+<Layout
+    title=`${singleBlog.data.title} - Scriptone`
+    }
+    description={singleBlog.data.description}
+>
+    <div><a href="/diary">&lt; Diary一覧に戻る</a></div>
+    <div class="border-b pb-8 border-[var(--border1)]">
+        <Article
+            Content={Content}
+            headings={headings}
+            singleBlog={singleBlog}
+        />
+    </div>
+    <div class="mt-8"><a href="/diary">&lt; Diary一覧に戻る</a></div>
+</Layout>
+
+<style>
+    a {
+        text-decoration: underline;
+    }
+</style>
