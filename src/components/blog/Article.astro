@@ -5,7 +5,7 @@ import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
 ---
 
-<div>
+<article>
     <h2 class="font-bold text-3xl text-center">
         {Astro.props.singleBlog.data.title}
     </h2>
@@ -39,9 +39,17 @@ import ToC from "@/components/blog/ToC.astro";
     <div id="content">
         <Astro.props.Content />
     </div>
-</div>
+</article>
 
 <style is:global>
+    #content a {
+        color: var(--accent3);
+        text-decoration: underline;
+    }
+
+    #content a:hover{
+        text-decoration: none;
+    }
     #content h1,
     #content h2 {
         font-size: 1.8em;
