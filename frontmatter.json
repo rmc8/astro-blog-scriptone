@@ -1,71 +1,117 @@
 {
-  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
-  "frontMatter.framework.id": "astro",
-  "frontMatter.preview.host": "http://localhost:4321",
-  "frontMatter.content.publicFolder": "public",
-  "frontMatter.content.pageFolders": [
-    {
-      "title": "blog_ja",
-      "path": "[[workspace]]/src/content/blog_ja"
-    },
-    {
-      "title": "blog_en",
-      "path": "[[workspace]]/src/content/blog_en"
-    },
-    {
-      "title": "blog_ko",
-      "path": "[[workspace]]/src/content/blog_ko"
-    },
-    {
-      "title": "diary",
-      "path": "[[workspace]]/src/content/diary"
-    }
-  ],
-  "frontMatter.taxonomy.contentTypes": [
-    {
-      "name": "default",
-      "pageBundle": false,
-      "previewPath": null,
-      "fields": [
+    "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+    "frontMatter.framework.id": "astro",
+    "frontMatter.preview.host": "http://localhost:4321",
+    "frontMatter.content.publicFolder": "public",
+    "frontMatter.content.pageFolders": [
         {
-          "title": "Title",
-          "name": "title",
-          "type": "string"
+            "title": "blog_ja",
+            "path": "[[workspace]]/src/content/blog_ja"
         },
         {
-          "title": "Description",
-          "name": "description",
-          "type": "string"
+            "title": "blog_en",
+            "path": "[[workspace]]/src/content/blog_en"
         },
         {
-          "title": "Publishing date",
-          "name": "date",
-          "type": "datetime",
-          "default": "{{now}}",
-          "isPublishDate": true
+            "title": "blog_ko",
+            "path": "[[workspace]]/src/content/blog_ko"
         },
         {
-          "title": "Content preview",
-          "name": "preview",
-          "type": "image"
-        },
-        {
-          "title": "Is in draft",
-          "name": "draft",
-          "type": "draft"
-        },
-        {
-          "title": "Tags",
-          "name": "tags",
-          "type": "tags"
-        },
-        {
-          "title": "Categories",
-          "name": "categories",
-          "type": "categories"
+            "title": "diary",
+            "path": "[[workspace]]/src/content/diary"
         }
-      ]
-    }
-  ],
-  "frontMatter.panel.openOnSupportedFile": false
+    ],
+    "frontMatter.taxonomy.contentTypes": [
+        {
+            "name": "blog",
+            "pageBundle": false,
+            "previewPath": null,
+            "fields": [
+                {
+                    "title": "Title",
+                    "name": "title",
+                    "type": "string"
+                },
+                {
+                    "title": "Description",
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "title": "Publishing date",
+                    "name": "date",
+                    "type": "datetime",
+                    "default": "{{now}}",
+                    "isPublishDate": true
+                },
+                {
+                    "title": "Content preview",
+                    "name": "preview",
+                    "type": "image"
+                },
+                {
+                    "title": "Is in draft",
+                    "name": "draft",
+                    "type": "draft"
+                },
+                {
+                    "title": "Tags",
+                    "name": "tags",
+                    "type": "tags"
+                },
+                {
+                    "title": "Categories",
+                    "name": "categories",
+                    "type": "categories"
+                }
+            ]
+        },
+        {
+            "name": "diary",
+            "pageBundle": false,
+            "previewPath": null,
+            "slugTemplate": "{{year}}-{{month}}-{{day}}",
+            "fields": [
+                {
+                    "title": "Title",
+                    "name": "title",
+                    "type": "string"
+                },
+                {
+                    "title": "Description",
+                    "name": "description",
+                    "type": "string"
+                },
+                {
+                    "title": "Publishing date",
+                    "name": "date",
+                    "type": "datetime",
+                    "default": "{{now}}",
+                    "isPublishDate": true
+                },
+                {
+                    "title": "Content preview",
+                    "name": "preview",
+                    "type": "image"
+                },
+                {
+                    "title": "Is in draft",
+                    "name": "draft",
+                    "type": "draft"
+                },
+                {
+                    "title": "Tags",
+                    "name": "tags",
+                    "type": "tags"
+                },
+                {
+                    "title": "Categories",
+                    "name": "categories",
+                    "type": "categories"
+                }
+            ]
+        }
+    ],
+    "frontMatter.panel.openOnSupportedFile": false,
+    "frontMatter.taxonomy.alignFilename": true
 }
