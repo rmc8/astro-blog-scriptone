@@ -25,4 +25,11 @@ const lang = getLangFromUrl(Astro.url);
     header {
         background-color: var(--bg2);
     }
+
+    @media (max-width: 600px) {
+        header,
+        header a {
+            font-size: 0.875em !important;
+        }
+    }
 </style>
