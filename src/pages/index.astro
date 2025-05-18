@@ -1,6 +1,7 @@
 ---
 import Me from "@/components/home/Me.astro";
 import BlogLangs from "@/components/blog/BlogLangList.astro";
+import Contents from "@/components/home/Contents.astro";
 import Base from "@/layouts/Base.astro";
 ---
 
@@ -13,10 +14,7 @@ import Base from "@/layouts/Base.astro";
         </div>
         <div>
             <h2 class="text-2xl font-bold my-4">Contents</h2>
-            <ul>
-                <li><a href="/about">About</a></li>
-                <li><a href="/project_sekai">プロジェクトセカイ</a></li>
-            </ul>
+            <Contents />
         </div>
     </div>
 </Base>
