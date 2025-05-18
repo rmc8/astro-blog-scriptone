@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths, InferGetStaticParamsType } from "astro";
+
+const EXISTING_PAGE_SLUGS = new Set<string>([
+  'about',
+  'privacy_policy',
+  'project_sekai',
+  'diary',
+  'api',
+  'index',
+  '404',
+  'sitemap.xml', 
+  'blog' 
+]);
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  // getStaticPaths 関数内で定数を再定義してスコープ問題を回避
+  const EXISTING_PAGE_SLUGS_IN_FUNC = new Set<string>([
+    'about',
+    'privacy_policy',
+    'project_sekai',
+    'diary',
+    'api',
+    'index',
+    '404',
+    'sitemap.xml',
+    'blog'
+  ]);
+
+  const allJaBlogs = await getCollection('blog_ja');
+  
+  const redirectRoutes = allJaBlogs
+    .filter(blog => !EXISTING_PAGE_SLUGS_IN_FUNC.has(blog.slug)) // 関数内の定数を使用
+    .map(blog => ({
+      params: { slug: blog.slug },
+    }));
+
+  return redirectRoutes;
+};
+
+type Params = InferGetStaticParamsType<typeof getStaticPaths>;
+const { slug } = Astro.params as Params;
+
+if (slug && !EXISTING_PAGE_SLUGS.has(slug)) {
+  return Astro.redirect(`/blog/ja/${slug}`, 301);
+}
+
+return Astro.redirect('/404', 302); // 302 Found (一時的なリダイレクト)
+---
