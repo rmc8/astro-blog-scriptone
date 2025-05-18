@@ -3,7 +3,7 @@ title: ScriptoneをSvelteからAstroに書き直しました
 description: ""
 date: 2025-05-18T05:27:15.009Z
 preview: ""
-draft: true
+draft: false
 tags: []
 categories: []
 ---
