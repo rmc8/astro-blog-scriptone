@@ -14,5 +14,9 @@ const sortedPosts = allBlogPosts.sort((a, b) => {
 ---
 
 <Layout title="Diary - Scriptone">
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">ダイアリー</h2>
+        <p class="text-gray-600 leading-relaxed my-2 text-sm">薬にも毒にもならないようなことを自由に書いています。</p>
+    </div>
     <DiaryList posts={sortedPosts} />
 </Layout>
