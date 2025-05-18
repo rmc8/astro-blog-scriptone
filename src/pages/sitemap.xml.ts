@@ -27,7 +27,14 @@ export async function GET(context: { site: { toString: () => any } }) {
         }
     });
 
-    const urls = [];
+    interface SitemapEntry {
+        url: string;
+        changefreq: string;
+        priority: number;
+        lastmod?: string;
+    }
+
+    const urls: SitemapEntry[] = [];
 
     urls.push(
         {
@@ -140,8 +147,22 @@ export async function GET(context: { site: { toString: () => any } }) {
 
     urls.sort((a, b) => a.url.localeCompare(b.url));
 
-    return new Response(JSON.stringify(urls), {
+    const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(url => `
+    <url>
+        <loc>${url.url}</loc>
+        ${url.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : ''}
+        <changefreq>${url.changefreq}</changefreq>
+        <priority>${url.priority}</priority>
+    </url>`).join('')}
+</urlset>`;
+
+    return new Response(xmlContent, {
         status: 200,
-        headers: {},
+        headers: {
+            'Content-Type': 'application/xml',
+            'Cache-Control': 'public, max-age=3600'
+        },
     });
 }
