@@ -52,14 +52,26 @@ const {
         </main>
         <Footer />
     </body>
-    <style>
-        body {
-            background-color: var(--bg1);
+    <script>
+        if (
+            /AppleWebKit/.test(navigator.userAgent) &&
+            !/Chrome/.test(navigator.userAgent)
+        ) {
+            document.body.classList.add("is-webkit");
         }
-        main {
-            max-width: 1028px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-    </style>
+    </script>
 </html>
+
+<style>
+    body {
+        background-color: var(--bg1);
+    }
+    body.is-webkit {
+        font-family: sans-serif;
+    }
+    main {
+        max-width: 1028px;
+        margin: 0 auto;
+        padding: 16px;
+    }
+</style>
