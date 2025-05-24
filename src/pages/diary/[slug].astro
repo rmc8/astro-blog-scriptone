@@ -8,22 +8,17 @@ import Article from "@/components/diary/Article.astro";
 interface Props {
     singleBlog: CollectionEntry<"diary">;
 }
+
 export const getStaticPaths: GetStaticPaths = async () => {
     const allBlogs = await getCollection("diary");
-    const pathData = allBlogs.map((singleBlog) => {
-        const datePart = singleBlog.data.date
-            ? String(singleBlog.data.date).split("T")[0]
-            : '';
-
-        return {
-            params: {
-                slug: datePart, // Use the extracted date as the slug
-            },
-            props: {
-                singleBlog: singleBlog,
-            },
-        };
-    });
+    const pathData = allBlogs.map((singleBlog) => ({
+        params: {
+            slug: singleBlog.data.date.toISOString().slice(0, 10),
+        },
+        props: {
+            singleBlog: singleBlog,
+        },
+    }));
     return pathData;
 };
 

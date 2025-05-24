@@ -30,7 +30,7 @@ function truncateAndStripHtml(html: string, maxLength: number = 160): string {
                             <div class="pb-4 border-b border-gray-300">
                                 <a
                                     class="font-bold text-3xl hover:underline"
-                                    href={`/diary/${post.slug}`}
+                                    href={`/diary/${post.data.date.toISOString().slice(0, 10)}`}
                                 >
                                     {post.data.title}
                                 </a>
