@@ -8,7 +8,12 @@ const lang = getLangFromUrl(Astro.url);
 <header
     class="fixed top-0 left-0 w-full bg-white shadow-md flex justify-between items-center px-4 pt-2 pb-1 z-50"
 >
-    <h1 class="text-xl font-bold"><a href="/">Scriptone</a></h1>
+<h1 class="text-xl font-bold flex items-center">
+    <a href="/" class="flex items-center">
+        <img height="24" width="24" src="/scriptone_logo_icon.png" class="mr-1" />
+        Scriptone
+    </a>
+</h1>
 
     <nav class="flex space-x-4">
         <LanguagePicker />
