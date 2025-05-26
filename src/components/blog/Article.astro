@@ -153,4 +153,30 @@ import ToC from "@/components/blog/ToC.astro";
         line-height: 1.5;
         padding: 0.5em 0.5em 0.5em 0.33em;
     }
+
+    #content table {
+        width: 100%;
+        min-width: 600px;
+        border-collapse: collapse;
+        border: 1px solid var(--border1);
+        border-radius: 8px;
+        margin: 0.75em 0;
+    }
+
+    #content th {
+        text-align: center;
+        padding: 10px 8px;
+        color: white;
+        background-color: var(--accent1);
+        border: 1px solid var(--border1);
+    }
+
+    #content td {
+        padding: 8px;
+        border: 1px solid var(--border1);
+    }
+
+    #content tbody tr:nth-child(even) td {
+        background-color: var(--bg2);
+    }
 </style>
