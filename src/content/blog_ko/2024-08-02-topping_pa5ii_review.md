@@ -1,12 +1,16 @@
 ---
-title: "Topping PA5 II의 음질 리뷰"
-slug: "topping_pa5ii_review"
-description: "Topping PA5 II 파워앰프 리뷰. 중국의 인기 오디오 브랜드 Topping의 최신 컴팩트 앰프를 실제로 사용해 음질과 특징을 자세히 설명합니다. 3만 엔대에서 구입할 수 있는 고성능 제품으로, 오디오 초보자에게도 추천합니다."
+title: Topping PA5 II의 음질 리뷰
+slug: topping_pa5ii_review
+description: Topping PA5 II 파워앰프 리뷰. 중국의 인기 오디오 브랜드 Topping의 최신 컴팩트 앰프를 실제로 사용해 음질과 특징을 자세히 설명합니다. 3만 엔대에서 구입할 수 있는 고성능 제품으로, 오디오 초보자에게도 추천합니다.
 date: 2024-08-02T14:19:33.036Z
-preview: "https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/topping_pa5ii_1.webp"
+preview: https://pub-21c8df4785a6478092d6eb23a55a5c42.r2.dev/img/eyecatch/topping_pa5ii_1.webp
 draft: false
-tags: ['아ンプ', 'Topping', 'FiiO']
-categories: ['Audio']
+tags:
+  - FiiO
+  - Topping
+  - 앰프
+categories:
+  - Audio
 ---
 
 Topping의 [PA5 II](https://www.toppingaudio.com/product-item/pa5-ii-pa5-iiplus)를 Amazon(에서 판매하는 Shenzhen Audio)에서 구매했습니다. 구매 가격은 33,700엔입니다. 간단히 리뷰하겠습니다.
