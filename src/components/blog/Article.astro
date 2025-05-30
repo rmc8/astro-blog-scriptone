@@ -5,41 +5,55 @@ import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
 ---
 
-<article>
-    <h2 class="font-bold text-3xl text-center">
-        {Astro.props.singleBlog.data.title}
-    </h2>
-    <div class="flex flex-col items-center">
-        <div class="flex flex-wrap justify-center space-x-4 items-center py-2">
-            <CategoryTag
-                categories={Astro.props.singleBlog.data.categories}
-                tags={Astro.props.singleBlog.data.tags}
-                langCode={Astro.props.LANG_CODE}
-            />
-            <div class="pb-1">
-                <PostDate date={Astro.props.singleBlog.data.date} />
-            </div>
-        </div>
-        {
-            Astro.props.singleBlog.data.preview && (
-                <div class="mb-4" id="eye_catch">
-                    <Image
-                        src={Astro.props.singleBlog.data.preview}
-                        alt="blog-image"
-                        height={500}
-                        width={1000}
-                    />
+<div>
+    <article>
+        <h2 class="font-bold text-3xl text-center">
+            {Astro.props.singleBlog.data.title}
+        </h2>
+        <div class="flex flex-col items-center">
+            <div
+                class="flex flex-wrap justify-center space-x-4 items-center py-2"
+            >
+                <CategoryTag
+                    categories={Astro.props.singleBlog.data.categories}
+                    tags={Astro.props.singleBlog.data.tags}
+                    langCode={Astro.props.LANG_CODE}
+                />
+                <div class="pb-1">
+                    <PostDate date={Astro.props.singleBlog.data.date} />
                 </div>
-            )
-        }
-    </div>
+            </div>
+            {
+                Astro.props.singleBlog.data.preview && (
+                    <div class="mb-4" id="eye_catch">
+                        <Image
+                            src={Astro.props.singleBlog.data.preview}
+                            alt="blog-image"
+                            height={500}
+                            width={1000}
+                        />
+                    </div>
+                )
+            }
+        </div>
 
-    <ToC headings={Astro.props.headings} />
+        <ToC headings={Astro.props.headings} />
 
-    <div id="content">
-        <Astro.props.Content />
+        <div id="content">
+            <Astro.props.Content />
+        </div>
+    </article>
+    <div class="flex flex-wrap justify-center space-x-4 items-center py-2">
+        <CategoryTag
+            categories={Astro.props.singleBlog.data.categories}
+            tags={Astro.props.singleBlog.data.tags}
+            langCode={Astro.props.LANG_CODE}
+        />
+        <div class="pb-1">
+            <PostDate date={Astro.props.singleBlog.data.date} />
+        </div>
     </div>
-</article>
+</div>
 
 <style is:global>
     #content a {
