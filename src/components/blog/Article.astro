@@ -14,7 +14,7 @@ import ToC from "@/components/blog/ToC.astro";
             <CategoryTag
                 categories={Astro.props.singleBlog.data.categories}
                 tags={Astro.props.singleBlog.data.tags}
-                lang_code={Astro.props.LANG_CODE}
+                langCode={Astro.props.LANG_CODE}
             />
             <div class="pb-1">
                 <PostDate date={Astro.props.singleBlog.data.date} />
@@ -62,7 +62,8 @@ import ToC from "@/components/blog/ToC.astro";
         line-height: 1.2;
     }
 
-    #content h1,#content h2 {
+    #content h1,
+    #content h2 {
         font-size: 1.8em;
         font-weight: bold;
         padding: 16px 0px;
