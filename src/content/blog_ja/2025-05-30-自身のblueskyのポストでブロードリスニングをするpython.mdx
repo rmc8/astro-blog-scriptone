@@ -3,7 +3,7 @@ title: 自身のBlueskyのポストでブロードリスニングをする(Pytho
 slug: broad_listening_on_your_own_bluesky_posts_python
 description: 自身で保有するBlueskyのポストを活用してブロードリスニングを行います。使用言語はPythonでポストの取得・分析のための前処理・ベクトル化・クラスタリング・ラベリング・チャート作成をすべてPythonのみで実装していきます。
 date: 2025-05-30T00:12:57.825Z
-preview: ""
+preview: "https://b.rmc-8.com/img/2025/05/30/cd4be79782372458a33e899ba59adcc7.png"
 draft: false
 tags:
     - LLM
@@ -13,11 +13,11 @@ categories:
     - Programming
 ---
 
-import Chart from "../blog_ja/component/broad_listening/chart.html"
+import Chart from "../blog_ja/component/broad_listening/chart.html";
 
 ## 概要
 
-(あとで書きます)
+本記事では、Blueskyに自身が投稿したテキストデータを活用し、Pythonと生成AI、クラスタリング技術を用いて「ブロードリスニング」を行う方法を解説します。ブロードリスニングとは、大勢の声や多様な意見を効率的に集約・整理し、全体像や傾向を把握するための手法です。個人利用に特化した本記事では、著作権や利用規約に配慮しつつ、自分の投稿データだけを対象に分析を進めます。
 
 ## ブロードリスニングとは
 
@@ -38,14 +38,14 @@ URL: [https://github.com/rmc8/bsky_listening](https://github.com/rmc8/bsky_liste
 
 ブロードリスニングのプログラムはGoogleのfireライブラリを使用してCLIで実行するように組まれています。実行方法はリポジトリのREADME.mdに記載がありますが`uv run main.py all`のようにコマンドを設定して実行します。xAIやBlueskyなど外部のAPIを使用するので、APIキーやアプリパスなどを事前に.evnやPCの環境変数に設定してください。CLIで実行する処理の大まかな流れは以下のとおりです。
 
-* **main.py**: 下記の機能をCLIで操作させる機能を提供する
-  * **fetch**: Blueskyから自身のポストを取得する
-  * **preproc**: ポストをブロードリスニングが行いやすい形に整形して、複数のトピックが含まれる場合1つずつになるように分割する
-  * **embedding**: 前処理したテキストをベクトル化する（OllamaおよびOpenAIの任意のモデルで対応可能）
-  * **clustering**: ベクトル化したデータをクラスタリングしX,Y座標とクラスタ番号を表示する
-  * **labeling**: クラスタごとにクラスタの特徴を記した簡単なラベルを作る
-  * **chart**: preproc, clustering, labelingのデータを使って散布図を作る
-  * **all**: 上記のfetchからchartまでの一連の処理をすべて実行する
+- **main.py**: 下記の機能をCLIで操作させる機能を提供する
+    - **fetch**: Blueskyから自身のポストを取得する
+    - **preproc**: ポストをブロードリスニングが行いやすい形に整形して、複数のトピックが含まれる場合1つずつになるように分割する
+    - **embedding**: 前処理したテキストをベクトル化する（OllamaおよびOpenAIの任意のモデルで対応可能）
+    - **clustering**: ベクトル化したデータをクラスタリングしX,Y座標とクラスタ番号を表示する
+    - **labeling**: クラスタごとにクラスタの特徴を記した簡単なラベルを作る
+    - **chart**: preproc, clustering, labelingのデータを使って散布図を作る
+    - **all**: 上記のfetchからchartまでの一連の処理をすべて実行する
 
 ### main.py
 
@@ -1080,3 +1080,4 @@ Plotlyの機能でページとして出力する場合にはfull_htmlをTrueに�
 ## まとめ
 
 身近にあるテキストを自動で取得し、可視化するまでの一連の流れを確認しました。ブロードリスニングはテキストの準備や生成AIの活用などで難しそうに見えますが、人間が手作業で処理すると非常に手間がかかる手順をAIで楽に判断・分類してもらえることが体感できるかと思います。また、Blueskyなど自身で所有するテキストであれば再公開も含めて柔軟に対応もできます。
+自身のSNSのポストやメモなどであれば簡単に気兼ねなく分析や再公開ができますし、公私ともに分析と改善をわかりやすく行えて使い勝手のいい技術・分析手法ですのでぜひブロードリスニングの手法を自身の所有するテキストにあわせて適用いただけると良いのかと思います。

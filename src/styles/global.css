@@ -40,3 +40,8 @@ code {
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
     font-family: monospace;
 }
+
+
+.plotly-graph-div, .js-plotly-plot {
+    margin: 0.75em 0;
+}
