@@ -43,8 +43,9 @@ import ToC from "@/components/blog/ToC.astro";
             <Astro.props.Content />
         </div>
     </article>
-    <hr />
-    <div class="flex flex-wrap justify-center space-x-4 items-center py-2">
+    <div
+        class="flex flex-wrap justify-center space-x-4 items-center mt-8 pt-4 pb-2 border-t-[0.5px]  border-[var(--border1)]"
+    >
         <CategoryTag
             categories={Astro.props.singleBlog.data.categories}
             tags={Astro.props.singleBlog.data.tags}
