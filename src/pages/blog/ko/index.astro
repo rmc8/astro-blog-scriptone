@@ -6,8 +6,9 @@ import { LIMIT_PER_PAGE, SITE_NAME } from "@/lib/constants";
 import BlogList from "@/components/blog/BlogList.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
 
-const allBlogPosts: CollectionEntry<"blog_ko">[] =
-    await getCollection("blog_ko");
+const allBlogPosts: CollectionEntry<"blog_ko">[] = (
+    await getCollection("blog_ko")
+).filter((post) => !post.data.draft);
 
 const sortedPosts = allBlogPosts.sort((a, b) => {
     const dateA = a.data.date ? a.data.date.getTime() : 0;

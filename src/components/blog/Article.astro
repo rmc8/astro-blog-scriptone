@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import PostDate from "@/components/blog/PostDate.astro";
+import UpdatedDate from "@/components/blog/UpdatedDate.astro";
 import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
 ---
@@ -19,185 +20,194 @@ import ToC from "@/components/blog/ToC.astro";
                     tags={Astro.props.singleBlog.data.tags}
                     langCode={Astro.props.LANG_CODE}
                 />
-                <div class="pb-1">
+                <div class="flex items-center space-x-2 pb-1">
                     <PostDate date={Astro.props.singleBlog.data.date} />
+                    <UpdatedDate
+                        postDate={Astro.props.singleBlog.data.date}
+                        updatedDate={Astro.props.singleBlog.data.updatedDate}
+                    />
                 </div>
+                {
+                    Astro.props.singleBlog.data.preview && (
+                        <div class="mb-4" id="eye_catch">
+                            <Image
+                                src={Astro.props.singleBlog.data.preview}
+                                alt="blog-image"
+                                height={500}
+                                width={1000}
+                            />
+                        </div>
+                    )
+                }
             </div>
+
             {
-                Astro.props.singleBlog.data.preview && (
-                    <div class="mb-4" id="eye_catch">
-                        <Image
-                            src={Astro.props.singleBlog.data.preview}
-                            alt="blog-image"
-                            height={500}
-                            width={1000}
-                        />
-                    </div>
-                )
+                (typeof Astro.props.singleBlog.data.toc === "undefined" ||
+                Astro.props.singleBlog.data.toc === true) && Astro.props.headings.length > 0 ? (
+                    <ToC headings={Astro.props.headings} />
+                ) : null
             }
+
+            <div id="content">
+                <Astro.props.Content />
+            </div>
         </div>
-
-        <ToC headings={Astro.props.headings} />
-
-        <div id="content">
-            <Astro.props.Content />
+        <div
+            class="flex flex-wrap justify-center space-x-4 items-center mt-8 pt-4 pb-2 border-t-[0.5px] border-[var(--border1)]"
+        >
+            <CategoryTag
+                categories={Astro.props.singleBlog.data.categories}
+                tags={Astro.props.singleBlog.data.tags}
+                langCode={Astro.props.LANG_CODE}
+            />
         </div>
     </article>
-    <div
-        class="flex flex-wrap justify-center space-x-4 items-center mt-8 pt-4 pb-2 border-t-[0.5px]  border-[var(--border1)]"
-    >
-        <CategoryTag
-            categories={Astro.props.singleBlog.data.categories}
-            tags={Astro.props.singleBlog.data.tags}
-            langCode={Astro.props.LANG_CODE}
-        />
-    </div>
+
+    <style is:global>
+        #content a {
+            color: var(--accent3);
+            text-decoration: underline;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        #content a:hover {
+            text-decoration: none;
+        }
+        #content h1,
+        #content h2,
+        #content h3,
+        #content h4,
+        #content h5,
+        #content h6 {
+            line-height: 1.2;
+        }
+
+        #content h1,
+        #content h2 {
+            font-size: 1.8em;
+            font-weight: bold;
+            padding: 16px 0px;
+        }
+        #content h3 {
+            font-size: 1.6em;
+            font-weight: bold;
+            padding: 12px 0px;
+        }
+
+        #content h4 {
+            font-size: 1.4em;
+            font-weight: bold;
+            padding: 8px 0px;
+        }
+
+        #content h5 {
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 4px 0px;
+        }
+
+        #content h6 {
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 2px 0px;
+        }
+
+        #content code {
+            background-color: transparent;
+            padding: 0em 0.33em;
+            color: #881100;
+            box-shadow: 0 0 0 0;
+            background-color: var(--bg2);
+            border-radius: 2px;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+
+        #content pre code {
+            padding: 0;
+            background-color: transparent;
+            text-decoration: none;
+            color: white;
+        }
+
+        #content code,
+        #content pro code {
+            font-family: "Source Han Code JP Regular", monospace !important;
+        }
+
+        #content div.remark-code-container {
+            margin: 1.5em 0;
+        }
+
+        #content div.remark-code-container,
+        #content pre.astro-code {
+            border-radius: 8px;
+            scrollbar-y: hidden;
+        }
+
+        #content pre.astro-code {
+            padding: 8px 12px;
+        }
+
+        #eye_catch img,
+        #content img {
+            border-radius: 8px;
+            margin: 0.75em 0;
+        }
+
+        #content iframe {
+            margin: 0.75em 0;
+        }
+
+        #content ul,
+        #content ol {
+            border-radius: 8px;
+            border: solid var(--border2) 1px;
+            background-color: var(--bg2);
+            box-shadow: 2px 2px 4px var(--shadow1);
+            list-style-type: disc;
+            padding: 0.5em 0.5em 0.5em 2em;
+            margin: 0.75em 0;
+        }
+
+        #content ul ul,
+        #content ol ol {
+            border: none;
+            box-shadow: none;
+        }
+
+        #content ul li,
+        #content ol li {
+            line-height: 1.5;
+            padding: 0.5em 0.5em 0.5em 0.33em;
+        }
+
+        #content table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid var(--border1);
+            border-radius: 8px;
+            margin: 0.75em 0;
+        }
+
+        #content th {
+            text-align: center;
+            padding: 10px 8px;
+            color: white;
+            background-color: var(--accent1);
+            border: 1px solid var(--border1);
+        }
+
+        #content td {
+            padding: 8px;
+            border: 1px solid var(--border1);
+        }
+
+        #content tbody tr:nth-child(even) td {
+            background-color: var(--bg2);
+        }
+    </style>
 </div>
-
-<style is:global>
-    #content a {
-        color: var(--accent3);
-        text-decoration: underline;
-        white-space: pre-wrap;
-        word-break: break-word;
-        overflow-wrap: break-word;
-    }
-
-    #content a:hover {
-        text-decoration: none;
-    }
-    #content h1,
-    #content h2,
-    #content h3,
-    #content h4,
-    #content h5,
-    #content h6 {
-        line-height: 1.2;
-    }
-
-    #content h1,
-    #content h2 {
-        font-size: 1.8em;
-        font-weight: bold;
-        padding: 16px 0px;
-    }
-    #content h3 {
-        font-size: 1.6em;
-        font-weight: bold;
-        padding: 12px 0px;
-    }
-
-    #content h4 {
-        font-size: 1.4em;
-        font-weight: bold;
-        padding: 8px 0px;
-    }
-
-    #content h5 {
-        font-size: 1.2em;
-        font-weight: bold;
-        padding: 4px 0px;
-    }
-
-    #content h6 {
-        font-size: 1.1em;
-        font-weight: bold;
-        padding: 2px 0px;
-    }
-
-    #content code {
-        background-color: transparent;
-        padding: 0em 0.33em;
-        color: #881100;
-        box-shadow: 0 0 0 0;
-        background-color: var(--bg2);
-        border-radius: 2px;
-        white-space: pre-wrap;
-        word-break: break-word;
-        overflow-wrap: break-word;
-    }
-
-    #content pre code {
-        padding: 0;
-        background-color: transparent;
-        text-decoration: none;
-        color: white;
-    }
-
-    #content code,
-    #content pro code {
-        font-family: "Source Han Code JP Regular", monospace !important;
-    }
-
-    #content div.remark-code-container {
-        margin: 1.5em 0;
-    }
-
-    #content div.remark-code-container,
-    #content pre.astro-code {
-        border-radius: 8px;
-        scrollbar-y: hidden;
-    }
-
-    #content pre.astro-code {
-        padding: 8px 12px;
-    }
-
-    #eye_catch img,
-    #content img {
-        border-radius: 8px;
-        margin: 0.75em 0;
-    }
-
-    #content iframe {
-        margin: 0.75em 0;
-    }
-
-    #content ul,
-    #content ol {
-        border-radius: 8px;
-        border: solid var(--border2) 1px;
-        background-color: var(--bg2);
-        box-shadow: 2px 2px 4px var(--shadow1);
-        list-style-type: disc;
-        padding: 0.5em 0.5em 0.5em 2em;
-        margin: 0.75em 0;
-    }
-
-    #content ul ul,
-    #content ol ol {
-        border: none;
-        box-shadow: none;
-    }
-
-    #content ul li,
-    #content ol li {
-        line-height: 1.5;
-        padding: 0.5em 0.5em 0.5em 0.33em;
-    }
-
-    #content table {
-        width: 100%;
-        border-collapse: collapse;
-        border: 1px solid var(--border1);
-        border-radius: 8px;
-        margin: 0.75em 0;
-    }
-
-    #content th {
-        text-align: center;
-        padding: 10px 8px;
-        color: white;
-        background-color: var(--accent1);
-        border: 1px solid var(--border1);
-    }
-
-    #content td {
-        padding: 8px;
-        border: 1px solid var(--border1);
-    }
-
-    #content tbody tr:nth-child(even) td {
-        background-color: var(--bg2);
-    }
-</style>
