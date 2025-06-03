@@ -6,12 +6,13 @@ date: 2025-06-01T03:04:01.679Z
 preview: https://b.rmc-8.com/img/2025/06/01/1fbe657aa246865432be2e1d53002531.jpg
 draft: false
 tags:
-    - Lチカ
-    - Raspberry Pi
-    - Rust
+  - Lチカ
+  - Raspberry Pi
+  - Rust
 categories:
-    - Programming
+  - Programming
 fmContentType: blog
+updatedDate: 2025-06-03T03:05:16.305Z
 ---
 
 ## 概要

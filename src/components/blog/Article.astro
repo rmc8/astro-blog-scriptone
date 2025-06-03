@@ -43,7 +43,8 @@ import ToC from "@/components/blog/ToC.astro";
 
             {
                 (typeof Astro.props.singleBlog.data.toc === "undefined" ||
-                Astro.props.singleBlog.data.toc === true) && Astro.props.headings.length > 0 ? (
+                    Astro.props.singleBlog.data.toc === true) &&
+                Astro.props.headings.length > 0 ? (
                     <ToC headings={Astro.props.headings} />
                 ) : null
             }
@@ -64,6 +65,9 @@ import ToC from "@/components/blog/ToC.astro";
     </article>
 
     <style is:global>
+        #content {
+            width: 100%;
+        }
         #content a {
             color: var(--accent3);
             text-decoration: underline;
