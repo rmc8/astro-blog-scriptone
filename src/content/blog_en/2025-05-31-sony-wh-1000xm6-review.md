@@ -4,7 +4,7 @@ slug: sony_wh-1000xm6_review
 description: This is a review of the Sony WH-1000XM6, released on May 30, 2025.
 date: 2025-05-31T00:31:58.428Z
 preview: "https://b.rmc-8.com/img/2025/05/31/86387faf6089cb5d5732fa3a8e5d211c.jpg"
-draft: true
+draft: false
 tags:
     - Sony
     - WH-1000XM6
