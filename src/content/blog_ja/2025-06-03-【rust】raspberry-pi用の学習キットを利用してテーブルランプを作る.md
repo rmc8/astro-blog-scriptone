@@ -1,6 +1,6 @@
 ---
 title: 【Rust】Raspberry Pi用の学習キットを利用してテーブルランプを作る
-description: ""
+description: "Lチカの回路にスイッチを加えてRustでLEDの制御をします。"
 slug: raspberry_pi_rust_table_lamp_kit
 date: 2025-06-03T03:40:33.958Z
 updatedDate: 2025-06-03T03:40:33.958Z

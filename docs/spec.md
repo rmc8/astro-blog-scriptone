@@ -68,6 +68,56 @@
 - `privacy_policy/`: プライバシーポリシー。
 - `project_sekai/`: プロジェクトセカイ関連のコンテンツ（イベント計算ツールなど）。
 
+### 1.8. blog/en/[slug].astro, blog/ja/[slug].astro, blog/ko/[slug].astro
+
+- **概要**: 各言語のブログ記事ページ。
+- **機能**:
+  - 特定のブログ記事を表示。
+  - 記事のタイトル、内容、日付などを表示。
+- **使用コンポーネント**: `Layout`、`Article`
+
+### 1.9. blog/en/archives/[archive].astro, blog/ja/archives/[archive].astro, blog/ko/archives/[archive].astro
+
+- **概要**: 各言語のブログアーカイブページ。
+- **機能**:
+  - 指定されたアーカイブ（例: 年月）のブログ記事一覧を表示。
+- **使用コンポーネント**: `Layout`、`BlogList`
+
+### 1.10. blog/en/categories/[category].astro, blog/ja/categories/[category].astro, blog/ko/categories/[category].astro
+
+- **概要**: 各言語のカテゴリ別ブログページ。
+- **機能**:
+  - 指定されたカテゴリのブログ記事一覧を表示。
+- **使用コンポーネント**: `Layout`、`BlogList`
+
+### 1.11. blog/en/tags/[tag].astro, blog/ja/tags/[tag].astro, blog/ko/tags/[tag].astro
+
+- **概要**: 各言語のタグ別ブログページ。
+- **機能**:
+  - 指定されたタグのブログ記事一覧を表示。
+- **使用コンポーネント**: `Layout`、`BlogList`
+
+### 1.12. diary/[slug].astro
+
+- **概要**: 日記記事ページ。
+- **機能**:
+  - 特定の日記記事を表示。
+- **使用コンポーネント**: `Layout`、`Article`
+
+### 1.13. project_sekai/event_point_calculator/index.astro
+
+- **概要**: プロジェクトセカイのイベントポイント計算ツールページ。
+- **機能**:
+  - イベントポイントを計算するためのインタラクティブなツールを提供。
+- **使用コンポーネント**: `Layout`、`Tools`
+
+### 1.14. project_sekai/simple_efficiency_table_for_prsk_music/index.astro
+
+- **概要**: プロジェクトセカイの音楽効率テーブルページ。
+- **機能**:
+  - 音楽の効率を表形式で表示。
+- **使用コンポーネント**: `Layout`、`Profile`
+
 ## 2. コンポーネント構造 (`src/components/`)
 
 ### 2.1. blog/
@@ -93,23 +143,23 @@
 ### 2.3. diary/
 
 - **概要**: 日記記事の表示と関連機能のためのコンポーネント群。
-- **主要コンポーネント**: `Article.astro`、`DiaryList.astro`、`PostDate.astro` など。
+- **主要コンポーネント**: `Article.astro`、`DiaryList.astro`、`PostDate.astro`、`PostTitle.astro`、`UpdatedDate.astro`、`EyecatchSmall.astro` など。日記記事の表示を詳細にカバー。
 
 ### 2.4. home/
 
 - **概要**: トップページ専用のコンポーネント群。
-- **主要コンポーネント**: `Me.astro`（自己紹介）、`Contents.astro`（コンテンツリスト）、`Skills.astro`（スキル一覧）など。
+- **主要コンポーネント**: `Me.astro`（自己紹介セクション）、`Contents.astro`（コンテンツリスト表示）、`Skills.astro`（スキル一覧表示）、`SNSLink.astro` など。トップページの要素を明確に記述。
 
 ### 2.5. i18n/
 
 - **概要**: 国際化（i18n）機能のためのコンポーネント群。
-- **主要コンポーネント**: `LanguagePicker.astro`（言語選択ドロップダウン）など。
-- **ユーティリティ**: `utils.ts`（URLから言語コードを取得する関数 `getLangFromUrl`）。
+- **主要コンポーネント**: `LanguagePicker.astro`（言語選択ドロップダウン）。
+- **ユーティリティ**: `utils.ts`（URLから言語コードを取得する関数 `getLangFromUrl`）。国際化機能を強化。追加のi18n関連コンポーネントを考慮。
 
 ### 2.6. prsk/
 
 - **概要**: プロジェクトセカイ関連のコンテンツのためのコンポーネント群。
-- **主要コンポーネント**: `Profile.astro`、`Tools.astro` など。
+- **主要コンポーネント**: `Profile.astro`（プロフィール表示）、`Tools.astro`（ツール表示）、`EventPointCalculator.astro` など。プロジェクトセカイ関連の機能を詳細に記述。
 
 ## 3. 全体的な機能と特徴
 
