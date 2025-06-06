@@ -30,30 +30,27 @@ const homeItem: BreadcrumbItem = {
 const allItems = [homeItem, ...items];
 ---
 
-<nav aria-label="パンくずリスト" class="mb-6">
-    <ol class="flex items-center space-x-2 text-sm">
+<nav aria-label="パンくずリスト" class="breadcrumb-nav">
+    <ol class="breadcrumb-list">
         {allItems.map((item, index) => (
-            <li class="flex items-center">
+            <li class="breadcrumb-item">
                 {index > 0 && (
-                    <span class="mx-2 text-gray-400" aria-hidden="true">
+                    <span class="breadcrumb-separator" aria-hidden="true">
                         /
                     </span>
                 )}
                 {item.href && index < allItems.length - 1 ? (
                     <a
                         href={item.href}
-                        class="transition-colors duration-200 hover:underline"
-                        style="color: var(--accent4);"
-                        onmouseover="this.style.color='var(--accent3)'"
-                        onmouseout="this.style.color='var(--accent4)'"
+                        class="breadcrumb-link"
                     >
                         {item.text}
                     </a>
                 ) : (
                     <span 
-                        class="font-medium"
-                        style="color: var(--accent7);"
+                        class="breadcrumb-current"
                         aria-current={index === allItems.length - 1 ? "page" : undefined}
+                        title={item.text}
                     >
                         {item.text}
                     </span>
@@ -62,3 +59,103 @@ const allItems = [homeItem, ...items];
         ))}
     </ol>
 </nav>
+
+<style>
+    .breadcrumb-nav {
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+    
+    .breadcrumb-list {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        font-size: 0.875rem;
+        min-height: 1.5rem;
+        overflow: hidden;
+    }
+    
+    .breadcrumb-item {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+    
+    .breadcrumb-separator {
+        margin: 0 0.5rem;
+        color: var(--border1);
+        flex-shrink: 0;
+    }
+    
+    .breadcrumb-link {
+        color: var(--accent4);
+        transition: color 0.2s ease;
+        text-decoration: none;
+        flex-shrink: 0;
+    }
+    
+    .breadcrumb-link:hover {
+        color: var(--accent3);
+        text-decoration: underline;
+    }
+    
+    .breadcrumb-current {
+        font-weight: 500;
+        color: var(--accent7);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 100%;
+    }
+    
+    /* タブレット向け調整 */
+    @media (max-width: 768px) {
+        .breadcrumb-list {
+            font-size: 0.8125rem;
+        }
+        
+        .breadcrumb-current {
+            max-width: 200px;
+        }
+    }
+    
+    /* スマートフォン向け調整 */
+    @media (max-width: 480px) {
+        .breadcrumb-nav {
+            margin-bottom: 1rem;
+        }
+        
+        .breadcrumb-list {
+            font-size: 0.75rem;
+        }
+        
+        .breadcrumb-separator {
+            margin: 0 0.25rem;
+        }
+        
+        .breadcrumb-current {
+            max-width: 150px;
+        }
+        
+        /* 長いタイトルの場合の省略表示 */
+        .breadcrumb-item:last-child .breadcrumb-current {
+            max-width: calc(100vw - 120px);
+        }
+    }
+    
+    /* 極小画面向け調整 */
+    @media (max-width: 320px) {
+        .breadcrumb-list {
+            font-size: 0.6875rem;
+        }
+        
+        .breadcrumb-current {
+            max-width: 100px;
+        }
+        
+        .breadcrumb-item:last-child .breadcrumb-current {
+            max-width: calc(100vw - 100px);
+        }
+    }
+</style>
