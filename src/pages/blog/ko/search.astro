@@ -1,0 +1,59 @@
+---
+export const prerender = false;
+
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
+import SearchForm from "@/components/search/SearchForm.astro";
+import SearchResults from "@/components/search/SearchResults.astro";
+import { searchPosts } from "@/lib/search";
+import { ui, defaultLang } from "@/i18n/ui";
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation("ko");
+
+// SSRでクエリパラメータを取得
+const url = new URL(Astro.request.url);
+const query = url.searchParams.get("q") || "";
+
+// ブログ記事を取得
+const allPosts = await getCollection("blog_ko");
+
+// 検索実行
+const searchResults = query ? searchPosts(allPosts, query) : [];
+
+const breadcrumbItems = [
+    {
+        text: t("breadcrumb.blog"),
+        href: "/blog/ko",
+    },
+    {
+        text: t("search.title"),
+    },
+];
+---
+
+<Layout title={`${t("search.title")} - Scriptone`}>
+    <Breadcrumb items={breadcrumbItems} langCode="ko" />
+    
+    <div class="max-w-4xl mx-auto">
+        <h1 class="text-3xl font-bold mb-6">{t("search.title")}</h1>
+        
+        <SearchForm 
+            langCode="ko"
+            query={query}
+            searchUrl="/blog/ko/search"
+        />
+        
+        <SearchResults 
+            results={searchResults}
+            query={query}
+            langCode="ko"
+        />
+    </div>
+</Layout>

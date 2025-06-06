@@ -1,0 +1,48 @@
+---
+import { ui, defaultLang } from "@/i18n/ui";
+
+export interface Props {
+    langCode: string;
+    query?: string;
+    searchUrl: string;
+}
+
+const { langCode, query = "", searchUrl } = Astro.props;
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(langCode);
+---
+
+<form method="GET" action={searchUrl} class="mb-8">
+    <div class="flex flex-col sm:flex-row gap-4">
+        <div class="flex-1">
+            <label for="q" class="sr-only">{t("search.placeholder")}</label>
+            <input
+                type="text"
+                id="q"
+                name="q"
+                value={query}
+                placeholder={t("search.placeholder")}
+                class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 transition-colors duration-200"
+                style="border-color: var(--border1); background-color: var(--bg2);"
+                onfocus="this.style.borderColor='var(--accent1)'; this.style.backgroundColor='var(--bg1)';"
+                onblur="this.style.borderColor='var(--border1)'; this.style.backgroundColor='var(--bg2)';"
+                required
+            />
+        </div>
+        <button
+            type="submit"
+            class="px-6 py-2 text-white rounded-md font-medium transition-colors duration-200 hover:opacity-90"
+            style="background-color: var(--accent1);"
+            onmouseover="this.style.backgroundColor='var(--accent3)'"
+            onmouseout="this.style.backgroundColor='var(--accent1)'"
+        >
+            {t("search.button")}
+        </button>
+    </div>
+</form>

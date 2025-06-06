@@ -28,6 +28,7 @@ export default defineConfig({
             },
         }),
     ],
+    output: "hybrid",
     adapter: vercel(),
     markdown: {
         remarkPlugins: [remarkToc, remarkFlexibleCodeTitles],

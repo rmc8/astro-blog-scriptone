@@ -1,0 +1,113 @@
+---
+import type { SearchResult } from "@/lib/search";
+import { highlightText } from "@/lib/search";
+import { ui, defaultLang } from "@/i18n/ui";
+import PostDate from "@/components/blog/PostDate.astro";
+import CategoryTag from "@/components/blog/CategoryTag.astro";
+
+export interface Props {
+    results: SearchResult[];
+    query: string;
+    langCode: string;
+}
+
+const { results, query, langCode } = Astro.props;
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(langCode);
+---
+
+<div class="search-results">
+    {query && (
+        <div class="mb-6">
+            <h2 class="text-2xl font-bold mb-2">{t("search.results")}</h2>
+            {results.length > 0 ? (
+                <p class="text-gray-600">
+                    {results.length} {t("search.found_results")}
+                </p>
+            ) : (
+                <p class="text-gray-600">{t("search.no_results")}</p>
+            )}
+        </div>
+    )}
+
+    {results.length > 0 && (
+        <div class="space-y-6">
+            {results.map((result) => (
+                <article class="border rounded-lg p-6 transition-shadow duration-200 hover:shadow-md"
+                         style="border-color: var(--border1); background-color: var(--bg2);">
+                    <h3 class="text-xl font-semibold mb-2">
+                        <a 
+                            href={`/blog/${langCode}/${result.post.slug}`}
+                            class="transition-colors duration-200"
+                            style="color: var(--accent4);"
+                            onmouseover="this.style.color='var(--accent3)'"
+                            onmouseout="this.style.color='var(--accent4)'"
+                            set:html={highlightText(result.post.data.title, query)}
+                        />
+                    </h3>
+                    
+                    {result.post.data.description && (
+                        <p 
+                            class="text-gray-600 mb-3 line-clamp-2"
+                            set:html={highlightText(result.post.data.description, query)}
+                        />
+                    )}
+                    
+                    <div class="flex flex-wrap items-center gap-4 text-sm">
+                        <PostDate date={result.post.data.date} />
+                        
+                        {(result.post.data.categories || result.post.data.tags) && (
+                            <CategoryTag
+                                categories={result.post.data.categories}
+                                tags={result.post.data.tags}
+                                langCode={langCode}
+                            />
+                        )}
+                        
+                        <span class="text-gray-500">
+                            Score: {result.score}
+                        </span>
+                    </div>
+                    
+                    {result.post.data.preview && (
+                        <div class="mt-4">
+                            <img 
+                                src={result.post.data.preview} 
+                                alt={result.post.data.title}
+                                class="w-full h-32 object-cover rounded"
+                            />
+                        </div>
+                    )}
+                </article>
+            ))}
+        </div>
+    )}
+
+    {!query && (
+        <div class="text-center py-12">
+            <p class="text-gray-500 text-lg">{t("search.enter_query")}</p>
+        </div>
+    )}
+</div>
+
+<style>
+    .line-clamp-2 {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    :global(.search-results mark) {
+        background-color: var(--accent2);
+        color: var(--accent7);
+        padding: 0.1em 0.2em;
+        border-radius: 2px;
+    }
+</style>

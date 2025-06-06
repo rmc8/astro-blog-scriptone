@@ -1,8 +1,17 @@
 ---
 import LanguagePicker from "@/components/i18n/LanguagePicker.astro";
 import { getLangFromUrl } from "@/i18n/utils";
+import { ui, defaultLang } from "@/i18n/ui";
 
 const lang = getLangFromUrl(Astro.url);
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(lang);
 ---
 
 <header
@@ -17,8 +26,13 @@ const lang = getLangFromUrl(Astro.url);
 
     <nav class="flex space-x-4">
         <LanguagePicker />
+        <a href=`/blog/${lang}/search` class="text-gray-900 hover:text-gray-600" title={t("search.title")}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+        </a>
         <span class="text-gray-400">|</span>
-        <!-- <a href="/" class="text-gray-600 hover:text-gray-900">HOME</a> -->
         <a href=`/blog/${lang}` class="text-gray-600 hover:text-gray-900"
             >BLOG</a
         >
