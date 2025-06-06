@@ -21,6 +21,11 @@ const {
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
         <meta name="description" content={description} />
+        
+        <!-- RSS Feeds -->
+        <link rel="alternate" type="application/rss+xml" title="Scriptone - ブログ (日本語)" href="/blog/ja/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Scriptone - Blog (English)" href="/blog/en/rss.xml" />
+        <link rel="alternate" type="application/rss+xml" title="Scriptone - 블로그 (한국어)" href="/blog/ko/rss.xml" />
         <script>
             window.requestIdleCallback(
                 () => {
