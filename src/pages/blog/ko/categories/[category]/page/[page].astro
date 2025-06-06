@@ -1,0 +1,74 @@
+---
+import type { GetStaticPaths } from "astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import BlogList from "@/components/blog/BlogList.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+import Pagination from "@/components/common/Pagination.astro";
+import { POSTS_PER_PAGE } from "@/lib/constants";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const allBlogPosts: CollectionEntry<"blog_ko">[] = await getCollection("blog_ko");
+    const uniqueCategories = Array.from(new Set(allBlogPosts.flatMap(post => post.data.categories || [])));
+    
+    const paths = [];
+    
+    for (const category of uniqueCategories) {
+        const filteredPosts = allBlogPosts.filter(post => post.data.categories?.includes(category));
+        
+        const sortedPosts = filteredPosts.sort((a, b) => {
+            const dateA = a.data.date ? a.data.date.getTime() : 0;
+            const dateB = b.data.date ? b.data.date.getTime() : 0;
+            return dateB - dateA;
+        });
+        
+        const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+        
+        for (let page = 1; page <= totalPages; page++) {
+            const start = (page - 1) * POSTS_PER_PAGE;
+            const end = start + POSTS_PER_PAGE;
+            
+            paths.push({
+                params: { category, page: page.toString() },
+                props: {
+                    category,
+                    posts: sortedPosts.slice(start, end),
+                    allBlogPosts: allBlogPosts,
+                    currentPage: page,
+                    totalPages: totalPages,
+                },
+            });
+        }
+    }
+    
+    return paths;
+};
+
+const { category, posts, allBlogPosts, currentPage, totalPages } = Astro.props;
+---
+
+<Layout title={`카테고리: ${category} - 페이지 ${currentPage} - Scriptone`}>
+    <h2 class="text-3xl font-bold mb-4">카테고리: {category}</h2>
+    {posts.length > 0 ? (
+        <>
+            <BlogList posts={posts} langCode="ko" />
+            <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                basePath={`/blog/ko/categories/${category}`}
+                langCode="ko"
+            />
+        </>
+    ) : (
+        <p>이 카테고리에는 게시물이 없습니다.</p>
+    )}
+
+    <BlogAggregationLists
+        allBlogPosts={allBlogPosts}
+        langCode="ko"
+        archiveLabel="아카이브"
+        categoryLabel="카테고리"
+        tagLabel="태그"
+    />
+</Layout>

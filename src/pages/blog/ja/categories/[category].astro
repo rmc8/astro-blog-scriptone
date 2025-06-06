@@ -4,6 +4,8 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import BlogList from "@/components/blog/BlogList.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+import Pagination from "@/components/common/Pagination.astro";
+import { POSTS_PER_PAGE } from "@/lib/constants";
 
 export async function getStaticPaths() {
     const allBlogPosts: CollectionEntry<"blog_ja">[] = await getCollection("blog_ja");
@@ -16,13 +18,30 @@ export async function getStaticPaths() {
 const { category } = Astro.params;
 const allBlogPosts: CollectionEntry<"blog_ja">[] = await getCollection("blog_ja");
 const filteredPosts = allBlogPosts.filter(post => post.data.categories?.includes(category));
+
+const sortedPosts = filteredPosts.sort((a, b) => {
+    const dateA = a.data.date ? a.data.date.getTime() : 0;
+    const dateB = b.data.date ? b.data.date.getTime() : 0;
+    return dateB - dateA;
+});
+
+const postsToShow = sortedPosts.slice(0, POSTS_PER_PAGE);
+const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 ---
 
 <Layout title={`カテゴリ: ${category} - Scriptone`}>
     <h2 class="text-3xl font-bold mb-4">カテゴリ: {category}</h2>
     {
-        filteredPosts.length > 0 ? (
-            <BlogList posts={filteredPosts} langCode="ja" />
+        postsToShow.length > 0 ? (
+            <>
+                <BlogList posts={postsToShow} langCode="ja" />
+                <Pagination
+                    currentPage={1}
+                    totalPages={totalPages}
+                    basePath={`/blog/ja/categories/${category}`}
+                    langCode="ja"
+                />
+            </>
         ) : (
             <p>このカテゴリの投稿はありません。</p>
         )

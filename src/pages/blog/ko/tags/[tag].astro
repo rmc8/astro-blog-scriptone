@@ -5,6 +5,8 @@ import { getAggregatedData } from "@/lib/collections/data";
 import Layout from "@/layouts/Base.astro";
 import BlogList from "@/components/blog/BlogList.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+import Pagination from "@/components/common/Pagination.astro";
+import { POSTS_PER_PAGE } from "@/lib/constants";
 
 export async function getStaticPaths() {
     const allBlogPosts: CollectionEntry<"blog_ko">[] =
@@ -22,13 +24,30 @@ const allBlogPosts: CollectionEntry<"blog_ko">[] =
 const filteredPosts = allBlogPosts.filter((post) =>
     post.data.tags?.includes(tag)
 );
+
+const sortedPosts = filteredPosts.sort((a, b) => {
+    const dateA = a.data.date ? a.data.date.getTime() : 0;
+    const dateB = b.data.date ? b.data.date.getTime() : 0;
+    return dateB - dateA;
+});
+
+const postsToShow = sortedPosts.slice(0, POSTS_PER_PAGE);
+const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 ---
 
 <Layout title={`태그: ${tag} - Scriptone`}>
     <h2 class="text-3xl font-bold mb-4">태그: {tag}</h2>
     {
-        filteredPosts.length > 0 ? (
-            <BlogList posts={filteredPosts} langCode="ko" />
+        postsToShow.length > 0 ? (
+            <>
+                <BlogList posts={postsToShow} langCode="ko" />
+                <Pagination
+                    currentPage={1}
+                    totalPages={totalPages}
+                    basePath={`/blog/ko/tags/${tag}`}
+                    langCode="ko"
+                />
+            </>
         ) : (
             <p>이 태그가 달린 게시물이 없습니다.</p>
         )

@@ -1,0 +1,59 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import Layout from "@/layouts/Base.astro";
+import { POSTS_PER_PAGE, SITE_NAME } from "@/lib/constants";
+import BlogList from "@/components/blog/BlogList.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+import Pagination from "@/components/common/Pagination.astro";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const allBlogPosts: CollectionEntry<"blog_ko">[] = (
+        await getCollection("blog_ko")
+    ).filter((post) => !post.data.draft);
+
+    const sortedPosts = allBlogPosts.sort((a, b) => {
+        const dateA = a.data.date ? a.data.date.getTime() : 0;
+        const dateB = b.data.date ? b.data.date.getTime() : 0;
+        return dateB - dateA;
+    });
+
+    const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+
+    return Array.from({ length: totalPages }, (_, i) => {
+        const page = i + 1;
+        const start = (page - 1) * POSTS_PER_PAGE;
+        const end = start + POSTS_PER_PAGE;
+
+        return {
+            params: { page: page.toString() },
+            props: {
+                posts: sortedPosts.slice(start, end),
+                allBlogPosts: allBlogPosts,
+                currentPage: page,
+                totalPages: totalPages,
+            },
+        };
+    });
+};
+
+const { posts, allBlogPosts, currentPage, totalPages } = Astro.props;
+---
+
+<Layout title={`${SITE_NAME} - Blog - 페이지 ${currentPage}`}>
+    <BlogList posts={posts} langCode="ko" />
+    <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/blog/ko"
+        langCode="ko"
+    />
+    <BlogAggregationLists
+        allBlogPosts={allBlogPosts}
+        langCode="ko"
+        archiveLabel="아카이브"
+        categoryLabel="카테고리"
+        tagLabel="태그"
+    />
+</Layout>

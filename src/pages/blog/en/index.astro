@@ -2,9 +2,10 @@
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import Layout from "@/layouts/Base.astro";
-import { LIMIT_PER_PAGE, SITE_NAME } from "@/lib/constants";
+import { POSTS_PER_PAGE, SITE_NAME } from "@/lib/constants";
 import BlogList from "@/components/blog/BlogList.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
+import Pagination from "@/components/common/Pagination.astro";
 
 const allBlogPosts: CollectionEntry<"blog_en">[] = (
     await getCollection("blog_en")
@@ -18,12 +19,20 @@ const sortedPosts = allBlogPosts.sort((a, b) => {
 
 const postsToShow: CollectionEntry<"blog_en">[] = sortedPosts.slice(
     0,
-    LIMIT_PER_PAGE
+    POSTS_PER_PAGE
 );
+
+const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 ---
 
 <Layout title={`${SITE_NAME} - Blog`}>
     <BlogList posts={postsToShow} langCode="en" />
+    <Pagination
+        currentPage={1}
+        totalPages={totalPages}
+        basePath="/blog/en"
+        langCode="en"
+    />
     <BlogAggregationLists
         allBlogPosts={allBlogPosts}
         langCode="en"

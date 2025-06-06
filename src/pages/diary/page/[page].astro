@@ -1,0 +1,50 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "@/layouts/Base.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import DiaryList from "@/components/diary/DiaryList.astro";
+import Pagination from "@/components/common/Pagination.astro";
+import { POSTS_PER_PAGE } from "@/lib/constants";
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const allBlogPosts: CollectionEntry<"diary">[] = await getCollection("diary");
+    const sortedPosts = allBlogPosts.sort((a, b) => {
+        const dateA = a.data.date ? a.data.date.getTime() : 0;
+        const dateB = b.data.date ? b.data.date.getTime() : 0;
+        return dateB - dateA;
+    });
+
+    const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+
+    return Array.from({ length: totalPages }, (_, i) => {
+        const page = i + 1;
+        const start = (page - 1) * POSTS_PER_PAGE;
+        const end = start + POSTS_PER_PAGE;
+
+        return {
+            params: { page: page.toString() },
+            props: {
+                posts: sortedPosts.slice(start, end),
+                currentPage: page,
+                totalPages: totalPages,
+            },
+        };
+    });
+};
+
+const { posts, currentPage, totalPages } = Astro.props;
+---
+
+<Layout title={`Diary - ページ ${currentPage} - Scriptone`}>
+    <div class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">ダイアリー</h2>
+        <p class="text-gray-600 leading-relaxed my-2 text-sm">薬にも毒にもならないようなことを自由に書いています。</p>
+    </div>
+    <DiaryList posts={posts} />
+    <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/diary"
+    />
+</Layout>

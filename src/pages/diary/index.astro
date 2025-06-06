@@ -3,7 +3,8 @@ import Layout from "@/layouts/Base.astro";
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import DiaryList from "@/components/diary/DiaryList.astro";
-// import { LIMIT_PER_PAGE, SITE_NAME } from "@/lib/constants";
+import Pagination from "@/components/common/Pagination.astro";
+import { POSTS_PER_PAGE } from "@/lib/constants";
 
 const allBlogPosts: CollectionEntry<"diary">[] = await getCollection("diary");
 const sortedPosts = allBlogPosts.sort((a, b) => {
@@ -11,6 +12,9 @@ const sortedPosts = allBlogPosts.sort((a, b) => {
     const dateB = b.data.date ? b.data.date.getTime() : 0;
     return dateB - dateA;
 });
+
+const postsToShow = sortedPosts.slice(0, POSTS_PER_PAGE);
+const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 ---
 
 <Layout title="Diary - Scriptone">
@@ -18,5 +22,10 @@ const sortedPosts = allBlogPosts.sort((a, b) => {
         <h2 class="text-2xl font-bold mb-4">ダイアリー</h2>
         <p class="text-gray-600 leading-relaxed my-2 text-sm">薬にも毒にもならないようなことを自由に書いています。</p>
     </div>
-    <DiaryList posts={sortedPosts} />
+    <DiaryList posts={postsToShow} />
+    <Pagination
+        currentPage={1}
+        totalPages={totalPages}
+        basePath="/diary"
+    />
 </Layout>
