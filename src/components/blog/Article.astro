@@ -4,6 +4,7 @@ import PostDate from "@/components/blog/PostDate.astro";
 import UpdatedDate from "@/components/blog/UpdatedDate.astro";
 import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
+import RelatedPosts from "@/components/blog/RelatedPosts.astro";
 ---
 
 <div>
@@ -63,6 +64,11 @@ import ToC from "@/components/blog/ToC.astro";
             />
         </div>
     </article>
+    
+    <RelatedPosts
+        relatedPosts={Astro.props.relatedPosts}
+        langCode={Astro.props.LANG_CODE}
+    />
 
     <style is:global>
         #content {
