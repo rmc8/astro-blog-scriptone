@@ -1,12 +1,7 @@
 ---
-export const prerender = false;
-
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import Breadcrumb from "@/components/common/Breadcrumb.astro";
-import SearchForm from "@/components/search/SearchForm.astro";
-import SearchResults from "@/components/search/SearchResults.astro";
-import { searchPosts } from "@/lib/search";
 import { ui, defaultLang } from "@/i18n/ui";
 
 function useTranslation(langCode: string) {
@@ -17,15 +12,8 @@ function useTranslation(langCode: string) {
 
 const t = useTranslation("ja");
 
-// SSRでクエリパラメータを取得
-const url = new URL(Astro.request.url);
-const query = url.searchParams.get("q") || "";
-
-// ブログ記事を取得
+// ブログ記事を取得（クライアントサイド検索用）
 const allPosts = await getCollection("blog_ja");
-
-// 検索実行
-const searchResults = query ? searchPosts(allPosts, query) : [];
 
 const breadcrumbItems = [
     {
@@ -44,16 +32,111 @@ const breadcrumbItems = [
     <div class="max-w-4xl mx-auto">
         <h1 class="text-3xl font-bold mb-6">{t("search.title")}</h1>
         
-        <SearchForm 
-            langCode="ja"
-            query={query}
-            searchUrl="/blog/ja/search"
-        />
+        <div class="mb-6">
+            <input 
+                type="text" 
+                id="search-input"
+                placeholder={t("search.placeholder")}
+                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+        </div>
         
-        <SearchResults 
-            results={searchResults}
-            query={query}
-            langCode="ja"
-        />
+        <div id="search-results" class="hidden">
+            <h2 class="text-xl font-semibold mb-4">{t("search.results")}</h2>
+            <div id="results-container"></div>
+        </div>
+        
+        <div id="no-results" class="hidden text-gray-600">
+            {t("search.noResults")}
+        </div>
     </div>
 </Layout>
+
+<script define:vars={{ allPosts, t: {
+    "search.results": t("search.results"),
+    "search.noResults": t("search.noResults")
+} }}>
+    const searchInput = document.getElementById('search-input');
+    const searchResults = document.getElementById('search-results');
+    const noResults = document.getElementById('no-results');
+    const resultsContainer = document.getElementById('results-container');
+    
+    function searchPosts(posts, query) {
+        if (!query.trim()) return [];
+        
+        const normalizedQuery = query.toLowerCase().trim();
+        const results = [];
+        
+        posts.forEach(post => {
+            let score = 0;
+            const title = post.data.title.toLowerCase();
+            const description = (post.data.description || '').toLowerCase();
+            const tags = (post.data.tags || []).map(tag => tag.toLowerCase());
+            const categories = (post.data.categories || []).map(cat => cat.toLowerCase());
+            
+            // タイトルマッチ（最高点）
+            if (title.includes(normalizedQuery)) score += 10;
+            
+            // 説明マッチ
+            if (description.includes(normalizedQuery)) score += 5;
+            
+            // タグマッチ
+            if (tags.some(tag => tag.includes(normalizedQuery))) score += 3;
+            
+            // カテゴリーマッチ
+            if (categories.some(cat => cat.includes(normalizedQuery))) score += 2;
+            
+            if (score > 0) {
+                results.push({ post, score });
+            }
+        });
+        
+        return results.sort((a, b) => b.score - a.score).slice(0, 50);
+    }
+    
+    function displayResults(results, query) {
+        if (results.length === 0) {
+            searchResults.classList.add('hidden');
+            noResults.classList.remove('hidden');
+            return;
+        }
+        
+        noResults.classList.add('hidden');
+        searchResults.classList.remove('hidden');
+        
+        resultsContainer.innerHTML = results.map(({ post }) => `
+            <article class="mb-6 p-4 border border-gray-200 rounded-lg">
+                <h3 class="text-lg font-semibold mb-2">
+                    <a href="/blog/ja/${post.slug}" class="text-blue-600 hover:text-blue-800">
+                        ${post.data.title}
+                    </a>
+                </h3>
+                <p class="text-gray-600 mb-2">${post.data.description || ''}</p>
+                <div class="flex flex-wrap gap-2 text-sm">
+                    ${(post.data.tags || []).map(tag => 
+                        `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">${tag}</span>`
+                    ).join('')}
+                    ${(post.data.categories || []).map(cat => 
+                        `<span class="bg-green-100 text-green-800 px-2 py-1 rounded">${cat}</span>`
+                    ).join('')}
+                </div>
+                <p class="text-sm text-gray-500 mt-2">${new Date(post.data.publishedDate).toLocaleDateString('ja-JP')}</p>
+            </article>
+        `).join('');
+    }
+    
+    searchInput.addEventListener('input', (e) => {
+        const query = e.target.value;
+        const results = searchPosts(allPosts, query);
+        displayResults(results, query);
+    });
+    
+    // URLからクエリパラメータを読み取り
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialQuery = urlParams.get('q') || '';
+    if (initialQuery) {
+        searchInput.value = initialQuery;
+        const results = searchPosts(allPosts, initialQuery);
+        displayResults(results, initialQuery);
+    }
+</script>
