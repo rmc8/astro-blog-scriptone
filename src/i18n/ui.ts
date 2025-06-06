@@ -28,6 +28,8 @@ export const ui = {
         "search.no_results": "検索結果が見つかりませんでした",
         "search.found_results": "件の記事が見つかりました",
         "search.enter_query": "検索キーワードを入力してください",
+        "share.title": "シェア",
+        "share.shareWith": "でシェア",
     },
     en: {
         "nav.home": "Home",
@@ -50,6 +52,8 @@ export const ui = {
         "search.no_results": "No search results found",
         "search.found_results": "articles found",
         "search.enter_query": "Please enter search keywords",
+        "share.title": "Share",
+        "share.shareWith": "Share on",
     },
     ko: {
         "nav.home": "홈",
@@ -72,5 +76,7 @@ export const ui = {
         "search.no_results": "검색 결과를 찾을 수 없습니다",
         "search.found_results": "개의 글을 찾았습니다",
         "search.enter_query": "검색 키워드를 입력해주세요",
+        "share.title": "공유",
+        "share.shareWith": "에서 공유",
     },
 } as const;

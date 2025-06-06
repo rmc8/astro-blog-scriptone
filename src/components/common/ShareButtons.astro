@@ -1,0 +1,188 @@
+---
+import { ui, defaultLang } from "@/i18n/ui";
+
+export interface Props {
+    title: string;
+    url: string;
+    lang?: string;
+}
+
+const { title, url, lang = "ja" } = Astro.props;
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(lang);
+
+const shareText = encodeURIComponent(title);
+const shareUrl = encodeURIComponent(url);
+
+const shareLinks = {
+    twitter: `https://twitter.com/intent/tweet?text=${shareText}&url=${shareUrl}`,
+    bluesky: `https://bsky.app/intent/compose?text=${shareText} ${shareUrl}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${shareUrl}`,
+    reddit: `https://reddit.com/submit?url=${shareUrl}&title=${shareText}`,
+    hatena: `https://b.hatena.ne.jp/entry/${shareUrl}`
+};
+
+// 日本語圏での影響度順に並び替え
+const shareButtons = [
+    { name: 'X', icon: 'x.svg', url: shareLinks.twitter },
+    { name: 'はてブ', icon: 'hatenabookmark.svg', url: shareLinks.hatena },
+    { name: 'Facebook', icon: 'facebook.svg', url: shareLinks.facebook },
+    { name: 'Bluesky', icon: 'bluesky.svg', url: shareLinks.bluesky },
+    { name: 'Reddit', icon: 'reddit.svg', url: shareLinks.reddit }
+];
+---
+
+<div class="share-section">
+    <h3 class="share-title">{t("share.title")}</h3>
+    <div class="share-buttons-grid">
+        {shareButtons.map((button) => (
+            <a
+                href={button.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="share-button"
+                title={`${t("share.shareWith")}${button.name}`}
+            >
+                <img 
+                    src={`/skill/${button.icon}`} 
+                    alt={button.name} 
+                    class="share-icon"
+                />
+                <span class="share-text">{button.name}</span>
+            </a>
+        ))}
+    </div>
+</div>
+
+<style>
+    .share-section {
+        margin: 2rem 0;
+        padding: 1.5rem;
+        border: 1px solid var(--border1);
+        border-radius: 8px;
+        background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+        box-shadow: 2px 2px 4px var(--shadow1);
+    }
+    
+    .share-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+        color: var(--accent7);
+        text-align: center;
+    }
+    
+    .share-buttons-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+        justify-items: center;
+    }
+    
+    .share-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        max-width: 140px;
+        padding: 0.75rem 1rem;
+        background-color: var(--bg2);
+        border: 1px solid var(--border2);
+        border-radius: 8px;
+        color: var(--accent7);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    
+    .share-button:hover {
+        background-color: var(--accent1);
+        border-color: var(--accent3);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 194, 209, 0.25);
+    }
+    
+    .share-icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 0.5rem;
+        flex-shrink: 0;
+    }
+    
+    .share-text {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* タブレット向け調整 */
+    @media (max-width: 768px) {
+        .share-buttons-grid {
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.5rem;
+        }
+        
+        .share-button {
+            max-width: 120px;
+            padding: 0.625rem 0.75rem;
+            font-size: 0.8125rem;
+        }
+    }
+    
+    /* スマートフォン向け調整 */
+    @media (max-width: 480px) {
+        .share-section {
+            margin: 1.5rem 0;
+            padding: 1rem;
+        }
+        
+        .share-buttons-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            max-width: 280px;
+            margin: 0 auto;
+        }
+        
+        .share-button {
+            max-width: none;
+            width: 100%;
+            padding: 0.75rem 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .share-icon {
+            width: 14px;
+            height: 14px;
+            margin-right: 0.375rem;
+        }
+        
+        .share-title {
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+        }
+    }
+    
+    /* 極小画面向け調整 */
+    @media (max-width: 320px) {
+        .share-buttons-grid {
+            max-width: 240px;
+        }
+        
+        .share-button {
+            padding: 0.625rem 0.25rem;
+        }
+        
+        .share-text {
+            font-size: 0.6875rem;
+        }
+    }
+</style>

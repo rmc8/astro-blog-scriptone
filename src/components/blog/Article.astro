@@ -6,6 +6,7 @@ import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
 import RelatedPosts from "@/components/blog/RelatedPosts.astro";
 import Breadcrumb from "@/components/common/Breadcrumb.astro";
+import ShareButtons from "@/components/common/ShareButtons.astro";
 import { ui, defaultLang } from "@/i18n/ui";
 
 function useTranslation(langCode: string) {
@@ -25,6 +26,11 @@ const breadcrumbItems = [
         text: Astro.props.singleBlog.data.title,
     },
 ];
+
+// シェア用のURL生成
+const currentUrl = new URL(Astro.request.url);
+const shareUrl = `${currentUrl.origin}/blog/${Astro.props.LANG_CODE}/${Astro.props.singleBlog.slug}`;
+const shareTitle = Astro.props.singleBlog.data.title;
 ---
 
 <div>
@@ -85,6 +91,12 @@ const breadcrumbItems = [
             />
         </div>
     </article>
+    
+    <ShareButtons 
+        title={shareTitle}
+        url={shareUrl}
+        lang={Astro.props.LANG_CODE}
+    />
     
     <RelatedPosts
         relatedPosts={Astro.props.relatedPosts}

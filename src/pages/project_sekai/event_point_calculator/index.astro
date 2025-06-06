@@ -1,5 +1,11 @@
 ---
 import Layout from "@/layouts/Base.astro";
+import ShareButtons from "@/components/common/ShareButtons.astro";
+
+// シェア用のURL生成
+const currentUrl = new URL(Astro.request.url);
+const shareUrl = `${currentUrl.origin}/project_sekai/event_point_calculator/`;
+const shareTitle = "プロセカ イベントポイント計算機";
 ---
 
 <Layout>
@@ -40,6 +46,12 @@ import Layout from "@/layouts/Base.astro";
                 </table>
             </div>
         </div>
+        
+        <ShareButtons 
+            title={shareTitle}
+            url={shareUrl}
+            lang="ja"
+        />
     </main>
 </Layout>
 

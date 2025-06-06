@@ -1,5 +1,11 @@
 ---
 import Layout from "@/layouts/Base.astro";
+import ShareButtons from "@/components/common/ShareButtons.astro";
+
+// シェア用のURL生成
+const currentUrl = new URL(Astro.request.url);
+const shareUrl = `${currentUrl.origin}/project_sekai/simple_efficiency_table_for_prsk_music/`;
+const shareTitle = "プロセカ 楽曲効率表";
 ---
 
 <Layout>
@@ -22,6 +28,12 @@ import Layout from "@/layouts/Base.astro";
                     <tbody id="tableBody"> </tbody>
                 </table>
             </div>
+            
+            <ShareButtons 
+                title={shareTitle}
+                url={shareUrl}
+                lang="ja"
+            />
         </div>
     </section>
 </Layout>
