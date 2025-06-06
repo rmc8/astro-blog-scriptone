@@ -6,49 +6,501 @@ import { ui, defaultLang } from "@/i18n/ui";
 const lang = getLangFromUrl(Astro.url);
 
 function useTranslation(langCode: string) {
-    return function t(key: keyof typeof ui[typeof defaultLang]) {
+    return function t(key: keyof (typeof ui)[typeof defaultLang]) {
         return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
     };
 }
 
 const t = useTranslation(lang);
+
+const menuItems = [
+    { href: "/", icon: "home", text: t("nav.home") },
+    { href: `/blog/${lang}`, icon: "article", text: "BLOG" },
+    { href: `/blog/${lang}/search`, icon: "search", text: t("search.title") },
+    { href: "/about", icon: "info", text: "ABOUT" },
+];
 ---
 
-<header
-    class="fixed top-0 left-0 w-full bg-white shadow-md flex justify-between items-center px-4 pt-1.5 pb-0.5 z-50"
->
-<h1 class="text-xl font-bold flex items-center">
-    <a href="/" class="flex items-center">
-        <img height="22" width="22" src="/scriptone_logo_icon.png" class="mr-1" />
-        Scriptone
-    </a>
-</h1>
-
-    <nav class="flex space-x-4">
-        <LanguagePicker />
-        <a href=`/blog/${lang}/search` class="text-gray-900 hover:text-gray-600" title={t("search.title")}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <path d="m21 21-4.35-4.35"></path>
-            </svg>
+<header class="header">
+    <!-- ロゴ部分 -->
+    <div class="header-brand">
+        <a href="/" class="brand-link">
+            <img
+                src="/scriptone_logo_icon.png"
+                alt="Scriptone"
+                class="brand-icon"
+            />
+            <span class="brand-text">Scriptone</span>
         </a>
-        <span class="text-gray-400">|</span>
-        <a href=`/blog/${lang}` class="text-gray-600 hover:text-gray-900"
-            >BLOG</a
-        >
-        <a href="/about" class="text-gray-600 hover:text-gray-900">ABOUT</a>
+    </div>
+
+    <!-- デスクトップナビゲーション -->
+    <nav class="desktop-nav">
+        <div class="nav-items">
+            <div class="language-picker-container">
+                <LanguagePicker />
+            </div>
+            <div class="nav-divider"></div>
+            {
+                menuItems.map((item) => (
+                    <a href={item.href} class="nav-link">
+                        <i class="material-icons nav-icon" aria-hidden="true">
+                            {item.icon}
+                        </i>
+                        <span class="nav-text">{item.text}</span>
+                    </a>
+                ))
+            }
+        </div>
+    </nav>
+
+    <!-- モバイルハンバーガーボタン -->
+    <button
+        class="mobile-menu-button"
+        aria-label="メニューを開く"
+        aria-expanded="false"
+    >
+        <div class="hamburger">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </div>
+    </button>
+
+    <!-- モバイルメニューオーバーレイ -->
+    <div class="mobile-menu-overlay"></div>
+
+    <!-- モバイルメニュー -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-header">
+            <h2 class="mobile-nav-title">メニュー</h2>
+            <button class="mobile-menu-close" aria-label="メニューを閉じる">
+                <i class="material-icons">close</i>
+            </button>
+        </div>
+
+        <div class="mobile-nav-content">
+            {
+                menuItems.map((item) => (
+                    <a href={item.href} class="mobile-nav-link">
+                        <i
+                            class="material-icons mobile-nav-icon"
+                            aria-hidden="true"
+                        >
+                            {item.icon}
+                        </i>
+                        <span class="mobile-nav-text">{item.text}</span>
+                    </a>
+                ))
+            }
+        </div>
+        <div class="mobile-nav-divider"></div>
+        <div class="mobile-language-picker">
+            <LanguagePicker />
+        </div>
     </nav>
 </header>
 
 <style>
-    header {
+    /* ヘッダー基本スタイル */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background-color: var(--bg2);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 1rem;
+        min-height: 60px;
+    }
+
+    /* ブランド部分 */
+    .header-brand {
+        flex-shrink: 0;
+    }
+
+    .brand-link {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #222;
+        font-weight: bold;
+        font-size: 1.25rem;
+        transition: color 0.3s ease;
+    }
+
+    .brand-link:hover {
+        color: var(--accent3);
+    }
+
+    .brand-icon {
+        width: 24px;
+        height: 24px;
+        margin-right: 0.5rem;
+    }
+
+    .brand-text {
+        white-space: nowrap;
+    }
+
+    /* デスクトップナビゲーション */
+    .desktop-nav {
+        display: flex;
+        align-items: center;
+    }
+
+    .nav-items {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        color: #222; /* var(--accent4) */
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        font-size: 0.875rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .nav-link:hover {
+        color: white; /* var(--accent7) */
+        background-color: var(--accent1); /* --bg1*/
+        transform: translateY(-1px);
+    }
+
+    .nav-icon {
+        font-size: 18px !important;
+    }
+
+    .nav-divider {
+        width: 1px;
+        height: 24px;
+        background-color: var(--border1);
+        margin: 0 0.5rem;
+    }
+
+    /* ハンバーガーボタン */
+    .mobile-menu-button {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 48px;
+        height: 48px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        border-radius: 8px;
+        transition: background-color 0.3s ease;
+    }
+
+    .mobile-menu-button:hover {
+        background-color: var(--bg1);
+    }
+
+    .hamburger {
+        position: relative;
+        width: 24px;
+        height: 18px;
+    }
+
+    .hamburger-line {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: #222; /* var(--accent7)*/
+        border-radius: 1px;
+        transition: all 0.3s ease;
+    }
+
+    .hamburger-line:nth-child(1) {
+        top: 0;
+    }
+
+    .hamburger-line:nth-child(2) {
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .hamburger-line:nth-child(3) {
+        bottom: 0;
+    }
+
+    /* ハンバーガーボタンアクティブ状態 */
+    .mobile-menu-button.active .hamburger-line:nth-child(1) {
+        top: 50%;
+        transform: translateY(-50%) rotate(45deg);
+    }
+
+    .mobile-menu-button.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+
+    .mobile-menu-button.active .hamburger-line:nth-child(3) {
+        bottom: 50%;
+        transform: translateY(50%) rotate(-45deg);
+    }
+
+    /* モバイルメニューオーバーレイ */
+    .mobile-menu-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+    }
+
+    .mobile-menu-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* モバイルナビゲーション */
+    .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 320px;
+        max-width: 85vw;
+        height: 100%;
+        background-color: var(--bg1);
+        box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+        transition: right 0.3s ease;
+        z-index: 1001;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .mobile-nav.active {
+        right: 0;
+    }
+
+    .mobile-nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border1);
         background-color: var(--bg2);
     }
 
-    @media (max-width: 600px) {
-        header,
-        header a {
-            font-size: 0.85em !important;
+    .mobile-nav-title {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: #222; /* var(--accent7) */
+        margin: 0;
+    }
+
+    .mobile-menu-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        color: var(--accent4);
+        transition: all 0.3s ease;
+    }
+
+    .mobile-menu-close:hover {
+        background-color: var(--bg3);
+        color: var(--accent7);
+    }
+
+    .mobile-nav-content {
+        flex: 1;
+        padding: 1.5rem 0;
+        overflow-y: auto;
+    }
+
+    .mobile-nav-link {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        color: #222; /* var(--accent7) */
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link:focus {
+        background-color: var(--bg2);
+        border-left-color: var(--accent3);
+        color: var(--accent3);
+    }
+
+    .mobile-nav-icon {
+        font-size: 24px !important;
+        flex-shrink: 0;
+    }
+
+    .mobile-nav-text {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    .mobile-nav-divider {
+        height: 1px;
+        background-color: var(--border1);
+        margin: 1rem 1.5rem;
+    }
+
+    .mobile-language-picker {
+        padding: 0 1.5rem;
+    }
+
+    /* レスポンシブ対応 */
+    @media (max-width: 768px) {
+        .desktop-nav {
+            display: none;
+        }
+
+        .mobile-menu-button {
+            display: flex;
+        }
+
+        .brand-text {
+            font-size: 1.125rem;
+        }
+
+        .brand-icon {
+            width: 22px;
+            height: 22px;
         }
     }
+
+    @media (max-width: 480px) {
+        .header {
+            padding: 0.5rem 1rem;
+            min-height: 56px;
+        }
+
+        .brand-text {
+            font-size: 1rem;
+        }
+
+        .mobile-nav {
+            width: 280px;
+        }
+
+        .mobile-nav-content {
+            padding: 1rem 0;
+        }
+
+        .mobile-nav-link {
+            padding: 0.875rem 1.25rem;
+        }
+    }
+
+    /* フォーカス状態 */
+    .nav-link:focus,
+    .mobile-menu-button:focus,
+    .mobile-menu-close:focus,
+    .mobile-nav-link:focus {
+        outline: 2px solid var(--accent3);
+        outline-offset: 2px;
+    }
+
+    /* body overflow制御（メニュー開時のスクロール防止） */
+    body.mobile-menu-open {
+        overflow: hidden;
+    }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const mobileMenuButton = document.querySelector(".mobile-menu-button");
+        const mobileMenuClose = document.querySelector(".mobile-menu-close");
+        const mobileNav = document.querySelector(".mobile-nav");
+        const mobileMenuOverlay = document.querySelector(
+            ".mobile-menu-overlay"
+        );
+        const body = document.body;
+
+        let isMenuOpen = false;
+
+        function openMenu() {
+            isMenuOpen = true;
+            mobileMenuButton.classList.add("active");
+            mobileNav.classList.add("active");
+            mobileMenuOverlay.classList.add("active");
+            body.classList.add("mobile-menu-open");
+            mobileMenuButton.setAttribute("aria-expanded", "true");
+            mobileMenuButton.setAttribute("aria-label", "メニューを閉じる");
+
+            // フォーカスを閉じるボタンに移動
+            mobileMenuClose.focus();
+        }
+
+        function closeMenu() {
+            isMenuOpen = false;
+            mobileMenuButton.classList.remove("active");
+            mobileNav.classList.remove("active");
+            mobileMenuOverlay.classList.remove("active");
+            body.classList.remove("mobile-menu-open");
+            mobileMenuButton.setAttribute("aria-expanded", "false");
+            mobileMenuButton.setAttribute("aria-label", "メニューを開く");
+
+            // フォーカスをハンバーガーボタンに戻す
+            mobileMenuButton.focus();
+        }
+
+        // ハンバーガーボタンクリック
+        mobileMenuButton.addEventListener("click", function () {
+            if (isMenuOpen) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+        });
+
+        // 閉じるボタンクリック
+        mobileMenuClose.addEventListener("click", closeMenu);
+
+        // オーバーレイクリック
+        mobileMenuOverlay.addEventListener("click", closeMenu);
+
+        // ESCキーでメニュー閉じる
+        document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape" && isMenuOpen) {
+                closeMenu();
+            }
+        });
+
+        // メニューリンククリックでメニュー閉じる
+        const mobileNavLinks = document.querySelectorAll(".mobile-nav-link");
+        mobileNavLinks.forEach((link) => {
+            link.addEventListener("click", closeMenu);
+        });
+
+        // リサイズ時の処理（デスクトップサイズでメニューが開いていたら閉じる）
+        window.addEventListener("resize", function () {
+            if (window.innerWidth > 768 && isMenuOpen) {
+                closeMenu();
+            }
+        });
+    });
+</script>
