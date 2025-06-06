@@ -43,7 +43,7 @@ const breadcrumbItems = [
         
         <div id="search-results" class="hidden">
             <h2 class="text-xl font-semibold mb-4">{t("search.results")}</h2>
-            <div id="results-container"></div>
+            <ul id="results-container" class="space-y-4"></ul>
         </div>
         
         <div id="no-results" class="hidden text-gray-600">
@@ -104,25 +104,52 @@ const breadcrumbItems = [
         noResults.classList.add('hidden');
         searchResults.classList.remove('hidden');
         
-        resultsContainer.innerHTML = results.map(({ post }) => `
-            <article class="mb-6 p-4 border border-gray-200 rounded-lg">
-                <h3 class="text-lg font-semibold mb-2">
-                    <a href="/blog/ja/${post.slug}" class="text-blue-600 hover:text-blue-800">
-                        ${post.data.title}
-                    </a>
-                </h3>
-                <p class="text-gray-600 mb-2">${post.data.description || ''}</p>
-                <div class="flex flex-wrap gap-2 text-sm">
-                    ${(post.data.tags || []).map(tag => 
-                        `<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">${tag}</span>`
-                    ).join('')}
-                    ${(post.data.categories || []).map(cat => 
-                        `<span class="bg-green-100 text-green-800 px-2 py-1 rounded">${cat}</span>`
-                    ).join('')}
-                </div>
-                <p class="text-sm text-gray-500 mt-2">${new Date(post.data.publishedDate).toLocaleDateString('ja-JP')}</p>
-            </article>
-        `).join('');
+        resultsContainer.innerHTML = results.map(({ post }) => {
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '';
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) return '';
+                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+            };
+            
+            return `
+                <li class="flex border-0 rounded-lg p-0 overflow-hidden shadow-sm bg-gradient-to-r from-[var(--bg1)] to-[var(--bg2)] mb-4">
+                    <div class="flex-1 p-4">
+                        <h3 class="text-lg font-bold mb-2">
+                            <a href="/blog/ja/${post.slug}" class="text-[var(--accent7)] hover:text-[var(--accent3)] transition-colors duration-300">
+                                ${post.data.title}
+                            </a>
+                        </h3>
+                        ${post.data.description ? `<p class="text-gray-600 mb-3 text-sm">${post.data.description}</p>` : ''}
+                        <div class="text-sm text-gray-600 flex flex-wrap gap-1 my-3">
+                            ${(post.data.categories || []).map(cat => 
+                                `<a href="/blog/ja/categories/${cat}" class="inline-flex items-center px-1 py-0.5 rounded bg-[var(--accent3)]/90 hover:bg-[var(--accent3)]/75 text-white text-xs font-semibold duration-300">
+                                    <i class="material-icons mr-1 text-white" style="font-size: 14px !important; transform: scale(0.9); vertical-align: middle;">folder</i>
+                                    ${cat}
+                                </a>`
+                            ).join('')}
+                            ${(post.data.tags || []).map(tag => 
+                                `<a href="/blog/ja/tags/${tag}" class="inline-flex items-center px-1 pl-0.5 pr-1.5 rounded bg-[var(--accent3)]/15 text-[var(--accent7)] hover:bg-[var(--accent3)]/35 hover:text-[var(--accent7)] text-xs font-medium transition-colors duration-300">
+                                    <i class="material-icons mr-1 text-[var(--accent7)]" style="font-size: 14px !important; transform: scale(0.9); vertical-align: middle;">local_offer</i>
+                                    ${tag}
+                                </a>`
+                            ).join('')}
+                        </div>
+                        ${post.data.date ? `
+                            <div class="text-sm text-gray-600 mt-1 flex items-center">
+                                <i class="material-icons mr-1" style="font-size: 14px !important; transform: scale(0.9); vertical-align: middle;">schedule</i>
+                                ${formatDate(post.data.date)}
+                            </div>
+                        ` : ''}
+                    </div>
+                    ${post.data.preview ? `
+                        <div class="flex-shrink-0 preview-image">
+                            <img src="${post.data.preview}" alt="${post.data.title}" class="w-32 h-full object-cover">
+                        </div>
+                    ` : ''}
+                </li>
+            `;
+        }).join('');
     }
     
     searchInput.addEventListener('input', (e) => {
@@ -140,3 +167,22 @@ const breadcrumbItems = [
         displayResults(results, initialQuery);
     }
 </script>
+
+<style>
+    #results-container .material-icons {
+        font-size: 14px !important;
+        transform: scale(0.9);
+        vertical-align: middle;
+    }
+    
+    #results-container .icon-small {
+        font-size: 14px !important;
+        transform: scale(0.9);
+    }
+    
+    @media (max-width: 640px) {
+        .preview-image {
+            display: none;
+        }
+    }
+</style>
