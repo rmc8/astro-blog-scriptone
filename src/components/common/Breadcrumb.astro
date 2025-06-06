@@ -28,6 +28,50 @@ const homeItem: BreadcrumbItem = {
 };
 
 const allItems = [homeItem, ...items];
+
+// アイコンを取得する関数
+function getIconForItem(text: string, index: number): string {
+    if (index === 0) return "home"; // ホーム
+    
+    const lowerText = text.toLowerCase();
+    if (lowerText.includes("blog") || lowerText.includes("ブログ") || lowerText.includes("블로그")) {
+        return "article";
+    }
+    if (lowerText.includes("diary") || lowerText.includes("ダイアリー") || lowerText.includes("다이어리")) {
+        return "book";
+    }
+    if (lowerText.includes("tag") || lowerText.includes("タグ") || lowerText.includes("태그")) {
+        return "local_offer";
+    }
+    if (lowerText.includes("categor") || lowerText.includes("カテゴリ") || lowerText.includes("카테고리")) {
+        return "folder";
+    }
+    if (lowerText.includes("archive") || lowerText.includes("アーカイブ") || lowerText.includes("아카이브")) {
+        return "archive";
+    }
+    if (lowerText.includes("page") || lowerText.includes("ページ") || lowerText.includes("페이지")) {
+        return "description";
+    }
+    if (lowerText.includes("search") || lowerText.includes("検索") || lowerText.includes("검색")) {
+        return "search";
+    }
+    if (lowerText.includes("project sekai") || lowerText.includes("プロセカ") || lowerText.includes("프로세카")) {
+        return "videogame_asset";
+    }
+    if (lowerText.includes("calculator") || lowerText.includes("計算機") || lowerText.includes("계산기")) {
+        return "calculate";
+    }
+    if (lowerText.includes("efficiency") || lowerText.includes("効率") || lowerText.includes("효율")) {
+        return "speed";
+    }
+    
+    // 最後の項目（記事タイトルなど）
+    if (index === allItems.length - 1) {
+        return "description";
+    }
+    
+    return "chevron_right"; // デフォルト
+}
 ---
 
 <nav aria-label="パンくずリスト" class="breadcrumb-nav">
@@ -44,7 +88,10 @@ const allItems = [homeItem, ...items];
                         href={item.href}
                         class="breadcrumb-link"
                     >
-                        {item.text}
+                        <i class="material-icons breadcrumb-icon" aria-hidden="true">
+                            {getIconForItem(item.text, index)}
+                        </i>
+                        <span class="breadcrumb-text">{item.text}</span>
                     </a>
                 ) : (
                     <span 
@@ -52,7 +99,10 @@ const allItems = [homeItem, ...items];
                         aria-current={index === allItems.length - 1 ? "page" : undefined}
                         title={item.text}
                     >
-                        {item.text}
+                        <i class="material-icons breadcrumb-icon" aria-hidden="true">
+                            {getIconForItem(item.text, index)}
+                        </i>
+                        <span class="breadcrumb-text">{item.text}</span>
                     </span>
                 )}
             </li>
@@ -93,6 +143,8 @@ const allItems = [homeItem, ...items];
         transition: color 0.2s ease;
         text-decoration: none;
         flex-shrink: 0;
+        display: flex;
+        align-items: center;
     }
     
     .breadcrumb-link:hover {
@@ -104,9 +156,23 @@ const allItems = [homeItem, ...items];
         font-weight: 500;
         color: var(--accent7);
         overflow: hidden;
-        text-overflow: ellipsis;
         white-space: nowrap;
         max-width: 100%;
+        display: flex;
+        align-items: center;
+    }
+    
+    .breadcrumb-icon {
+        font-size: 16px !important;
+        margin-right: 0.25rem;
+        flex-shrink: 0;
+        vertical-align: middle;
+    }
+    
+    .breadcrumb-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     
     /* タブレット向け調整 */
@@ -115,7 +181,11 @@ const allItems = [homeItem, ...items];
             font-size: 0.8125rem;
         }
         
-        .breadcrumb-current {
+        .breadcrumb-icon {
+            font-size: 14px !important;
+        }
+        
+        .breadcrumb-current .breadcrumb-text {
             max-width: 200px;
         }
     }
@@ -134,13 +204,18 @@ const allItems = [homeItem, ...items];
             margin: 0 0.25rem;
         }
         
-        .breadcrumb-current {
+        .breadcrumb-icon {
+            font-size: 13px !important;
+            margin-right: 0.1875rem;
+        }
+        
+        .breadcrumb-current .breadcrumb-text {
             max-width: 150px;
         }
         
         /* 長いタイトルの場合の省略表示 */
-        .breadcrumb-item:last-child .breadcrumb-current {
-            max-width: calc(100vw - 120px);
+        .breadcrumb-item:last-child .breadcrumb-current .breadcrumb-text {
+            max-width: calc(100vw - 140px);
         }
     }
     
@@ -150,12 +225,17 @@ const allItems = [homeItem, ...items];
             font-size: 0.6875rem;
         }
         
-        .breadcrumb-current {
+        .breadcrumb-icon {
+            font-size: 12px !important;
+            margin-right: 0.125rem;
+        }
+        
+        .breadcrumb-current .breadcrumb-text {
             max-width: 100px;
         }
         
-        .breadcrumb-item:last-child .breadcrumb-current {
-            max-width: calc(100vw - 100px);
+        .breadcrumb-item:last-child .breadcrumb-current .breadcrumb-text {
+            max-width: calc(100vw - 120px);
         }
     }
 </style>

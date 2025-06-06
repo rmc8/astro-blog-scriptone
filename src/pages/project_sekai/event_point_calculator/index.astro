@@ -1,15 +1,27 @@
 ---
 import Layout from "@/layouts/Base.astro";
 import ShareButtons from "@/components/common/ShareButtons.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
 
 // シェア用のURL生成
 const currentUrl = new URL(Astro.request.url);
 const shareUrl = `${currentUrl.origin}/project_sekai/event_point_calculator/`;
 const shareTitle = "プロセカ イベントポイント計算機";
+
+const breadcrumbItems = [
+    {
+        text: "Project Sekai",
+        href: "/project_sekai",
+    },
+    {
+        text: "イベントポイント計算機",
+    },
+];
 ---
 
 <Layout>
     <main>
+        <Breadcrumb items={breadcrumbItems} langCode="ja" />
         <h2 class="text-3xl font-bold mb-4">Event Point Calculator</h2>
         <p>
             独りんぼエンヴィーでのイベントポイントの調整のための計算をします。炊きありの場合には小数点の切り捨ての関係で誤差が出る場合がありますため、最終的な調整は0炊きでお願いいたします。
