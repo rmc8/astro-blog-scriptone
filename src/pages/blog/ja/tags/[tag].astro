@@ -6,7 +6,17 @@ import Layout from "@/layouts/Base.astro";
 import BlogList from "@/components/blog/BlogList.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
 import Pagination from "@/components/common/Pagination.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
 import { POSTS_PER_PAGE } from "@/lib/constants";
+import { ui, defaultLang } from "@/i18n/ui";
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation("ja");
 
 export async function getStaticPaths() {
     const allBlogPosts: CollectionEntry<"blog_ja">[] =
@@ -33,9 +43,24 @@ const sortedPosts = filteredPosts.sort((a, b) => {
 
 const postsToShow = sortedPosts.slice(0, POSTS_PER_PAGE);
 const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
+
+const breadcrumbItems = [
+    {
+        text: t("breadcrumb.blog"),
+        href: "/blog/ja",
+    },
+    {
+        text: t("breadcrumb.tags"),
+        href: "/blog/ja/tags",
+    },
+    {
+        text: tag,
+    },
+];
 ---
 
 <Layout title={`タグ: ${tag} - Scriptone`}>
+    <Breadcrumb items={breadcrumbItems} langCode="ja" />
     <h2 class="text-3xl font-bold mb-4">タグ: {tag}</h2>
     {
         postsToShow.length > 0 ? (

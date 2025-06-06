@@ -1,0 +1,64 @@
+---
+import { ui, defaultLang } from "@/i18n/ui";
+
+export interface BreadcrumbItem {
+    text: string;
+    href?: string;
+}
+
+export interface Props {
+    items: BreadcrumbItem[];
+    langCode?: string;
+}
+
+const { items, langCode = "ja" } = Astro.props;
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(langCode);
+
+// ホームを先頭に追加
+const homeItem: BreadcrumbItem = {
+    text: t("breadcrumb.home"),
+    href: "/",
+};
+
+const allItems = [homeItem, ...items];
+---
+
+<nav aria-label="パンくずリスト" class="mb-6">
+    <ol class="flex items-center space-x-2 text-sm">
+        {allItems.map((item, index) => (
+            <li class="flex items-center">
+                {index > 0 && (
+                    <span class="mx-2 text-gray-400" aria-hidden="true">
+                        /
+                    </span>
+                )}
+                {item.href && index < allItems.length - 1 ? (
+                    <a
+                        href={item.href}
+                        class="transition-colors duration-200 hover:underline"
+                        style="color: var(--accent4);"
+                        onmouseover="this.style.color='var(--accent3)'"
+                        onmouseout="this.style.color='var(--accent4)'"
+                    >
+                        {item.text}
+                    </a>
+                ) : (
+                    <span 
+                        class="font-medium"
+                        style="color: var(--accent7);"
+                        aria-current={index === allItems.length - 1 ? "page" : undefined}
+                    >
+                        {item.text}
+                    </span>
+                )}
+            </li>
+        ))}
+    </ol>
+</nav>

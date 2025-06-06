@@ -4,6 +4,16 @@ import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import Article from "@/components/diary/Article.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
+import { ui, defaultLang } from "@/i18n/ui";
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation("ja");
 
 interface Props {
     singleBlog: CollectionEntry<"diary">;
@@ -24,6 +34,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const { singleBlog } = Astro.props;
 const { Content, headings } = await singleBlog.render();
+
+const breadcrumbItems = [
+    {
+        text: t("breadcrumb.diary"),
+        href: "/diary",
+    },
+    {
+        text: singleBlog.data.title,
+    },
+];
 ---
 
 <Layout
@@ -31,7 +51,7 @@ const { Content, headings } = await singleBlog.render();
     }
     description={singleBlog.data.description}
 >
-    <div><a href="/diary">&lt; Diary一覧に戻る</a></div>
+    <Breadcrumb items={breadcrumbItems} langCode="ja" />
     <div class="border-b py-8 border-[var(--border1)]">
         <Article
             Content={Content}

@@ -4,7 +4,23 @@ import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
 import DiaryList from "@/components/diary/DiaryList.astro";
 import Pagination from "@/components/common/Pagination.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
 import { POSTS_PER_PAGE } from "@/lib/constants";
+import { ui, defaultLang } from "@/i18n/ui";
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation("ja");
+
+const breadcrumbItems = [
+    {
+        text: t("breadcrumb.diary"),
+    },
+];
 
 const allBlogPosts: CollectionEntry<"diary">[] = await getCollection("diary");
 const sortedPosts = allBlogPosts.sort((a, b) => {
@@ -18,6 +34,7 @@ const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 ---
 
 <Layout title="Diary - Scriptone">
+    <Breadcrumb items={breadcrumbItems} langCode="ja" />
     <div class="mb-8">
         <h2 class="text-2xl font-bold mb-4">ダイアリー</h2>
         <p class="text-gray-600 leading-relaxed my-2 text-sm">薬にも毒にもならないようなことを自由に書いています。</p>

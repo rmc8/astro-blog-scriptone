@@ -5,9 +5,30 @@ import UpdatedDate from "@/components/blog/UpdatedDate.astro";
 import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
 import RelatedPosts from "@/components/blog/RelatedPosts.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
+import { ui, defaultLang } from "@/i18n/ui";
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(Astro.props.LANG_CODE);
+
+const breadcrumbItems = [
+    {
+        text: t("breadcrumb.blog"),
+        href: `/blog/${Astro.props.LANG_CODE}`,
+    },
+    {
+        text: Astro.props.singleBlog.data.title,
+    },
+];
 ---
 
 <div>
+    <Breadcrumb items={breadcrumbItems} langCode={Astro.props.LANG_CODE} />
     <article>
         <h2 class="font-bold text-3xl text-center">
             {Astro.props.singleBlog.data.title}

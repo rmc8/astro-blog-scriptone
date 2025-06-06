@@ -6,6 +6,22 @@ import { POSTS_PER_PAGE, SITE_NAME } from "@/lib/constants";
 import BlogList from "@/components/blog/BlogList.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
 import Pagination from "@/components/common/Pagination.astro";
+import Breadcrumb from "@/components/common/Breadcrumb.astro";
+import { ui, defaultLang } from "@/i18n/ui";
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation("ja");
+
+const breadcrumbItems = [
+    {
+        text: t("breadcrumb.blog"),
+    },
+];
 
 const allBlogPosts: CollectionEntry<"blog_ja">[] = (
     await getCollection("blog_ja")
@@ -26,6 +42,7 @@ const totalPages = Math.ceil(sortedPosts.length / POSTS_PER_PAGE);
 ---
 
 <Layout title={`${SITE_NAME} - Blog`}>
+    <Breadcrumb items={breadcrumbItems} langCode="ja" />
     <BlogList posts={postsToShow} langCode="ja" />
     <Pagination
         currentPage={1}
