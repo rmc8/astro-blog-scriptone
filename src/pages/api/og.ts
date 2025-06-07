@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-ぁ
+
 export const GET: APIRoute = async ({ url }) => {
   const { searchParams } = url;
   const title = searchParams.get('title') || 'Scriptone';
