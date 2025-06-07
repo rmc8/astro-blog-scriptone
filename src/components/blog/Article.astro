@@ -8,6 +8,7 @@ import RelatedPosts from "@/components/blog/RelatedPosts.astro";
 import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
 import Breadcrumb from "@/components/common/Breadcrumb.astro";
 import ShareButtons from "@/components/common/ShareButtons.astro";
+import PostNavigation from "@/components/common/PostNavigation.astro";
 import { ui, defaultLang } from "@/i18n/ui";
 
 function useTranslation(langCode: string) {
@@ -97,6 +98,13 @@ const shareTitle = Astro.props.singleBlog.data.title;
         title={shareTitle}
         url={shareUrl}
         lang={Astro.props.LANG_CODE}
+    />
+
+    <PostNavigation
+        prevPost={Astro.props.prevPost}
+        nextPost={Astro.props.nextPost}
+        langCode={Astro.props.LANG_CODE}
+        baseUrl={`/blog/${Astro.props.LANG_CODE}`}
     />
     
     <RelatedPosts

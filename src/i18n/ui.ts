@@ -34,6 +34,8 @@ export const ui = {
         "menu.open": "メニューを開く",
         "menu.close": "メニューを閉じる",
         "menu.title": "メニュー",
+        "nav.prev": "← 前の記事",
+        "nav.next": "次の記事 →",
     },
     en: {
         "nav.home": "Home",
@@ -62,6 +64,8 @@ export const ui = {
         "menu.open": "Open menu",
         "menu.close": "Close menu",
         "menu.title": "Menu",
+        "nav.prev": "← Previous post",
+        "nav.next": "Next post →",
     },
     ko: {
         "nav.home": "홈",
@@ -90,5 +94,7 @@ export const ui = {
         "menu.open": "메뉴 열기",
         "menu.close": "메뉴 닫기",
         "menu.title": "메뉴",
+        "nav.prev": "← 이전 글",
+        "nav.next": "다음 글 →",
     },
 } as const;

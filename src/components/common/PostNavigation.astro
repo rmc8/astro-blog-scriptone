@@ -1,0 +1,149 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { ui, defaultLang } from "@/i18n/ui";
+
+type SupportedCollectionEntry =
+    | CollectionEntry<"blog_ja">
+    | CollectionEntry<"blog_en">
+    | CollectionEntry<"blog_ko">
+    | CollectionEntry<"diary">;
+
+interface Props {
+    prevPost?: SupportedCollectionEntry | null;
+    nextPost?: SupportedCollectionEntry | null;
+    langCode: "ja" | "en" | "ko";
+    baseUrl: string; // e.g., "/blog/ja", "/blog/en", "/diary"
+}
+
+const { prevPost, nextPost, langCode, baseUrl } = Astro.props;
+
+function useTranslation(langCode: string) {
+    return function t(key: keyof typeof ui[typeof defaultLang]) {
+        return ui[langCode as keyof typeof ui]?.[key] || ui[defaultLang][key];
+    };
+}
+
+const t = useTranslation(langCode);
+
+// URLを生成する関数
+function getPostUrl(post: SupportedCollectionEntry, baseUrl: string): string {
+    if (post.collection === "diary") {
+        return `/diary/${post.data.date.toISOString().slice(0, 10)}`;
+    }
+    return `${baseUrl}/${post.slug}`;
+}
+---
+
+{(prevPost || nextPost) && (
+    <nav class="post-navigation">
+        <div class="nav-container">
+            {prevPost && (
+                <a href={getPostUrl(prevPost, baseUrl)} class="nav-link prev-link">
+                    <span class="nav-label">{t("nav.prev")}</span>
+                    <span class="nav-title">{prevPost.data.title}</span>
+                </a>
+            )}
+            
+            {nextPost && (
+                <a href={getPostUrl(nextPost, baseUrl)} class="nav-link next-link">
+                    <span class="nav-label">{t("nav.next")}</span>
+                    <span class="nav-title">{nextPost.data.title}</span>
+                </a>
+            )}
+        </div>
+    </nav>
+)}
+
+<style>
+    .post-navigation {
+        margin: 2rem 0;
+        padding: 1.5rem 0;
+        border-top: 1px solid var(--border1);
+        border-bottom: 1px solid var(--border1);
+    }
+
+    .nav-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 1rem;
+        max-width: 100%;
+    }
+
+    .nav-link {
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 1px solid var(--border1);
+        background-color: var(--bg2);
+        min-width: 0;
+        flex: 1;
+        max-width: calc(50% - 0.5rem);
+    }
+
+    .nav-link:hover {
+        background-color: var(--bg1);
+        border-color: var(--accent3);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .prev-link {
+        text-align: left;
+        margin-right: auto;
+    }
+
+    .next-link {
+        text-align: right;
+        margin-left: auto;
+    }
+
+    .nav-label {
+        font-size: 0.875rem;
+        color: var(--accent3);
+        font-weight: 500;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    .nav-title {
+        font-weight: 600;
+        color: var(--text1);
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* 1つしかリンクがない場合の調整 */
+    .nav-container:has(.prev-link:only-child) .prev-link,
+    .nav-container:has(.next-link:only-child) .next-link {
+        max-width: 50%;
+    }
+
+    @media (max-width: 768px) {
+        .nav-container {
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .nav-link {
+            max-width: 100%;
+        }
+
+        .prev-link,
+        .next-link {
+            text-align: left;
+            margin: 0;
+        }
+
+        .nav-container:has(.prev-link:only-child) .prev-link,
+        .nav-container:has(.next-link:only-child) .next-link {
+            max-width: 100%;
+        }
+    }
+</style>

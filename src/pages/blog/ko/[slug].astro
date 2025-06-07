@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import Article from "@/components/blog/Article.astro";
 import { getRelatedPosts } from "@/lib/collections/related";
+import { getPostNavigation } from "@/lib/collections/navigation";
 
 interface Props {
     singleBlog: CollectionEntry<"blog_ko">;
@@ -28,6 +29,7 @@ const { singleBlog } = Astro.props;
 const { Content, headings } = await singleBlog.render();
 const allBlogs = await getCollection("blog_ko");
 const relatedPosts = getRelatedPosts(singleBlog, allBlogs, 6);
+const { prevPost, nextPost } = getPostNavigation(singleBlog, allBlogs);
 ---
 
 <Layout
@@ -42,6 +44,8 @@ const relatedPosts = getRelatedPosts(singleBlog, allBlogs, 6);
         singleBlog={singleBlog}
         relatedPosts={relatedPosts}
         allBlogPosts={allBlogs}
+        prevPost={prevPost}
+        nextPost={nextPost}
     />
 </Layout>
 

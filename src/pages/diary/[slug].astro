@@ -4,8 +4,10 @@ import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/Base.astro";
 import Article from "@/components/diary/Article.astro";
+import PostNavigation from "@/components/common/PostNavigation.astro";
 import Breadcrumb from "@/components/common/Breadcrumb.astro";
 import { ui, defaultLang } from "@/i18n/ui";
+import { getPostNavigation } from "@/lib/collections/navigation";
 
 function useTranslation(langCode: string) {
     return function t(key: keyof typeof ui[typeof defaultLang]) {
@@ -34,6 +36,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 const { singleBlog } = Astro.props;
 const { Content, headings } = await singleBlog.render();
+const allDiaries = await getCollection("diary");
+const { prevPost, nextPost } = getPostNavigation(singleBlog, allDiaries);
 
 const breadcrumbItems = [
     {
@@ -52,13 +56,20 @@ const breadcrumbItems = [
     description={singleBlog.data.description}
 >
     <Breadcrumb items={breadcrumbItems} langCode="ja" />
-    <div class="border-b py-8 border-[var(--border1)]">
-        <Article
-            Content={Content}
-            headings={headings}
-            singleBlog={singleBlog}
-        />
-    </div>
+    
+    <Article
+        Content={Content}
+        headings={headings}
+        singleBlog={singleBlog}
+    />
+    
+    <PostNavigation
+        prevPost={prevPost}
+        nextPost={nextPost}
+        langCode="ja"
+        baseUrl="/diary"
+    />
+    
     <div class="mt-8"><a href="/diary">&lt; Diary一覧に戻る</a></div>
 </Layout>
 
