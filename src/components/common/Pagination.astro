@@ -40,12 +40,12 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : null;
                 onmouseout="this.style.backgroundColor='var(--bg2)'"
                 aria-label={`${t("pagination.page")} ${prevPage}`}
             >
-                ‹ {t("pagination.prev")}
+                {t("pagination.prev")}
             </a>
         ) : (
             <span class="flex-shrink-0 px-3 py-2 border rounded-md cursor-not-allowed text-sm sm:text-base"
                   style="background-color: var(--bg3); border-color: var(--border1); color: var(--shadow1);">
-                ‹ {t("pagination.prev")}
+                {t("pagination.prev")}
             </span>
         )}
 
@@ -66,12 +66,12 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : null;
                 onmouseout="this.style.backgroundColor='var(--bg2)'"
                 aria-label={`${t("pagination.page")} ${nextPage}`}
             >
-                {t("pagination.next")} ›
+                {t("pagination.next")}
             </a>
         ) : (
             <span class="flex-shrink-0 px-3 py-2 border rounded-md cursor-not-allowed text-sm sm:text-base"
                   style="background-color: var(--bg3); border-color: var(--border1); color: var(--shadow1);">
-                {t("pagination.next")} ›
+                {t("pagination.next")}
             </span>
         )}
     </nav>
