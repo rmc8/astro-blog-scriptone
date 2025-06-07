@@ -31,6 +31,9 @@ export const ui = {
         "search.enter_query": "検索キーワードを入力してください",
         "share.title": "シェア",
         "share.shareWith": "でシェア",
+        "menu.open": "メニューを開く",
+        "menu.close": "メニューを閉じる",
+        "menu.title": "メニュー",
     },
     en: {
         "nav.home": "Home",
@@ -56,6 +59,9 @@ export const ui = {
         "search.enter_query": "Please enter search keywords",
         "share.title": "Share",
         "share.shareWith": "Share on",
+        "menu.open": "Open menu",
+        "menu.close": "Close menu",
+        "menu.title": "Menu",
     },
     ko: {
         "nav.home": "홈",
@@ -81,5 +87,8 @@ export const ui = {
         "search.enter_query": "검색 키워드를 입력해주세요",
         "share.title": "공유",
         "share.shareWith": "에서 공유",
+        "menu.open": "메뉴 열기",
+        "menu.close": "메뉴 닫기",
+        "menu.title": "메뉴",
     },
 } as const;

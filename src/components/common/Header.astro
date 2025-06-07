@@ -62,8 +62,10 @@ const menuItems = [
         </div>
         <button
             class="mobile-menu-button"
-            aria-label="メニューを開く"
+            aria-label={t("menu.open")}
             aria-expanded="false"
+            data-open-label={t("menu.open")}
+            data-close-label={t("menu.close")}
         >
             <div class="hamburger">
                 <span class="hamburger-line"></span>
@@ -79,8 +81,8 @@ const menuItems = [
     <!-- モバイルメニュー -->
     <nav class="mobile-nav">
         <div class="mobile-nav-header">
-            <h2 class="mobile-nav-title">メニュー</h2>
-            <button class="mobile-menu-close" aria-label="メニューを閉じる">
+            <h2 class="mobile-nav-title">{t("menu.title")}</h2>
+            <button class="mobile-menu-close" aria-label={t("menu.close")}>
                 <i class="material-icons">close</i>
             </button>
         </div>
@@ -488,7 +490,7 @@ const menuItems = [
             mobileMenuOverlay.classList.add("active");
             body.classList.add("mobile-menu-open");
             mobileMenuButton.setAttribute("aria-expanded", "true");
-            mobileMenuButton.setAttribute("aria-label", "メニューを閉じる");
+            mobileMenuButton.setAttribute("aria-label", mobileMenuButton.getAttribute("data-close-label") || "Close menu");
 
             // フォーカスを閉じるボタンに移動
             mobileMenuClose.focus();
@@ -501,7 +503,7 @@ const menuItems = [
             mobileMenuOverlay.classList.remove("active");
             body.classList.remove("mobile-menu-open");
             mobileMenuButton.setAttribute("aria-expanded", "false");
-            mobileMenuButton.setAttribute("aria-label", "メニューを開く");
+            mobileMenuButton.setAttribute("aria-label", mobileMenuButton.getAttribute("data-open-label") || "Open menu");
 
             // フォーカスをハンバーガーボタンに戻す
             mobileMenuButton.focus();
