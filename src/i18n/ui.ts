@@ -9,6 +9,7 @@ export const defaultLang = "ja";
 export const ui = {
     ja: {
         "nav.home": "ホーム",
+        "nav.blog": "ブログ",
         "nav.about": "このサイトについて",
         "related.posts": "関連記事",
         "pagination.prev": "← 前へ",
@@ -33,6 +34,7 @@ export const ui = {
     },
     en: {
         "nav.home": "Home",
+        "nav.blog": "Blog",
         "nav.about": "About",
         "related.posts": "Related Posts",
         "pagination.prev": "← Previous",
@@ -57,6 +59,7 @@ export const ui = {
     },
     ko: {
         "nav.home": "홈",
+        "nav.blog": "블로그",
         "nav.about": "소개",
         "related.posts": "관련 글",
         "pagination.prev": "← 이전",

@@ -1,44 +1,397 @@
 ---
 import { languages } from "@/i18n/ui";
+import { getLangFromUrl } from "@/i18n/utils";
+
+const currentLang = getLangFromUrl(Astro.url);
+const { id = "default" } = Astro.props;
+const uniqueId = `language-picker-${id}`;
 ---
 
-<div class="relative">
-    <button id="language-button" class="text-black font-bold rounded">
-        <span class="material-icons"> translate </span>
+<div class="language-picker" data-picker-id={uniqueId}>
+    <button class="language-button" data-button={uniqueId}>
+        <span class="material-icons">translate</span>
+        <span class="current-lang desktop-only">{languages[currentLang as keyof typeof languages]}</span>
+        <span class="material-icons arrow-icon desktop-only">expand_more</span>
     </button>
-    <ul
-        id="language-menu"
-        class="absolute mt-2 bg-[var(--bg2)] border rounded shadow hidden"
-    >
+    <ul class="language-menu" data-menu={uniqueId}>
         {
             Object.entries(languages).map(([lang, label]) => (
                 <li>
-<a
-    href={`/blog/${lang}/${Astro.url.pathname.split('/').slice(3).join('/') || ''}`}
-    onclick={`localStorage.setItem('selectedLang', '${lang}'); location.reload(); document.getElementById('language-menu').classList.add('hidden');`}
-    class="px-4 py-2 hover:bg-[var(--accent2)]/35 flex items-center"
->
-    <i class="material-icons mr-2">language</i> {label}
-</a>
+                    <a
+                        href={`/blog/${lang}/${Astro.url.pathname.split('/').slice(3).join('/') || ''}`}
+                        class={`language-link ${lang === currentLang ? 'active' : ''}`}
+                        data-lang={lang}
+                    >
+                        <span class="material-icons">language</span>
+                        <span class="lang-label">{label}</span>
+                        {lang === currentLang && <span class="material-icons check-icon">check</span>}
+                    </a>
                 </li>
             ))
         }
     </ul>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const languageButton = document.getElementById("language-button");
-            if (languageButton) {
-                languageButton.addEventListener("click", function () {
-                    const menu = document.getElementById("language-menu");
-                    if (menu) {
-                        if (menu.classList.contains("hidden")) {
-                            menu.classList.remove("hidden");
-                        } else {
-                            menu.classList.add("hidden");
-                        }
-                    }
-                });
-            }
-        });
-    </script>
 </div>
+
+<style>
+    .language-picker {
+        position: relative;
+        display: inline-block;
+    }
+
+    /* デスクトップ版のスタイル - 他のナビゲーションボタンと統一 */
+    .language-button {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0.75rem;
+        background: none;
+        border: none;
+        border-radius: 8px;
+        color: #222;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.875rem;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .language-button:hover {
+        color: white;
+        background-color: var(--accent1);
+        transform: translateY(-1px);
+    }
+
+    .language-button.active {
+        color: white;
+        background-color: var(--accent1);
+    }
+
+    .arrow-icon {
+        font-size: 16px !important;
+        transition: transform 0.3s ease;
+    }
+
+    .language-button.active .arrow-icon {
+        transform: rotate(180deg);
+    }
+
+    .language-menu {
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        right: 0;
+        min-width: 160px;
+        background: var(--bg1);
+        border: 1px solid var(--border1);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+        z-index: 200;
+        list-style: none;
+        margin: 0;
+        padding: 0.5rem 0;
+    }
+
+    .language-menu.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .language-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: #222;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .language-link:hover {
+        background: var(--bg2);
+        color: var(--accent3);
+    }
+
+    .language-link.active {
+        background: var(--accent3);
+        color: white;
+    }
+
+    .check-icon {
+        margin-left: auto;
+        font-size: 16px !important;
+    }
+
+    .desktop-only {
+        display: inline;
+    }
+
+    .mobile-only {
+        display: none;
+    }
+    
+    /* デフォルトでは言語ピッカーを表示 */
+    .language-picker {
+        display: inline-block;
+    }
+
+    /* モバイル対応 */
+    @media (max-width: 768px) {
+        /* ヘッダー内の言語ピッカー（ハンバーガーメニューの外） */
+        .mobile-header-actions .language-picker,
+        .mobile-language-picker-container .language-picker {
+            position: relative !important;
+            width: auto !important;
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 100 !important;
+        }
+
+        .mobile-header-actions .language-button,
+        .mobile-language-picker-container .language-button {
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            width: 40px !important;
+            height: 40px !important;
+            min-width: 40px !important;
+            padding: 0.5rem !important;
+            background: none !important;
+            border: none !important;
+            border-radius: 50% !important;
+            color: #222 !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+            font-size: 18px !important;
+            font-weight: 500 !important;
+            box-sizing: border-box !important;
+            flex-shrink: 0 !important;
+        }
+
+        .mobile-header-actions .language-button:hover,
+        .mobile-language-picker-container .language-button:hover {
+            background-color: var(--bg1);
+            color: var(--accent3);
+            transform: none;
+        }
+
+        .mobile-header-actions .language-button.active,
+        .mobile-language-picker-container .language-button.active {
+            background-color: var(--bg1);
+            color: var(--accent3);
+        }
+
+        /* ハンバーガーメニュー内のフォールバック */
+        .mobile-nav .language-picker {
+            width: 100%;
+        }
+
+        .mobile-nav .language-button {
+            width: 100%;
+            justify-content: flex-start;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            color: #222;
+            border-left: 4px solid transparent;
+            border-radius: 0;
+        }
+
+        .mobile-nav .language-button:hover,
+        .mobile-nav .language-button.active {
+            background-color: var(--bg2);
+            border-left-color: var(--accent3);
+            color: var(--accent3);
+            transform: none;
+        }
+
+        .desktop-only {
+            display: none;
+        }
+
+        .mobile-only {
+            display: inline;
+        }
+
+        /* ヘッダー内の言語メニュー */
+        .mobile-header-actions .language-menu,
+        .mobile-language-picker-container .language-menu {
+            position: absolute;
+            top: calc(100% + 0.5rem);
+            right: 0;
+            min-width: 160px;
+            background: var(--bg1);
+            border: 1px solid var(--border1);
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .mobile-header-actions .language-menu.show,
+        .mobile-language-picker-container .language-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .mobile-header-actions .language-link,
+        .mobile-language-picker-container .language-link {
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            border-left: none;
+            color: #222;
+        }
+
+        .mobile-header-actions .language-link:hover,
+        .mobile-language-picker-container .language-link:hover {
+            background: var(--bg2);
+            color: var(--accent3);
+        }
+
+        .mobile-header-actions .language-link.active,
+        .mobile-language-picker-container .language-link.active {
+            background: var(--accent3);
+            color: white;
+        }
+
+        /* ハンバーガーメニュー内の言語メニュー */
+        .mobile-nav .language-menu {
+            position: absolute;
+            bottom: calc(100% + 0.5rem);
+            left: 0;
+            right: 0;
+            width: 100%;
+            background: var(--bg1);
+            border: 1px solid var(--border1);
+            border-radius: 8px;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .mobile-nav .language-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .mobile-nav .language-link {
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+            border-left: 4px solid transparent;
+        }
+
+        .mobile-nav .language-link:hover {
+            background: var(--bg2);
+            border-left-color: var(--accent3);
+            color: var(--accent3);
+        }
+
+        .mobile-nav .language-link.active {
+            background: var(--accent3);
+            color: white;
+            border-left-color: var(--accent3);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .language-button {
+            padding: 0.875rem 1.25rem;
+        }
+
+        .language-menu::before {
+            width: 95%;
+        }
+    }
+</style>
+
+<script is:inline>
+document.addEventListener("DOMContentLoaded", function() {
+    // 全ての言語ピッカーを初期化
+    const languagePickers = document.querySelectorAll("[data-picker-id]");
+    
+    languagePickers.forEach((picker) => {
+        const pickerDiv = picker;
+        const pickerIdAttr = pickerDiv.getAttribute("data-picker-id");
+        if (!pickerIdAttr) return;
+        
+        const languageButton = pickerDiv.querySelector(`[data-button="${pickerIdAttr}"]`);
+        const languageMenu = pickerDiv.querySelector(`[data-menu="${pickerIdAttr}"]`);
+        
+        if (languageButton && languageMenu && languageButton instanceof HTMLButtonElement && languageMenu instanceof HTMLElement) {
+            let isMenuOpen = false;
+
+            function toggleMenu() {
+                isMenuOpen = !isMenuOpen;
+                languageButton.classList.toggle("active", isMenuOpen);
+                languageMenu.classList.toggle("show", isMenuOpen);
+                languageButton.setAttribute("aria-expanded", isMenuOpen.toString());
+            }
+
+            function closeMenu() {
+                isMenuOpen = false;
+                languageButton.classList.remove("active");
+                languageMenu.classList.remove("show");
+                languageButton.setAttribute("aria-expanded", "false");
+            }
+
+            // ボタンクリック
+            languageButton.addEventListener("click", (e) => {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // メニュー外クリックで閉じる
+            document.addEventListener("click", (e) => {
+                if (isMenuOpen && e.target instanceof Node && !pickerDiv.contains(e.target)) {
+                    closeMenu();
+                }
+            });
+
+            // ESCキーで閉じる
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && isMenuOpen) {
+                    closeMenu();
+                    languageButton.focus();
+                }
+            });
+
+            // 言語選択時の処理
+            const languageLinks = languageMenu.querySelectorAll(".language-link");
+            languageLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                    closeMenu();
+                });
+            });
+
+            // リサイズ時にメニューを閉じる
+            window.addEventListener("resize", () => {
+                if (isMenuOpen) {
+                    closeMenu();
+                }
+            });
+
+            // アクセシビリティ: ARIA属性設定
+            languageButton.setAttribute("aria-haspopup", "true");
+            languageButton.setAttribute("aria-expanded", "false");
+            languageMenu.setAttribute("role", "menu");
+            
+            languageLinks.forEach((link) => {
+                link.setAttribute("role", "menuitem");
+            });
+        } else {
+            console.error(`Language picker elements not found for ${pickerIdAttr}`);
+        }
+    });
+});
+</script>
+

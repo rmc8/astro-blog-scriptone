@@ -1,5 +1,6 @@
 ---
-import LanguagePicker from "@/components/i18n/LanguagePicker.astro";
+import LanguagePicker
+from "@/components/i18n/LanguagePicker.astro";
 import { getLangFromUrl } from "@/i18n/utils";
 import { ui, defaultLang } from "@/i18n/ui";
 
@@ -15,9 +16,9 @@ const t = useTranslation(lang);
 
 const menuItems = [
     { href: "/", icon: "home", text: t("nav.home") },
-    { href: `/blog/${lang}`, icon: "article", text: "BLOG" },
+    { href: `/blog/${lang}`, icon: "article", text: t("nav.blog") },
     { href: `/blog/${lang}/search`, icon: "search", text: t("search.title") },
-    { href: "/about", icon: "info", text: "ABOUT" },
+    { href: "/about", icon: "info", text: t("nav.about") },
 ];
 ---
 
@@ -38,7 +39,7 @@ const menuItems = [
     <nav class="desktop-nav">
         <div class="nav-items">
             <div class="language-picker-container">
-                <LanguagePicker />
+                <LanguagePicker id="desktop" />
             </div>
             <div class="nav-divider"></div>
             {
@@ -54,18 +55,23 @@ const menuItems = [
         </div>
     </nav>
 
-    <!-- モバイルハンバーガーボタン -->
-    <button
-        class="mobile-menu-button"
-        aria-label="メニューを開く"
-        aria-expanded="false"
-    >
-        <div class="hamburger">
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
-            <span class="hamburger-line"></span>
+    <!-- モバイル言語ピッカー + ハンバーガーボタン -->
+    <div class="mobile-header-actions">
+        <div class="mobile-language-picker-container">
+            <LanguagePicker id="mobile" />
         </div>
-    </button>
+        <button
+            class="mobile-menu-button"
+            aria-label="メニューを開く"
+            aria-expanded="false"
+        >
+            <div class="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </div>
+        </button>
+    </div>
 
     <!-- モバイルメニューオーバーレイ -->
     <div class="mobile-menu-overlay"></div>
@@ -93,10 +99,6 @@ const menuItems = [
                     </a>
                 ))
             }
-        </div>
-        <div class="mobile-nav-divider"></div>
-        <div class="mobile-language-picker">
-            <LanguagePicker />
         </div>
     </nav>
 </header>
@@ -368,8 +370,26 @@ const menuItems = [
         margin: 1rem 1.5rem;
     }
 
-    .mobile-language-picker {
-        padding: 0 1.5rem;
+    /* モバイルヘッダーアクション */
+    .mobile-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .mobile-language-picker-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        z-index: 100;
+    }
+
+    /* デスクトップ表示時はモバイルヘッダーを非表示 */
+    @media (min-width: 769px) {
+        .mobile-header-actions {
+            display: none;
+        }
     }
 
     /* レスポンシブ対応 */
@@ -413,6 +433,15 @@ const menuItems = [
         .mobile-nav-link {
             padding: 0.875rem 1.25rem;
         }
+
+        .mobile-header-actions {
+            gap: 0.5rem;
+        }
+
+        .mobile-language-picker-container {
+            flex-shrink: 0;
+            min-width: 40px;
+        }
     }
 
     /* フォーカス状態 */
@@ -430,7 +459,7 @@ const menuItems = [
     }
 </style>
 
-<script>
+<script lang="ts">
     document.addEventListener("DOMContentLoaded", function () {
         const mobileMenuButton = document.querySelector(".mobile-menu-button");
         const mobileMenuClose = document.querySelector(".mobile-menu-close");
@@ -439,6 +468,16 @@ const menuItems = [
             ".mobile-menu-overlay"
         );
         const body = document.body;
+
+        if (
+            !(mobileMenuButton instanceof HTMLElement) ||
+            !(mobileMenuClose instanceof HTMLElement) ||
+            !(mobileNav instanceof HTMLElement) ||
+            !(mobileMenuOverlay instanceof HTMLElement)
+        ) {
+            console.error("Mobile menu elements not found or are not of expected type.");
+            return;
+        }
 
         let isMenuOpen = false;
 
