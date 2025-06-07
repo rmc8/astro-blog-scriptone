@@ -5,6 +5,7 @@ import UpdatedDate from "@/components/blog/UpdatedDate.astro";
 import CategoryTag from "@/components/blog/CategoryTag.astro";
 import ToC from "@/components/blog/ToC.astro";
 import RelatedPosts from "@/components/blog/RelatedPosts.astro";
+import BlogAggregationLists from "@/components/blog/BlogAggregationLists.astro";
 import Breadcrumb from "@/components/common/Breadcrumb.astro";
 import ShareButtons from "@/components/common/ShareButtons.astro";
 import { ui, defaultLang } from "@/i18n/ui";
@@ -101,6 +102,15 @@ const shareTitle = Astro.props.singleBlog.data.title;
     <RelatedPosts
         relatedPosts={Astro.props.relatedPosts}
         langCode={Astro.props.LANG_CODE}
+    />
+
+    <BlogAggregationLists
+        allBlogPosts={Astro.props.allBlogPosts}
+        langCode={Astro.props.LANG_CODE}
+        archiveLabel={t("breadcrumb.archives")}
+        categoryLabel={t("breadcrumb.categories")}
+        tagLabel={t("breadcrumb.tags")}
+        showTopOnly={false}
     />
 
     <style is:global>

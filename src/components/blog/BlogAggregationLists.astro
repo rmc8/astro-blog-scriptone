@@ -14,9 +14,10 @@ interface Props {
     archiveLabel: string;
     categoryLabel: string;
     tagLabel: string;
+    showTopOnly?: boolean;
 }
 
-const { allBlogPosts, langCode, archiveLabel, categoryLabel, tagLabel } =
+const { allBlogPosts, langCode, archiveLabel, categoryLabel, tagLabel, showTopOnly = false } =
     Astro.props;
 
 const {
@@ -48,20 +49,72 @@ const sortedTags: [string, number][] = Object.entries(tags).sort(
         return b[1] - a[1];
     }
 );
+
+// 表示する項目を決定
+const displayArchives = showTopOnly ? sortedArchives.slice(0, 5) : sortedArchives;
+const displayCategories = showTopOnly ? sortedCategories.slice(0, 8) : sortedCategories;
+const displayTags = showTopOnly ? sortedTags.slice(0, 10) : sortedTags;
 ---
 
-<div class="mt-16">
+<div class={`mt-16 ${showTopOnly ? 'compact' : ''}`}>
     <h2 class="text-3xl font-bold my-8">{archiveLabel}</h2>
-    <ItemCountList
-        items={sortedArchives}
-        baseUrl={`/blog/${langCode}/archives`}
-    />
+    <div class="aggregation-content">
+        <ItemCountList
+            items={displayArchives}
+            baseUrl={`/blog/${langCode}/archives`}
+        />
+    </div>
 
     <h2 class="text-3xl font-bold my-8">{categoryLabel}</h2>
-    <ItemCountList
-        items={sortedCategories}
-        baseUrl={`/blog/${langCode}/categories`}
-    />
+    <div class="aggregation-content">
+        <ItemCountList
+            items={displayCategories}
+            baseUrl={`/blog/${langCode}/categories`}
+        />
+    </div>
+    
     <h2 class="text-3xl font-bold my-8">{tagLabel}</h2>
-    <ItemCountList items={sortedTags} baseUrl={`/blog/${langCode}/tags`} />
+    <div class="aggregation-content">
+        <ItemCountList items={displayTags} baseUrl={`/blog/${langCode}/tags`} />
+    </div>
 </div>
+
+<style>
+    .aggregation-content {
+        max-height: 400px;
+        overflow-y: auto;
+        margin-bottom: 2rem;
+    }
+
+    .aggregation-content::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .aggregation-content::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .aggregation-content::-webkit-scrollbar-thumb {
+        background: var(--border1);
+        border-radius: 4px;
+    }
+
+    .aggregation-content::-webkit-scrollbar-thumb:hover {
+        background: var(--accent3);
+    }
+
+    .compact .aggregation-content {
+        max-height: 300px;
+        margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        .aggregation-content {
+            max-height: 250px;
+        }
+
+        .compact .aggregation-content {
+            max-height: 200px;
+        }
+    }
+</style>
