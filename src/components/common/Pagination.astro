@@ -29,68 +29,49 @@ const nextPage = currentPage < totalPages ? currentPage + 1 : null;
 ---
 
 {totalPages > 1 && (
-    <nav class="flex justify-center items-center space-x-2 mt-8" aria-label="ページネーション">
+    <nav class="flex justify-center items-center space-x-3 mt-8 px-4" aria-label="ページネーション">
         <!-- 前のページボタン -->
         {prevPage ? (
             <a
                 href={getPageUrl(prevPage)}
-                class="px-4 py-2 border rounded-md transition-colors duration-200"
+                class="flex-shrink-0 px-3 py-2 border rounded-md transition-colors duration-200 text-sm sm:text-base"
                 style="background-color: var(--bg2); border-color: var(--border1); color: var(--accent4);"
                 onmouseover="this.style.backgroundColor='var(--bg3)'"
                 onmouseout="this.style.backgroundColor='var(--bg2)'"
                 aria-label={`${t("pagination.page")} ${prevPage}`}
             >
-                {t("pagination.prev")}
+                ← {t("pagination.prev")}
             </a>
         ) : (
-            <span class="px-4 py-2 border rounded-md cursor-not-allowed"
+            <span class="flex-shrink-0 px-3 py-2 border rounded-md cursor-not-allowed text-sm sm:text-base"
                   style="background-color: var(--bg3); border-color: var(--border1); color: var(--shadow1);">
-                {t("pagination.prev")}
+                ← {t("pagination.prev")}
             </span>
         )}
 
-        <!-- ページ番号 -->
-        <div class="flex items-center space-x-1">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                page === currentPage ? (
-                    <span
-                        class="px-3 py-2 rounded-md font-medium text-white"
-                        style="background-color: var(--accent1);"
-                        aria-current="page"
-                    >
-                        {page}
-                    </span>
-                ) : (
-                    <a
-                        href={getPageUrl(page)}
-                        class="px-3 py-2 border rounded-md transition-colors duration-200"
-                        style="background-color: var(--bg2); border-color: var(--border1); color: var(--accent4);"
-                        onmouseover="this.style.backgroundColor='var(--bg3)'"
-                        onmouseout="this.style.backgroundColor='var(--bg2)'"
-                        aria-label={`${t("pagination.page")} ${page}`}
-                    >
-                        {page}
-                    </a>
-                )
-            ))}
+        <!-- 現在のページ情報 -->
+        <div class="flex-shrink-0 px-4 py-2 rounded-md font-medium text-white text-sm sm:text-base"
+             style="background-color: var(--accent1);"
+             aria-current="page">
+            {currentPage} / {totalPages}
         </div>
 
         <!-- 次のページボタン -->
         {nextPage ? (
             <a
                 href={getPageUrl(nextPage)}
-                class="px-4 py-2 border rounded-md transition-colors duration-200"
+                class="flex-shrink-0 px-3 py-2 border rounded-md transition-colors duration-200 text-sm sm:text-base"
                 style="background-color: var(--bg2); border-color: var(--border1); color: var(--accent4);"
                 onmouseover="this.style.backgroundColor='var(--bg3)'"
                 onmouseout="this.style.backgroundColor='var(--bg2)'"
                 aria-label={`${t("pagination.page")} ${nextPage}`}
             >
-                {t("pagination.next")}
+                {t("pagination.next")} →
             </a>
         ) : (
-            <span class="px-4 py-2 border rounded-md cursor-not-allowed"
+            <span class="flex-shrink-0 px-3 py-2 border rounded-md cursor-not-allowed text-sm sm:text-base"
                   style="background-color: var(--bg3); border-color: var(--border1); color: var(--shadow1);">
-                {t("pagination.next")}
+                {t("pagination.next")} →
             </span>
         )}
     </nav>
