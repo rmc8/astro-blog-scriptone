@@ -118,8 +118,8 @@ const menuItems = [
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 0.75rem 1rem;
-        min-height: 60px;
+        padding: 0.875rem 1.5rem;
+        min-height: 68px;
     }
 
     /* ブランド部分 */
@@ -132,9 +132,10 @@ const menuItems = [
         align-items: center;
         text-decoration: none;
         color: #222;
-        font-weight: bold;
-        font-size: 1.25rem;
+        font-weight: 600;
+        font-size: 1.5rem;
         transition: color 0.3s ease;
+        gap: 0.625rem;
     }
 
     .brand-link:hover {
@@ -142,9 +143,9 @@ const menuItems = [
     }
 
     .brand-icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 0.5rem;
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
     }
 
     .brand-text {
@@ -167,24 +168,25 @@ const menuItems = [
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 0.75rem;
-        color: #222; /* var(--accent4) */
+        padding: 0.625rem 0.875rem;
+        color: #222;
         text-decoration: none;
-        border-radius: 8px;
+        border-radius: 10px;
         transition: all 0.3s ease;
-        font-size: 0.875rem;
+        font-size: 0.9375rem;
         font-weight: 500;
         white-space: nowrap;
     }
 
     .nav-link:hover {
-        color: white; /* var(--accent7) */
-        background-color: var(--accent1); /* --bg1*/
+        color: white;
+        background-color: var(--accent1);
         transform: translateY(-1px);
     }
 
     .nav-icon {
-        font-size: 18px !important;
+        font-size: 20px !important;
+        flex-shrink: 0;
     }
 
     .nav-divider {
@@ -200,14 +202,15 @@ const menuItems = [
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        width: 48px;
-        height: 48px;
+        width: 44px;
+        height: 44px;
         background: none;
         border: none;
         cursor: pointer;
         padding: 0;
-        border-radius: 8px;
+        border-radius: 10px;
         transition: background-color 0.3s ease;
+        flex-shrink: 0;
     }
 
     .mobile-menu-button:hover {
@@ -216,8 +219,8 @@ const menuItems = [
 
     .hamburger {
         position: relative;
-        width: 24px;
-        height: 18px;
+        width: 22px;
+        height: 16px;
     }
 
     .hamburger-line {
@@ -307,7 +310,8 @@ const menuItems = [
     }
 
     .mobile-nav-title {
-        font-size: 1.125rem;
+        /* font-size: 1.125rem; */
+        font-size: 22px;
         font-weight: 600;
         color: #222; /* var(--accent7) */
         margin: 0;
@@ -357,7 +361,7 @@ const menuItems = [
     }
 
     .mobile-nav-icon {
-        font-size: 24px !important;
+        font-size: 22px !important;
         flex-shrink: 0;
     }
 
@@ -396,6 +400,11 @@ const menuItems = [
 
     /* レスポンシブ対応 */
     @media (max-width: 768px) {
+        .header {
+            padding: 0.75rem 1rem;
+            min-height: 64px;
+        }
+
         .desktop-nav {
             display: none;
         }
@@ -404,24 +413,29 @@ const menuItems = [
             display: flex;
         }
 
-        .brand-text {
-            font-size: 1.125rem;
+        .brand-link {
+            font-size: 1.25rem;
         }
 
         .brand-icon {
-            width: 22px;
-            height: 22px;
+            width: 26px;
+            height: 26px;
         }
     }
 
     @media (max-width: 480px) {
         .header {
-            padding: 0.5rem 1rem;
-            min-height: 56px;
+            padding: 0.625rem 1rem;
+            min-height: 60px;
         }
 
-        .brand-text {
-            font-size: 1rem;
+        .brand-link {
+            font-size: 1.125rem;
+        }
+
+        .brand-icon {
+            width: 24px;
+            height: 24px;
         }
 
         .mobile-nav {
