@@ -6,6 +6,7 @@ import Layout from "@/layouts/Base.astro";
 import Article from "@/components/blog/Article.astro";
 import { getRelatedPosts } from "@/lib/collections/related";
 import { getPostNavigation } from "@/lib/collections/navigation";
+import type { SEOProps } from "@/lib/seo";
 
 interface Props {
     singleBlog: CollectionEntry<"blog_ko">;
@@ -30,12 +31,32 @@ const { Content, headings } = await singleBlog.render();
 const allBlogs = await getCollection("blog_ko");
 const relatedPosts = getRelatedPosts(singleBlog, allBlogs, 6);
 const { prevPost, nextPost } = getPostNavigation(singleBlog, allBlogs);
+
+// SEO props for multilingual support
+const currentUrl = `/blog/${LANG_CODE}/${singleBlog.slug}`;
+const seoProps: SEOProps = {
+    title: singleBlog.data.title,
+    description: singleBlog.data.description,
+    url: currentUrl,
+    type: 'article',
+    publishedTime: singleBlog.data.date,
+    modifiedTime: singleBlog.data.updatedDate,
+    author: 'Scriptone',
+    section: singleBlog.data.categories?.[0],
+    tags: singleBlog.data.tags,
+    locale: LANG_CODE,
+    alternateLocales: [
+        { locale: 'ja', url: `/blog/ja/${singleBlog.slug}` },
+        { locale: 'en', url: `/blog/en/${singleBlog.slug}` },
+        { locale: 'ko', url: `/blog/ko/${singleBlog.slug}` }
+    ]
+};
 ---
 
 <Layout
     title=`${singleBlog.data.title} - Scriptone`
-    }
     description={singleBlog.data.description}
+    seoProps={seoProps}
 >
     <Article
         LANG_CODE={LANG_CODE}

@@ -3,6 +3,7 @@ import "../styles/global.css";
 import "../styles/font.css";
 import Header from "../components/common/Header.astro";
 import Footer from "../components/common/Footer.astro";
+import SEOHead from "../components/seo/SEOHead.astro";
 import { getLangFromUrl } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
@@ -10,6 +11,7 @@ const lang = getLangFromUrl(Astro.url);
 const {
     title = "Scriptone",
     description = "Scriptoneは、プログラミング、文房具、オーディオなど筆者の多様な趣味や購入品に関する情報を共有するサイトです。作成したプログラムの配布やナレッジシェアも行い、知識と体験をまとめています。AI時代に個の創造性を大切に、「書く」ことを通じて自分らしく生きるための一助となることを目指しています。",
+    seoProps,
 } = Astro.props;
 ---
 
@@ -19,8 +21,16 @@ const {
         <link rel="icon" type="image/svg+xml" href="/scriptone_logo_icon.png" />
         <meta name="viewport" content="width=device-width" />
         <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
-        <meta name="description" content={description} />
+        
+        <!-- SEO Meta Tags -->
+        {seoProps ? (
+            <SEOHead {...seoProps} />
+        ) : (
+            <>
+                <title>{title}</title>
+                <meta name="description" content={description} />
+            </>
+        )}
         
         <!-- RSS Feeds -->
         <link rel="alternate" type="application/rss+xml" title="Scriptone - ブログ (日本語)" href="/blog/ja/rss.xml" />
