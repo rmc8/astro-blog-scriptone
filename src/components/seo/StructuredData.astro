@@ -1,0 +1,160 @@
+---
+export interface ArticleStructuredData {
+  type: 'article';
+  title: string;
+  description: string;
+  url: string;
+  image?: string;
+  datePublished: string;
+  dateModified?: string;
+  author: string;
+  publisher: string;
+  categories?: string[];
+  tags?: string[];
+  locale: string;
+}
+
+export interface WebsiteStructuredData {
+  type: 'website';
+  name: string;
+  description: string;
+  url: string;
+  locale: string;
+}
+
+export interface BreadcrumbStructuredData {
+  type: 'breadcrumb';
+  items: Array<{
+    name: string;
+    url?: string;
+    position: number;
+  }>;
+}
+
+interface Props {
+  data: ArticleStructuredData | WebsiteStructuredData | BreadcrumbStructuredData;
+}
+
+const { data } = Astro.props;
+
+function generateArticleSchema(data: ArticleStructuredData) {
+  const baseUrl = 'https://rmc-8.com';
+  const fullUrl = data.url.startsWith('http') ? data.url : `${baseUrl}${data.url}`;
+  const imageUrl = data.image || `${baseUrl}/api/og?title=${encodeURIComponent(data.title)}&locale=${data.locale}`;
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": data.title,
+    "description": data.description,
+    "url": fullUrl,
+    "image": {
+      "@type": "ImageObject",
+      "url": imageUrl,
+      "width": 1200,
+      "height": 630
+    },
+    "datePublished": data.datePublished,
+    "dateModified": data.dateModified || data.datePublished,
+    "author": {
+      "@type": "Person",
+      "name": data.author,
+      "url": baseUrl
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": data.publisher,
+      "url": baseUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/scriptone_logo_icon.png`,
+        "width": 512,
+        "height": 512
+      }
+    },
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": fullUrl
+    },
+    "inLanguage": data.locale === 'ja' ? 'ja-JP' : data.locale === 'ko' ? 'ko-KR' : 'en-US',
+    ...(data.categories && data.categories.length > 0 && {
+      "articleSection": data.categories
+    }),
+    ...(data.tags && data.tags.length > 0 && {
+      "keywords": data.tags
+    })
+  };
+}
+
+function generateWebsiteSchema(data: WebsiteStructuredData) {
+  const baseUrl = 'https://rmc-8.com';
+  const fullUrl = data.url.startsWith('http') ? data.url : `${baseUrl}${data.url}`;
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": data.name,
+    "description": data.description,
+    "url": fullUrl,
+    "inLanguage": data.locale === 'ja' ? 'ja-JP' : data.locale === 'ko' ? 'ko-KR' : 'en-US',
+    "publisher": {
+      "@type": "Organization",
+      "name": "Scriptone",
+      "url": baseUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${baseUrl}/scriptone_logo_icon.png`,
+        "width": 512,
+        "height": 512
+      }
+    },
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${baseUrl}/blog/${data.locale}/search?q={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+}
+
+function generateBreadcrumbSchema(data: BreadcrumbStructuredData) {
+  const baseUrl = 'https://rmc-8.com';
+  
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": data.items.map((item, index) => ({
+      "@type": "ListItem",
+      "position": item.position || index + 1,
+      "name": item.name,
+      ...(item.url && {
+        "item": {
+          "@type": "WebPage",
+          "@id": item.url.startsWith('http') ? item.url : `${baseUrl}${item.url}`
+        }
+      })
+    }))
+  };
+}
+
+let schema;
+switch (data.type) {
+  case 'article':
+    schema = generateArticleSchema(data as ArticleStructuredData);
+    break;
+  case 'website':
+    schema = generateWebsiteSchema(data as WebsiteStructuredData);
+    break;
+  case 'breadcrumb':
+    schema = generateBreadcrumbSchema(data as BreadcrumbStructuredData);
+    break;
+  default:
+    schema = null;
+}
+---
+
+{schema && (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+)}

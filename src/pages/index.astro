@@ -3,9 +3,24 @@ import Me from "@/components/home/Me.astro";
 import BlogLangs from "@/components/blog/BlogLangList.astro";
 import Contents from "@/components/home/Contents.astro";
 import Base from "@/layouts/Base.astro";
+import type { SEOProps } from "@/lib/seo";
+
+// ホームページのSEO設定
+const seoProps: SEOProps = {
+    title: "Scriptone",
+    description: "Scriptoneは、プログラミング、文房具、オーディオなど筆者の多様な趣味や購入品に関する情報を共有するサイトです。作成したプログラムの配布やナレッジシェアも行い、知識と体験をまとめています。AI時代に個の創造性を大切に、「書く」ことを通じて自分らしく生きるための一助となることを目指しています。",
+    url: "/",
+    type: "website",
+    locale: "ja",
+    alternateLocales: [
+        { locale: 'ja', url: '/' },
+        { locale: 'en', url: '/blog/en' },
+        { locale: 'ko', url: '/blog/ko' }
+    ]
+};
 ---
 
-<Base>
+<Base seoProps={seoProps}>
     <Me />
     <div class="p-4">
         <div>

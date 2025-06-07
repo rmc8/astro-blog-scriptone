@@ -1,11 +1,61 @@
 ---
 import type { SEOProps } from '@/lib/seo';
 import { generateSEOProps, generateHreflangLinks } from '@/lib/seo';
+import StructuredData from './StructuredData.astro';
+import type { ArticleStructuredData, WebsiteStructuredData, BreadcrumbStructuredData } from './StructuredData.astro';
 
-interface Props extends SEOProps {}
+interface Props extends SEOProps {
+  structuredData?: ArticleStructuredData | WebsiteStructuredData | BreadcrumbStructuredData | Array<ArticleStructuredData | WebsiteStructuredData | BreadcrumbStructuredData>;
+  breadcrumbItems?: Array<{ name: string; url?: string; position: number }>;
+}
 
 const seoData = generateSEOProps(Astro.props);
 const hreflangLinks = generateHreflangLinks(seoData.alternateLocales);
+
+// 構造化データの生成
+const structuredDataArray: Array<ArticleStructuredData | WebsiteStructuredData | BreadcrumbStructuredData> = [];
+
+// 明示的に渡された構造化データ
+if (Astro.props.structuredData) {
+  if (Array.isArray(Astro.props.structuredData)) {
+    structuredDataArray.push(...Astro.props.structuredData);
+  } else {
+    structuredDataArray.push(Astro.props.structuredData);
+  }
+}
+
+// 記事の場合は自動で記事の構造化データを生成
+if (seoData.openGraph.type === 'article' && seoData.article) {
+  const articleData: ArticleStructuredData = {
+    type: 'article',
+    title: Astro.props.title,
+    description: Astro.props.description,
+    url: Astro.props.url,
+    image: seoData.openGraph.image,
+    datePublished: seoData.article.publishedTime || new Date().toISOString(),
+    dateModified: seoData.article.modifiedTime,
+    author: seoData.article.author || 'Scriptone',
+    publisher: 'Scriptone',
+    categories: seoData.article.section ? [seoData.article.section] : undefined,
+    tags: seoData.article.tags,
+    locale: Astro.props.locale || 'ja'
+  };
+  
+  // 重複チェック
+  const hasArticleData = structuredDataArray.some(data => data.type === 'article');
+  if (!hasArticleData) {
+    structuredDataArray.push(articleData);
+  }
+}
+
+// パンくずリストの構造化データ
+if (Astro.props.breadcrumbItems && Astro.props.breadcrumbItems.length > 0) {
+  const breadcrumbData: BreadcrumbStructuredData = {
+    type: 'breadcrumb',
+    items: Astro.props.breadcrumbItems
+  };
+  structuredDataArray.push(breadcrumbData);
+}
 ---
 
 <!-- Basic Meta Tags -->
@@ -52,4 +102,9 @@ const hreflangLinks = generateHreflangLinks(seoData.alternateLocales);
 <!-- Hreflang Links -->
 {hreflangLinks.map(link => (
   <link rel={link.rel} hreflang={link.hreflang} href={link.href} />
+))}
+
+<!-- Structured Data -->
+{structuredDataArray.map((data) => (
+  <StructuredData data={data} />
 ))}

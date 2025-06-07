@@ -35,10 +35,15 @@ export function generateSEOProps({
   const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
   const ogImage = image || `${baseUrl}/api/og?title=${encodeURIComponent(title)}&locale=${locale}`;
   
+  // Canonical URLの正規化（最後のスラッシュを削除、ただしルートパスは除く）
+  const canonicalUrl = fullUrl.endsWith('/') && fullUrl !== `${baseUrl}/` 
+    ? fullUrl.slice(0, -1) 
+    : fullUrl;
+  
   return {
     title: fullTitle,
     description,
-    canonical: fullUrl,
+    canonical: canonicalUrl,
     openGraph: {
       type,
       title: fullTitle,

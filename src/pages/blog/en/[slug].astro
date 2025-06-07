@@ -34,6 +34,14 @@ const { prevPost, nextPost } = getPostNavigation(singleBlog, allBlogs);
 
 // SEO props for multilingual support
 const currentUrl = `/blog/${LANG_CODE}/${singleBlog.slug}`;
+
+// パンくずリストデータ
+const breadcrumbItems = [
+    { name: 'Home', url: '/', position: 1 },
+    { name: 'Blog', url: `/blog/${LANG_CODE}`, position: 2 },
+    { name: singleBlog.data.title, position: 3 }
+];
+
 const seoProps: SEOProps = {
     title: singleBlog.data.title,
     description: singleBlog.data.description,
@@ -49,7 +57,8 @@ const seoProps: SEOProps = {
         { locale: 'ja', url: `/blog/ja/${singleBlog.slug}` },
         { locale: 'en', url: `/blog/en/${singleBlog.slug}` },
         { locale: 'ko', url: `/blog/ko/${singleBlog.slug}` }
-    ]
+    ],
+    breadcrumbItems
 };
 ---
 
