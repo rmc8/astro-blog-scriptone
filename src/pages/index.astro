@@ -21,31 +21,203 @@ const seoProps: SEOProps = {
 ---
 
 <Base seoProps={seoProps}>
-    <Me />
-    <div class="p-4">
-        <div>
-            <h2 class="text-2xl font-bold mb-4">Blog</h2>
-            <BlogLangs isVertical={false} />
-        </div>
-        <div>
-            <h2 class="text-2xl font-bold my-4">Contents</h2>
-            <Contents />
-        </div>
+    <div class="page-container">
+        <section class="hero-section">
+            <Me />
+        </section>
+        
+        <main class="main-content">
+            <section class="content-section blog-section">
+                <h2 class="section-title">Blog</h2>
+                <div class="section-content">
+                    <BlogLangs isVertical={false} />
+                </div>
+            </section>
+            
+            <section class="content-section contents-section">
+                <h2 class="section-title">Contents</h2>
+                <div class="section-content">
+                    <Contents />
+                </div>
+            </section>
+        </main>
     </div>
 </Base>
 
 <style>
-    ul {
-        padding-left: 2px;
-    }
-    li {
-        margin-bottom: 0.75rem;
+    /* ページ全体のコンテナ */
+    .page-container {
+        min-height: 100vh;
+        background: var(--bg1);
     }
 
-    ul li a {
-        text-decoration: underline;
+    /* ヒーローセクション */
+    .hero-section {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: gentleRise 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation-delay: 0.2s;
     }
-    ul li a:hover {
+
+    /* メインコンテンツ */
+    .main-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: gentleRise 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        animation-delay: 0.8s;
+    }
+
+    /* コンテンツセクション */
+    .content-section {
+        margin-bottom: 4rem;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        opacity: 0;
+        transform: translateY(30px) scale(0.98);
+        animation: floatIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .content-section:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+        border-color: rgba(var(--accent1), 0.3);
+    }
+
+    .section-title {
+        font-size: 1.875rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin: 0 0 2rem 0;
+        position: relative;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: gentleRise 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* セクションコンテンツ */
+    .section-content {
+        opacity: 0;
+        transform: translateY(15px);
+        animation: gentleRise 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    /* アニメーション遅延 */
+    .blog-section {
+        animation-delay: 1.2s;
+    }
+    .blog-section .section-title {
+        animation-delay: 1.4s;
+    }
+    .blog-section .section-content {
+        animation-delay: 1.6s;
+    }
+
+    .contents-section {
+        animation-delay: 1.4s;
+    }
+    .contents-section .section-title {
+        animation-delay: 1.6s;
+    }
+    .contents-section .section-content {
+        animation-delay: 1.8s;
+    }
+
+    /* アニメーション定義 */
+    @keyframes gentleRise {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes floatIn {
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* リストスタイルの改善 */
+    :global(ul) {
+        padding-left: 2px;
+    }
+
+    :global(li) {
+        margin-bottom: 0.75rem;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: gentleRise 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    :global(li:nth-child(1)) { animation-delay: 2s; }
+    :global(li:nth-child(2)) { animation-delay: 2.1s; }
+    :global(li:nth-child(3)) { animation-delay: 2.2s; }
+    :global(li:nth-child(4)) { animation-delay: 2.3s; }
+    :global(li:nth-child(5)) { animation-delay: 2.4s; }
+
+    /* リンクスタイル */
+    :global(ul li a) {
         text-decoration: none;
+        color: inherit;
+        transition: color 0.2s ease;
+    }
+
+    /* ブログセクションのリンクhover */
+    .blog-section :global(ul li a:hover) {
+        color: white;
+    }
+
+    /* Contentsセクションのリンクhover */
+    .contents-section :global(ul li a:hover) {
+        color: var(--accent3);
+    }
+
+    /* レスポンシブデザイン */
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 2rem 1rem;
+        }
+        
+        .content-section {
+            margin-bottom: 2.5rem;
+            padding: 1.5rem;
+            border-radius: 12px;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .main-content {
+            padding: 1.5rem 0.75rem;
+        }
+        
+        .content-section {
+            padding: 1.25rem;
+            border-radius: 8px;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+        }
+    }
+
+    /* プリファー・リデュースド・モーション */
+    @media (prefers-reduced-motion: reduce) {
+        * {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
     }
 </style>
