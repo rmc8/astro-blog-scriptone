@@ -1,28 +1,26 @@
-<ul>
-    <li><a href="/about">About</a></li>
-    <li><a href="/diary">ダイアリー</a></li>
-    <li><a href="/project_sekai">プロジェクトセカイ</a></li>
+<ul class="contents-list">
+    <li class="contents-item"><a href="/about">About</a></li>
+    <li class="contents-item"><a href="/diary">ダイアリー</a></li>
+    <li class="contents-item"><a href="/project_sekai">プロジェクトセカイ</a></li>
 </ul>
 
 <style>
-    ul,
-    ol {
+    .contents-list {
         list-style-type: disc;
         padding: 0 0 0 1em;
         margin: 0;
     }
 
-    ul li,
-    ol li {
+    .contents-item {
         line-height: 1.5;
         padding: 0.5em;
     }
 
-    a {
+    .contents-item a {
         text-decoration: underline;
     }
 
-    a:hover {
+    .contents-item a:hover {
         text-decoration: none;
         color: var(--accent3);
     }
