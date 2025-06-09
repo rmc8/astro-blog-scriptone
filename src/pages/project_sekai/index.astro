@@ -13,13 +13,13 @@ const breadcrumbItems = [
 
 <Layout title="@rmc8Bok's Profile & Tools - Scriptone">
     <Breadcrumb items={breadcrumbItems} langCode="ja" />
-    <h2 class="text-3xl font-bold mb-4">Profile & Tools</h2>
+    <h1 class="main-title">Project Sekai - Profile & Tools</h1>
     <Profile />
 
-    <h3 class="text-2xl font-bold my-4">Project Sekai</h3>
-    <ul style="padding:0;">
+    <section class="project-sekai-section">
+        <ul style="padding:0;">
         <li>
-            <h3 class="text-2xl font-bold my-2">支援編成</h3>
+            <h2 class="text-xl font-semibold my-3">支援編成</h2>
             <p>
                 ツイ募支援が多めですがお声がけくださいましたらDiscordの周回にもお邪魔します。連勝用であればいろいろな総合力の調整に対応できます。
             </p>
@@ -33,7 +33,7 @@ const breadcrumbItems = [
             <p></p>
         </li>
         <li>
-            <h3 class="text-2xl font-bold my-2">連勝</h3>
+            <h2 class="text-xl font-semibold my-3">連勝</h2>
             <p>
                 チアフルカーニバルイベントで固定メンバーやツイ募などでまったり連勝しています。1000連勝以上を目指した大型連勝も14か月しており1120連勝まで歩みを進められました。これからもツイボで色々な方々と連勝しながらときどき大型も楽しみたいです。以下は300連勝以上の記録です。
             </p>
@@ -56,7 +56,7 @@ const breadcrumbItems = [
             <p></p>
         </li>
         <li>
-            <h3 class="text-2xl font-bold my-2">イベラン</h3>
+            <h2 class="text-xl font-semibold my-3">イベラン</h2>
             <p>
                 ほぼほぼツイボランでXのTLをたびたび賑わせておりますが楽しくご一緒いただいてありがとうございます！
             </p>
@@ -75,25 +75,26 @@ const breadcrumbItems = [
             <p></p>
         </li>
     </ul>
+    </section>
 
     <section id="hobby">
-        <h2 class="text-3xl font-bold my-2">Hobby</h2>
+        <h2>Hobby</h2>
         <p>書ききれないぐらいに趣味がありますが5つ書きます。</p>
         <ul>
             <li>
-                <h3 class="text-2xl font-bold my-2">Coffee</h3>
+                <h3>Coffee</h3>
                 <p>
                     自宅で豆を焼いて挽いて飲むぐらいにはコーヒーが好きです。苦みや酸味・甘味・香りのバランスを考えて焼いたり、ブレンドして味のバランスを整えたり、いれ方を変えて味変したりで意外と奥が深いです。豆を選ぶ瞬間からコーヒーの楽しみが広がっていて長いこと楽しんでいます。メインはコーヒーですがお茶も好きで紅茶・緑茶・ブレンドなど国内外を問わずにいろいろと取り寄せて楽しんでいます。
                 </p>
             </li>
             <li>
-                <h3 class="text-2xl font-bold my-2">Stationery</h3>
+                <h3>Stationery</h3>
                 <p>
                     長時間の勉強や書写が好きで文房具にこっています。万年筆やガラスペンが好きでインク集めて勉強だったり趣味だったりでのんびり文字を書いています。ちなみに文字を書くときは左利きです。手から伝わる滑らかな感触やインクの色・匂い、文字や絵から得られる刺激や知識がいつまで経っても飽きないですし、実用性もあるので気に入っている趣味の1つです。
                 </p>
             </li>
             <li>
-                <h3 class="text-2xl font-bold my-2">Programming</h3>
+                <h3>Programming</h3>
                 <p>
                     プログラムを書くのが好きで、Discord用のBotも作っています。得意な言語はPythonで、他にもHTMLやJavaScript、Rustなどもお遊び程度に使っています。お仕事でもプログラムを書いていて簡単なWebアプリの構築やデータ分析、学習モデルの構築、AIエージェントの構築、めんどくさい作業の自動化とかとても好きです。お仕事以外だとGoogle
                     Apps
@@ -101,13 +102,13 @@ const breadcrumbItems = [
                 </p>
             </li>
             <li>
-                <h3 class="text-2xl font-bold my-2">Audio</h3>
+                <h3>Audio</h3>
                 <p>
                     一番長く続いている趣味だと思います。イヤホン・ヘッドホン・スピーカーとなんでも好きで、イヤホン自体をつくったり、アンプやケーブルを作ったりしながら音響システム全体の音を整えていくのがいつまでたっても終わりがなく楽しめます。音楽を聴くこと自体もとても楽しいですが、1つの音楽でも音や音楽の表現が変わって何度聞いても楽しい気持ちになれます。とても長く続けていても新しい発見が音楽にも機材側にもでてくるので手をかけることがやめられません。
                 </p>
             </li>
             <li>
-                <h3 class="text-2xl font-bold my-2">Fragrance</h3>
+                <h3>Fragrance</h3>
                 <p>
                     コーヒーと同様に匂いが好きなので意外とハマっている趣味です。といいつつご存じの通り香水は匂いやクセが強いものもあって私自身もそのあたりのものだったり、電車で遠くからも香るような強烈な感じだったりは得意ではないです。なので、やわらかく瑞々しく香る傾向のあるアクアディパルマの製品に好みが偏りがちです。
                 </p>
@@ -125,26 +126,219 @@ const breadcrumbItems = [
 </Layout>
 
 <style>
-    ul,
-    li {
-        margin-left: 0px;
+    /* シンプルでモダンなタイポグラフィ */
+    .main-title {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: #333;
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 2rem 0 1rem 0;
+        color: #333;
+        border-left: 3px solid var(--accent1);
+        padding-left: 1rem;
+        opacity: 0;
+        transform: translateX(-20px);
+        animation: slideInLeft 0.6s ease-out forwards;
+    }
+    
+    /* h3スタイル（Hobbyの各趣味用） */
+    h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 1.5rem 0 1rem 0;
+        color: #333;
+        border-left: 2px solid var(--accent1);
+        padding-left: 0.75rem;
+        opacity: 0;
+        transform: translateX(-15px);
+        animation: slideInLeft 0.5s ease-out forwards;
+    }
+    
+    /* アニメーション定義 */
+    @keyframes fadeInUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes slideInLeft {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+
+    /* シンプルなリストデザイン */
+    ul, li {
+        margin-left: 0;
         padding: 0;
+        list-style-type: none;
+    }
+    ul li {
+        margin-bottom: 1rem;
     }
     ul li ul {
-        margin-top: 24px;
-        margin-bottom: 24px;
+        margin-top: 0.75rem;
+        margin-bottom: 0.75rem;
     }
-    ul li ul li,
-    #tools ul li {
-        margin-left: 8px;
-        padding-left: 16px;
-        padding-bottom: 0.75em;
+    
+    /* Project Sekaiセクションのシンプルなリストスタイル */
+    .project-sekai-section ul.decoration li {
+        background: none;
+        border: none;
+        border-radius: 0;
+        padding: 0.75rem 0;
+        transition: all 0.3s ease;
+        position: relative;
+        line-height: 1.6;
+        margin-bottom: 0.25rem;
+        box-shadow: none;
+        border-left: 2px solid transparent;
+        padding-left: 2rem;
     }
-    ul.decoration li:before {
+    
+    .project-sekai-section ul.decoration li:before {
         content: "✿";
         position: absolute;
-        top: 0;
-        left: 0;
-        color: var(--accent1);
+        left: 0.5rem;
+        top: 0.5rem;
+        color: var(--accent3);
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    
+    .project-sekai-section ul.decoration li:hover {
+        border-left-color: var(--accent1);
+        background: var(--bg2);
+        padding-left: 2.25rem;
+        transform: translateX(0.25rem);
+    }
+    
+    .project-sekai-section ul.decoration li:hover:before {
+        transform: rotate(90deg) scale(1.1);
+        color: var(--accent3);
+    }
+    
+    /* Hobbyセクションのカードスタイル（元のまま） */
+    #hobby ul li {
+        background: white;
+        border: 1px solid var(--border1);
+        border-radius: 8px;
+        padding: 1rem;
+        transition: all 0.3s ease;
+        position: relative;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        transform: translateY(0);
+        opacity: 0;
+        animation: fadeIn 0.6s ease-out forwards;
+    }
+    
+    #hobby ul li:hover {
+        border-color: var(--accent1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+    
+    /* セクションアニメーション */
+    .project-sekai-section,
+    #hobby {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
+    }
+    
+    /* アニメーション遅延 */
+    h2:nth-of-type(1) { animation-delay: 0.2s; }
+    h2:nth-of-type(2) { animation-delay: 0.4s; }
+    h3:nth-of-type(1) { animation-delay: 0.3s; }
+    h3:nth-of-type(2) { animation-delay: 0.4s; }
+    h3:nth-of-type(3) { animation-delay: 0.5s; }
+    h3:nth-of-type(4) { animation-delay: 0.6s; }
+    h3:nth-of-type(5) { animation-delay: 0.7s; }
+    
+    .project-sekai-section { animation-delay: 0.3s; }
+    #hobby { animation-delay: 0.5s; }
+    
+    #hobby ul li:nth-child(1) { animation-delay: 0.7s; }
+    #hobby ul li:nth-child(2) { animation-delay: 0.8s; }
+    #hobby ul li:nth-child(3) { animation-delay: 0.9s; }
+    #hobby ul li:nth-child(4) { animation-delay: 1.0s; }
+    #hobby ul li:nth-child(5) { animation-delay: 1.1s; }
+    
+    /* シンプルなセクション */
+    #hobby {
+        margin: 3rem 0;
+        padding: 2rem;
+        border-radius: 8px;
+        border: 1px solid var(--border1);
+        background: var(--bg2);
+        overflow: hidden;
+    }
+    
+    /* Hobbyセクション内のpタグの余白 */
+    #hobby > p {
+        margin-bottom: 2rem;
+    }
+    
+    /* リストアイテムの余白調整 */
+    ul li {
+        margin-bottom: 1.5rem;
+    }
+    
+    /* Project Sekaiセクションの余白 */
+    .project-sekai-section {
+        margin-bottom: 3rem;
+    }
+    
+    /* レスポンシブデザイン */
+    @media (max-width: 768px) {
+        .main-title {
+            font-size: 1.875rem;
+        }
+        h2 {
+            font-size: 1.25rem;
+        }
+        h3 {
+            font-size: 1.125rem;
+        }
+        #hobby {
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        ul.decoration li,
+        #hobby ul li {
+            padding: 0.75rem;
+        }
+    }
+    @media (max-width: 480px) {
+        .main-title {
+            font-size: 1.5rem;
+        }
+        h2 {
+            font-size: 1.125rem;
+        }
+        h3 {
+            font-size: 1rem;
+        }
+        #hobby {
+            padding: 1rem;
+        }
     }
 </style>
