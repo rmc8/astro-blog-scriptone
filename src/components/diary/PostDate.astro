@@ -1,4 +1,6 @@
 ---
+import { formatDateJapanese } from "@/lib/dateUtils";
+
 const { date } = Astro.props as {
     date?: Date;
 };
@@ -9,9 +11,7 @@ const { date } = Astro.props as {
         <div class="text-gray-500 mt-1 flex items-center">
             <i class="material-icons icon-small mr-2">calendar_month</i>{" "}
             <p class="mt-0.5">
-                {date
-                    ? `${date.getFullYear()}年${String(date.getMonth() + 1)}月${String(date.getDate())}日`
-                    : "N/A"}
+                {date ? formatDateJapanese(date) : "N/A"}
             </p>
         </div>
     )

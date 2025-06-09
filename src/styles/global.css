@@ -45,3 +45,9 @@ code {
 .plotly-graph-div, .js-plotly-plot {
     margin: 0.75em 0;
 }
+
+/* 共通のアイコンスタイル */
+.icon-small {
+    font-size: 14px !important;
+    transform: scale(0.9);
+}

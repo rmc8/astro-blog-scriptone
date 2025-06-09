@@ -1,0 +1,162 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { SITE_NAME } from "@/lib/constants";
+import { ui } from "@/i18n/ui";
+import type { SupportedLanguage } from "@/lib/constants";
+
+type BlogPost = CollectionEntry<"blog_ja"> | CollectionEntry<"blog_en"> | CollectionEntry<"blog_ko">;
+
+interface Props {
+    posts: BlogPost[];
+    langCode: SupportedLanguage;
+    title: string;
+    description: string;
+}
+
+const { posts, langCode, title, description } = Astro.props;
+const t = ui[langCode];
+---
+
+<div class="search-container">
+    <h1 class="text-3xl font-bold mb-6">{title}</h1>
+    <p class="text-gray-600 mb-6">{description}</p>
+    
+    <div class="search-box mb-6">
+        <input
+            type="text"
+            id="searchInput"
+            placeholder={t.search?.placeholder || "検索..."}
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+    </div>
+    
+    <div id="searchResults" class="hidden">
+        <h2 class="text-xl font-semibold mb-4">{t.search?.results || "検索結果"}</h2>
+        <ul id="resultsContainer" class="space-y-4"></ul>
+    </div>
+    
+    <div id="noResults" class="hidden text-center py-8 text-gray-600">
+        <p>{t.search?.noResults || "検索結果が見つかりませんでした。"}</p>
+    </div>
+    
+    <div id="allPosts">
+        <h2 class="text-xl font-semibold mb-4">{t.search?.allPosts || "すべての記事"}</h2>
+        <ul class="space-y-4">
+            {posts.map((post) => (
+                <li class="flex border-0 rounded-lg p-0 overflow-hidden shadow-sm bg-gradient-to-r from-[var(--bg1)] to-[var(--bg2)]">
+                    <div class="flex-1 p-4">
+                        <h3 class="text-lg font-bold mb-2">
+                            <a href={`/blog/${langCode}/${post.slug}`} class="text-[var(--accent7)] hover:text-[var(--accent3)] transition-colors duration-300">
+                                {post.data.title}
+                            </a>
+                        </h3>
+                        {post.data.description && (
+                            <p class="text-gray-600 mb-3 text-sm">{post.data.description}</p>
+                        )}
+                        <div class="text-sm text-gray-600 flex flex-wrap gap-1 my-3">
+                            {(post.data.categories || []).map((category) => (
+                                <a href={`/blog/${langCode}/categories/${category}`} 
+                                   class="inline-flex items-center px-1 py-0.5 rounded bg-[var(--accent3)]/90 hover:bg-[var(--accent3)]/75 text-white text-xs font-semibold duration-300">
+                                    <i class="material-icons icon-small mr-1 text-white">folder</i>
+                                    {category}
+                                </a>
+                            ))}
+                            {(post.data.tags || []).map((tag) => (
+                                <a href={`/blog/${langCode}/tags/${tag}`}
+                                   class="inline-flex items-center px-1 pl-0.5 pr-1.5 rounded bg-[var(--accent3)]/15 text-[var(--accent7)] hover:bg-[var(--accent3)]/35 hover:text-[var(--accent7)] text-xs font-medium transition-colors duration-300">
+                                    <i class="material-icons icon-small mr-1 text-[var(--accent7)]">local_offer</i>
+                                    {tag}
+                                </a>
+                            ))}
+                        </div>
+                        <div class="text-sm text-gray-600 mt-1 flex items-center">
+                            <i class="material-icons icon-small mr-1">schedule</i>
+                            {post.data.date.getFullYear()}-{String(post.data.date.getMonth() + 1).padStart(2, '0')}-{String(post.data.date.getDate()).padStart(2, '0')}
+                        </div>
+                    </div>
+                </li>
+            ))}
+        </ul>
+    </div>
+</div>
+
+<script define:vars={{ posts, langCode }}>
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    const noResults = document.getElementById('noResults');
+    const allPosts = document.getElementById('allPosts');
+    const resultsContainer = document.getElementById('resultsContainer');
+    
+    function formatDate(date) {
+        if (!date) return '';
+        const d = new Date(date);
+        if (isNaN(d.getTime())) return '';
+        return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+    
+    function search(query) {
+        if (!query.trim()) {
+            searchResults.classList.add('hidden');
+            noResults.classList.add('hidden');
+            allPosts.classList.remove('hidden');
+            return;
+        }
+        
+        const searchTerm = query.toLowerCase();
+        const results = posts.filter(post => {
+            const { title, description, tags = [], categories = [] } = post.data;
+            return (
+                title.toLowerCase().includes(searchTerm) ||
+                (description && description.toLowerCase().includes(searchTerm)) ||
+                tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                categories.some(category => category.toLowerCase().includes(searchTerm))
+            );
+        });
+        
+        allPosts.classList.add('hidden');
+        
+        if (results.length === 0) {
+            searchResults.classList.add('hidden');
+            noResults.classList.remove('hidden');
+            return;
+        }
+        
+        noResults.classList.add('hidden');
+        searchResults.classList.remove('hidden');
+        
+        resultsContainer.innerHTML = results.map(post => `
+            <li class="flex border-0 rounded-lg p-0 overflow-hidden shadow-sm bg-gradient-to-r from-[var(--bg1)] to-[var(--bg2)]">
+                <div class="flex-1 p-4">
+                    <h3 class="text-lg font-bold mb-2">
+                        <a href="/blog/${langCode}/${post.slug}" class="text-[var(--accent7)] hover:text-[var(--accent3)] transition-colors duration-300">
+                            ${post.data.title}
+                        </a>
+                    </h3>
+                    ${post.data.description ? `<p class="text-gray-600 mb-3 text-sm">${post.data.description}</p>` : ''}
+                    <div class="text-sm text-gray-600 flex flex-wrap gap-1 my-3">
+                        ${(post.data.categories || []).map(cat => 
+                            `<a href="/blog/${langCode}/categories/${cat}" class="inline-flex items-center px-1 py-0.5 rounded bg-[var(--accent3)]/90 hover:bg-[var(--accent3)]/75 text-white text-xs font-semibold duration-300">
+                                <i class="material-icons icon-small mr-1 text-white">folder</i>
+                                ${cat}
+                            </a>`
+                        ).join('')}
+                        ${(post.data.tags || []).map(tag => 
+                            `<a href="/blog/${langCode}/tags/${tag}" class="inline-flex items-center px-1 pl-0.5 pr-1.5 rounded bg-[var(--accent3)]/15 text-[var(--accent7)] hover:bg-[var(--accent3)]/35 hover:text-[var(--accent7)] text-xs font-medium transition-colors duration-300">
+                                <i class="material-icons icon-small mr-1 text-[var(--accent7)]">local_offer</i>
+                                ${tag}
+                            </a>`
+                        ).join('')}
+                    </div>
+                    <div class="text-sm text-gray-600 mt-1 flex items-center">
+                        <i class="material-icons icon-small mr-1">schedule</i>
+                        ${formatDate(post.data.date)}
+                    </div>
+                </div>
+            </li>
+        `).join('');
+    }
+    
+    searchInput.addEventListener('input', (e) => {
+        search(e.target.value);
+    });
+</script>

@@ -1,25 +1,17 @@
 ---
+import { formatDateISO } from "@/lib/dateUtils";
+
 const { postDate, updatedDate } = Astro.props as {
     postDate: Date;
     updatedDate: Date | null;
 };
-console.log(postDate, updatedDate);
 ---
 
 {
-    updatedDate && postDate.toISOString().split('T')[0] !== updatedDate.toISOString().split('T')[0] && (
+    updatedDate && formatDateISO(postDate) !== formatDateISO(updatedDate) && (
         <div class="text-sm text-gray-600 mt-1 flex items-center">
             <i class="material-icons icon-small mr-1">update</i>{" "}
-            {updatedDate
-                ? `${updatedDate.getFullYear()}-${String(updatedDate.getMonth() + 1).padStart(2, "0")}-${String(updatedDate.getDate()).padStart(2, "0")}`
-                : "N/A"}
+            {updatedDate ? formatDateISO(updatedDate) : "N/A"}
         </div>
     )
 }
-
-<style>
-    .icon-small {
-        font-size: 14px !important;
-        transform: scale(0.9);
-    }
-</style>

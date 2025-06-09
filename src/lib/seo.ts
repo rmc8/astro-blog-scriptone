@@ -1,17 +1,7 @@
-export interface SEOProps {
-  title: string;
-  description: string;
-  url: string;
-  image?: string;
-  type?: 'website' | 'article';
-  publishedTime?: Date;
-  modifiedTime?: Date;
-  author?: string;
-  section?: string;
-  tags?: string[];
-  locale?: string;
-  alternateLocales?: { locale: string; url: string }[];
-}
+import type { SEOProps } from "./types";
+import { BASE_URL, SITE_NAME } from "./constants";
+
+export type { SEOProps };
 
 export function generateSEOProps({
   title,
@@ -27,9 +17,9 @@ export function generateSEOProps({
   locale = 'ja',
   alternateLocales = []
 }: SEOProps) {
-  const siteTitle = 'Scriptone';
-  const siteName = 'Scriptone';
-  const baseUrl = 'https://rmc-8.com';
+  const siteTitle = SITE_NAME;
+  const siteName = SITE_NAME;
+  const baseUrl = BASE_URL;
   
   const fullTitle = title.includes(siteTitle) ? title : `${title} - ${siteTitle}`;
   const fullUrl = url.startsWith('http') ? url : `${baseUrl}${url}`;
@@ -74,6 +64,6 @@ export function generateHreflangLinks(alternateLocales: { locale: string; url: s
   return alternateLocales.map(({ locale, url }) => ({
     rel: 'alternate',
     hreflang: locale,
-    href: url.startsWith('http') ? url : `https://rmc-8.com${url}`
+    href: url.startsWith('http') ? url : `${BASE_URL}${url}`
   }));
 }

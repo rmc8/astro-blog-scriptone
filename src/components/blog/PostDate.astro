@@ -1,4 +1,6 @@
 ---
+import { formatDateISO } from "@/lib/dateUtils";
+
 const { date } = Astro.props as {
     date?: Date;
 };
@@ -8,16 +10,7 @@ const { date } = Astro.props as {
     date && (
         <div class="text-sm text-gray-600 mt-1 flex items-center">
             <i class="material-icons icon-small mr-1">schedule</i>{" "}
-            {date
-                ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
-                : "N/A"}
+            {date ? formatDateISO(date) : "N/A"}
         </div>
     )
 }
-
-<style>
-    .icon-small {
-        font-size: 14px !important;
-        transform: scale(0.9);
-    }
-</style>
