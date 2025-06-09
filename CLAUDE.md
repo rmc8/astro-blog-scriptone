@@ -4,6 +4,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Project Information
+
+- **Project Name**: certain-crater
+- **Framework**: Astro v5.7.13 (Latest major version)
+- **Site URL**: https://rmc-8.com
+
 ## Development Commands
 
 - `npm run dev` - Start development server at localhost:4321
@@ -13,7 +19,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Architecture Overview
 
-This is an Astro-based multilingual blog site with Svelte components and TailwindCSS styling.
+This is an Astro v5-based multilingual blog site with Svelte 5 components and TailwindCSS v4 styling.
 
 ### Content Management System
 
@@ -43,7 +49,7 @@ This is an Astro-based multilingual blog site with Svelte components and Tailwin
 ### Component Architecture
 
 - Astro components for layout and blog functionality in `src/components/`
-- Svelte 5 components integrated via `@astrojs/svelte`
+- Svelte 5.30.2 components integrated via `@astrojs/svelte`
 - Organized component structure:
     - `blog/` - Blog-specific components (Article, BlogList, CategoryTag, ToC, etc.)
     - `common/` - Shared components (Header, Footer, Pagination, ShareButtons, etc.)
@@ -55,7 +61,8 @@ This is an Astro-based multilingual blog site with Svelte components and Tailwin
 
 ### Styling
 
-- TailwindCSS v4 with Vite plugin integration
+- TailwindCSS v4.1.7 with @tailwindcss/vite plugin integration
+- Configuration in `tailwind.config.js` (applyBaseStyles: false)
 - Custom fonts: NotoSans (JP/KR) and SourceHanCode (JP) in `public/fonts/`
 - Global styles in `src/styles/` (font.css, global.css)
 - Component-specific styles using Astro's scoped CSS
@@ -82,12 +89,18 @@ This is an Astro-based multilingual blog site with Svelte components and Tailwin
 
 ### Build Configuration
 
-- TypeScript with strict mode and path aliases (`@/*` → `./src/*`)
-- Vercel adapter for static deployment
+- Output: Static site generation (`output: "static"`)
+- TypeScript v5.8.3 with strict mode and path aliases (`@/*` → `./src/*`)
+- Vercel adapter (@astrojs/vercel v8.0.4) for deployment
 - Sitemap generation with i18n support
 - Site URL: https://rmc-8.com
 - @astrojs/check for TypeScript validation
 - Prettier with Astro and TailwindCSS plugins for code formatting
+- Integrations:
+  - @astrojs/mdx v4.1.1 for MDX support
+  - @astrojs/sitemap v3.3.1 for sitemap generation
+  - @astrojs/svelte v7.3.2 for Svelte 5 integration
+  - @astrojs/vercel v8.0.4 for Vercel deployment
 
 ### Special Features
 
@@ -97,3 +110,24 @@ This is an Astro-based multilingual blog site with Svelte components and Tailwin
 - Post navigation (previous/next) functionality
 - Share buttons for social media
 - Pagination with proper i18n routing
+
+### Dependencies
+
+- **Core Framework**: Astro v5.7.13
+- **UI Framework**: Svelte v5.30.2
+- **CSS Framework**: TailwindCSS v4.1.7
+- **Language**: TypeScript v5.8.3
+- **Markdown Processing**:
+  - remark-toc v9.0.0
+  - remark-flexible-code-titles v1.3.0
+- **Development Tools**:
+  - prettier v3.4.2
+  - prettier-plugin-astro v0.14.1
+  - prettier-plugin-tailwindcss v0.6.11
+
+## Important Instructions
+
+Do what has been asked; nothing more, nothing less.
+NEVER create files unless they're absolutely necessary for achieving your goal.
+ALWAYS prefer editing an existing file to creating a new one.
+NEVER proactively create documentation files (*.md) or README files. Only create documentation files if explicitly requested by the User.
