@@ -4,7 +4,7 @@ description: "We'll build a simple LED lighting circuit with Raspberry Pi and co
 slug: "raspberry_pi_rust_breathing_led"
 date: 2025-06-10T11:22:25.063Z
 updatedDate: 2025-06-10T11:22:25.062Z
-preview: "<https://b.rmc-8.com/img/2025/06/10/944eda2ccf3167af821e613abc784d11.jpg>"
+preview: "https://b.rmc-8.com/img/2025/06/10/944eda2ccf3167af821e613abc784d11.jpg"
 draft: false
 tags:
     - LED Blinking
