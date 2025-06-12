@@ -30,16 +30,23 @@ export const GET: APIRoute = async ({ request }) => {
     // AT Protocol OAuth 2.0 DPoP対応（重要: セキュリティ強化）
     dpop_bound_access_tokens: true,
     
-    // リダイレクトURI（Bluesky仕様：HTTPプロトコルのみ許可）
+    // リダイレクトURI（AT Protocol OAuth仕様準拠）
     redirect_uris: [
-      `${url.protocol}//${url.host}/moodesky/oauth/callback`, // HTTPS（Webアプリ用）
-      "http://localhost:8080/oauth/callback", // HTTP loopback（ネイティブアプリ用）
-      "http://localhost:8081/oauth/callback", // 代替ポート1
-      "http://localhost:8082/oauth/callback", // 代替ポート2
-      "http://localhost:8083/oauth/callback", // 代替ポート3
-      "http://localhost:8084/oauth/callback", // 代替ポート4
-      "http://localhost:8085/oauth/callback", // 代替ポート5
-      "http://127.0.0.1:8080/oauth/callback",   // IPv4 loopback（代替）
+      // HTTPS リダイレクト（Webアプリ & Vercel Functions用）
+      `${url.protocol}//${url.host}/api/moodesky/oauth/callback`, // Vercel Function
+      `${url.protocol}//${url.host}/moodesky/oauth/callback`, // 代替パス
+      
+      // カスタムURLスキーム（モバイルアプリ用）
+      "moodesky://oauth/callback", // メインコールバック
+      
+      // HTTP loopback（開発・ローカルテスト用）
+      "http://localhost:8080/oauth/callback",
+      "http://localhost:8081/oauth/callback",
+      "http://localhost:8082/oauth/callback",
+      "http://localhost:8083/oauth/callback",
+      "http://localhost:8084/oauth/callback",
+      "http://localhost:8085/oauth/callback",
+      "http://127.0.0.1:8080/oauth/callback",
       "http://127.0.0.1:8081/oauth/callback",
       "http://127.0.0.1:8082/oauth/callback",
       "http://127.0.0.1:8083/oauth/callback",
