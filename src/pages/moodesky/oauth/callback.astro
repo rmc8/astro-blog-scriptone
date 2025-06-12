@@ -82,14 +82,26 @@ if (error) {
 
 
         <script is:inline define:vars={{ code, state, error, statusType }}>
-            // モバイルアプリへのリダイレクト処理
+            // モバイルアプリへのリダイレクト処理（即座に実行）
             if (statusType === 'success' && code) {
                 const redirectUrl = `moodesky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
                 
-                console.log('Redirecting to app:', redirectUrl);
+                console.log('🔄 OAuth Callback: Redirecting to app with code');
+                console.log('🔄 Redirect URL:', redirectUrl);
+                console.log('🔄 Code received:', code.substring(0, 20) + '...');
+                console.log('🔄 State received:', state);
                 
-                // モバイルアプリへのリダイレクトを試行
-                window.location.href = redirectUrl;
+                // 即座にモバイルアプリへのリダイレクトを実行
+                try {
+                    window.location.href = redirectUrl;
+                } catch (e) {
+                    console.error('❌ Failed to redirect to app:', e);
+                    
+                    // フォールバック: リンクを作成してクリック
+                    const link = document.createElement('a');
+                    link.href = redirectUrl;
+                    link.click();
+                }
                 
                 // フォールバック: 3秒後にWebページを閉じる（デスクトップブラウザ対応）
                 setTimeout(() => {
