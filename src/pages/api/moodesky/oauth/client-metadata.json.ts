@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ request }) => {
   const metadata = {
     client_id: clientId,
     application_type: "native",
-    client_name: "MoodeSky",
+    client_name: "moodeSky",
     client_uri: "https://github.com/rmc-8/moodesky",
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
