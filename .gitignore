@@ -229,3 +229,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.toptal.com/developers/gitignore/api/astro,svelte,node,linux,macos,windows
+
+
+.mcp.json
+

@@ -1,0 +1,258 @@
+---
+import Footer from "@/components/common/Footer.astro";
+import Header from "@/components/common/Header.astro";
+import SEOHead from "@/components/seo/SEOHead.astro";
+
+// クエリパラメータを取得
+const url = new URL(Astro.request.url);
+const code = url.searchParams.get('code');
+const state = url.searchParams.get('state');
+const error = url.searchParams.get('error');
+const error_description = url.searchParams.get('error_description');
+
+// エラーハンドリング
+let statusMessage = '';
+let statusType: 'success' | 'error' | 'loading' = 'loading';
+
+if (error) {
+    statusType = 'error';
+    statusMessage = error_description || `認証エラー: ${error}`;
+} else if (code) {
+    statusType = 'success';
+    statusMessage = '認証が完了しました。アプリに戻っています...';
+} else {
+    statusType = 'error';
+    statusMessage = '認証コードが見つかりません。';
+}
+---
+
+<!doctype html>
+<html lang="ja">
+    <head>
+        <SEOHead
+            title="MoodeSky OAuth認証"
+            description="MoodeSky OAuth認証コールバック"
+            type="website"
+        />
+    </head>
+
+    <body>
+        <Header />
+        
+        <main class="oauth-callback-main">
+            <div class="oauth-callback-container">
+                <div class="oauth-callback-card">
+                    <div class="oauth-callback-icon">
+                        {statusType === 'success' && <i class="material-icons success-icon">check_circle</i>}
+                        {statusType === 'error' && <i class="material-icons error-icon">error</i>}
+                        {statusType === 'loading' && <i class="material-icons loading-icon">hourglass_empty</i>}
+                    </div>
+                    
+                    <h1 class="oauth-callback-title">MoodeSky OAuth認証</h1>
+                    
+                    <div class={`oauth-callback-message ${statusType}`}>
+                        <p>{statusMessage}</p>
+                    </div>
+
+                    {statusType === 'success' && (
+                        <div class="oauth-callback-details">
+                            <p class="redirect-message">
+                                自動的にアプリに戻らない場合は、アプリを手動で開いてください。
+                            </p>
+                        </div>
+                    )}
+
+                    {statusType === 'error' && (
+                        <div class="oauth-callback-actions">
+                            <button class="retry-button" onclick="window.history.back()">
+                                戻る
+                            </button>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </main>
+
+        <Footer />
+
+        <script define:vars={{ code, state, error, statusType }}>
+            // モバイルアプリへのリダイレクト処理
+            if (statusType === 'success' && code) {
+                const redirectUrl = `mooodysky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
+                
+                // モバイルアプリへのリダイレクトを試行
+                window.location.href = redirectUrl;
+                
+                // フォールバック: 3秒後にWebページを閉じる
+                setTimeout(() => {
+                    try {
+                        window.close();
+                    } catch (e) {
+                        // ウィンドウを閉じられない場合は何もしない
+                        console.log('ウィンドウを閉じることができませんでした');
+                    }
+                }, 3000);
+            }
+        </script>
+    </body>
+</html>
+
+<style>
+    .oauth-callback-main {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        margin-top: 68px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .oauth-callback-container {
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .oauth-callback-card {
+        background: white;
+        border-radius: 16px;
+        padding: 3rem 2rem;
+        text-align: center;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .oauth-callback-icon {
+        margin-bottom: 2rem;
+    }
+
+    .oauth-callback-icon i {
+        font-size: 4rem;
+        display: block;
+    }
+
+    .success-icon {
+        color: #4caf50;
+        animation: pulse 2s infinite;
+    }
+
+    .error-icon {
+        color: #f44336;
+    }
+
+    .loading-icon {
+        color: #2196f3;
+        animation: spin 2s linear infinite;
+    }
+
+    .oauth-callback-title {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+        color: #333;
+    }
+
+    .oauth-callback-message {
+        margin-bottom: 2rem;
+    }
+
+    .oauth-callback-message p {
+        font-size: 1.125rem;
+        margin: 0;
+        line-height: 1.6;
+    }
+
+    .oauth-callback-message.success {
+        color: #4caf50;
+    }
+
+    .oauth-callback-message.error {
+        color: #f44336;
+    }
+
+    .oauth-callback-message.loading {
+        color: #2196f3;
+    }
+
+    .oauth-callback-details {
+        background: #f5f5f5;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .redirect-message {
+        font-size: 0.875rem;
+        color: #666;
+        margin: 0;
+    }
+
+    .oauth-callback-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+    }
+
+    .retry-button {
+        background: #2196f3;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .retry-button:hover {
+        background: #1976d2;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (max-width: 640px) {
+        .oauth-callback-main {
+            padding: 1rem;
+            margin-top: 64px;
+        }
+
+        .oauth-callback-card {
+            padding: 2rem 1.5rem;
+        }
+
+        .oauth-callback-title {
+            font-size: 1.5rem;
+        }
+
+        .oauth-callback-icon i {
+            font-size: 3rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .oauth-callback-card {
+            padding: 1.5rem 1rem;
+        }
+
+        .oauth-callback-title {
+            font-size: 1.25rem;
+        }
+    }
+</style>
