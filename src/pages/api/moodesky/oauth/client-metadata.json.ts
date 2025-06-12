@@ -30,10 +30,10 @@ export const GET: APIRoute = async ({ request }) => {
     // AT Protocol OAuth 2.0 DPoP対応（重要: セキュリティ強化）
     dpop_bound_access_tokens: true,
     
-    // リダイレクトURI（カスタムスキーム優先 + HTTPSフォールバック）
+    // リダイレクトURI（HTTPS優先 - Bluesky互換性のため）
     redirect_uris: [
-      "moodesky://oauth/callback", // 第一優先：カスタムスキーム（ネイティブアプリ用）
-      `${url.protocol}//${url.host}/moodesky/oauth/callback` // フォールバック：HTTPS
+      `${url.protocol}//${url.host}/moodesky/oauth/callback`, // 第一優先：HTTPS（Bluesky互換）
+      "moodesky://oauth/callback" // サポート：カスタムスキーム（将来用）
     ]
   };
 
