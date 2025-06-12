@@ -36,22 +36,8 @@ export const GET: APIRoute = async ({ request }) => {
       `${url.protocol}//${url.host}/api/moodesky/oauth/callback`, // Vercel Function
       `${url.protocol}//${url.host}/moodesky/oauth/callback`, // 代替パス
       
-      // カスタムURLスキーム（モバイルアプリ用）
-      "moodesky://oauth/callback", // メインコールバック
-      
-      // HTTP loopback（開発・ローカルテスト用）
-      "http://localhost:8080/oauth/callback",
-      "http://localhost:8081/oauth/callback",
-      "http://localhost:8082/oauth/callback",
-      "http://localhost:8083/oauth/callback",
-      "http://localhost:8084/oauth/callback",
-      "http://localhost:8085/oauth/callback",
-      "http://127.0.0.1:8080/oauth/callback",
-      "http://127.0.0.1:8081/oauth/callback",
-      "http://127.0.0.1:8082/oauth/callback",
-      "http://127.0.0.1:8083/oauth/callback",
-      "http://127.0.0.1:8084/oauth/callback",
-      "http://127.0.0.1:8085/oauth/callback"
+      // カスタムURLスキーム（モバイルアプリ用 - RFC 8252準拠）
+      "moodesky://oauth/callback"
     ]
   };
 

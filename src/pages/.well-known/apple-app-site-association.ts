@@ -15,9 +15,9 @@ export const GET: APIRoute = async () => {
         {
           "appIDs": [
             // 開発用App ID（Team ID + Bundle ID）
-            "XXXXXXXXXX.com.example.moodesky", // Team IDを実際の値に置き換える
+            "XXXXXXXXXX.com.moodesky.app", // Team IDを実際の値に置き換える
             // 本番用App ID（必要に応じて追加）
-            // "YYYYYYYYYY.com.example.moodesky"
+            // "YYYYYYYYYY.com.moodesky.app"
           ],
           "components": [
             {
@@ -37,7 +37,7 @@ export const GET: APIRoute = async () => {
     "webcredentials": {
       "apps": [
         // WebAuthn用（将来の機能拡張用）
-        "XXXXXXXXXX.com.example.moodesky"
+        "XXXXXXXXXX.com.moodesky.app"
       ]
     },
     "appclips": {
