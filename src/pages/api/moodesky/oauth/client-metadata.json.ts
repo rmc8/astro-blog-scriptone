@@ -12,8 +12,8 @@ export const GET: APIRoute = async ({ request }) => {
     grant_types: ["authorization_code", "refresh_token"],
     response_types: ["code"],
     redirect_uris: [
-      "mooodysky://oauth/callback",
-      "https://rmc-8.com/moodesky/oauth/callback"
+      "https://rmc-8.com/moodesky/oauth/callback",
+      "mooodysky://oauth/callback"
     ],
     scope: "atproto",
     dpop_bound_access_tokens: true,

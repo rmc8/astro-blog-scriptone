@@ -81,16 +81,26 @@ if (error) {
             if (statusType === 'success' && code) {
                 const redirectUrl = `mooodysky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
                 
+                console.log('Redirecting to app:', redirectUrl);
+                
                 // モバイルアプリへのリダイレクトを試行
                 window.location.href = redirectUrl;
                 
-                // フォールバック: 3秒後にWebページを閉じる
+                // フォールバック: 3秒後にWebページを閉じる（デスクトップブラウザ対応）
                 setTimeout(() => {
                     try {
-                        window.close();
+                        if (window.opener) {
+                            // ポップアップウィンドウの場合
+                            window.close();
+                        } else {
+                            // 通常のウィンドウの場合、履歴を戻る
+                            window.history.back();
+                        }
                     } catch (e) {
-                        // ウィンドウを閉じられない場合は何もしない
-                        console.log('ウィンドウを閉じることができませんでした');
+                        console.log('ウィンドウ操作に失敗しました:', e);
+                        // 最後の手段：手動操作を促す
+                        document.querySelector('.redirect-message').innerHTML = 
+                            'アプリが開かない場合は、ブラウザタブを閉じてアプリを手動で開いてください。';
                     }
                 }, 3000);
             }
