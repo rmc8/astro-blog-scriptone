@@ -10,28 +10,28 @@ const state = url.searchParams.get('state');
 const error = url.searchParams.get('error');
 const error_description = url.searchParams.get('error_description');
 
-// エラーハンドリング
+// Error handling
 let statusMessage = '';
 let statusType: 'success' | 'error' | 'loading' = 'loading';
 
 if (error) {
     statusType = 'error';
-    statusMessage = error_description || `認証エラー: ${error}`;
+    statusMessage = error_description || `Authentication error: ${error}`;
 } else if (code) {
     statusType = 'success';
-    statusMessage = '認証が完了しました。アプリに戻っています...';
+    statusMessage = 'Authentication completed. Redirecting to app...';
 } else {
     statusType = 'error';
-    statusMessage = '認証コードが見つかりません。';
+    statusMessage = 'Authentication code not found.';
 }
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang="en">
     <head>
         <SEOHead
-            title="MoodeSky OAuth認証"
-            description="MoodeSky OAuth認証コールバック"
+            title="moodeSky OAuth Authentication"
+            description="moodeSky OAuth Authentication Callback"
             url="/moodesky/oauth/callback"
             type="website"
         />
@@ -49,7 +49,7 @@ if (error) {
                         {statusType === 'loading' && <i class="material-icons loading-icon">hourglass_empty</i>}
                     </div>
                     
-                    <h1 class="oauth-callback-title">MoodeSky OAuth認証</h1>
+                    <h1 class="oauth-callback-title">moodeSky OAuth Authentication</h1>
                     
                     <div class={`oauth-callback-message ${statusType}`}>
                         <p>{statusMessage}</p>
@@ -58,7 +58,7 @@ if (error) {
                     {statusType === 'success' && (
                         <div class="oauth-callback-details">
                             <p class="redirect-message">
-                                自動的にアプリに戻らない場合は、アプリを手動で開いてください。
+                                If the app doesn't open automatically, please open the app manually.
                             </p>
                         </div>
                     )}
@@ -66,7 +66,7 @@ if (error) {
                     {statusType === 'error' && (
                         <div class="oauth-callback-actions">
                             <button class="retry-button" onclick="window.history.back()">
-                                戻る
+                                Go Back
                             </button>
                         </div>
                     )}
@@ -97,10 +97,10 @@ if (error) {
                             window.history.back();
                         }
                     } catch (e) {
-                        console.log('ウィンドウ操作に失敗しました:', e);
-                        // 最後の手段：手動操作を促す
+                        console.log('Window operation failed:', e);
+                        // Last resort: prompt manual operation
                         document.querySelector('.redirect-message').innerHTML = 
-                            'アプリが開かない場合は、ブラウザタブを閉じてアプリを手動で開いてください。';
+                            'If the app does not open, please close the browser tab and open the app manually.';
                     }
                 }, 3000);
             }
@@ -110,13 +110,12 @@ if (error) {
 
 <style>
     .oauth-callback-main {
-        min-height: 100vh;
+        min-height: calc(100vh - 5rem);
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 2rem;
-        margin-top: 68px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background-color: var(--bg1);
     }
 
     .oauth-callback-container {
@@ -125,12 +124,14 @@ if (error) {
     }
 
     .oauth-callback-card {
-        background: white;
+        background: var(--bg2);
         border-radius: 16px;
         padding: 3rem 2rem;
         text-align: center;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--border1);
+        max-width: 500px;
+        width: 100%;
     }
 
     .oauth-callback-icon {
@@ -143,7 +144,7 @@ if (error) {
     }
 
     .success-icon {
-        color: #4caf50;
+        color: var(--accent1);
         animation: pulse 2s infinite;
     }
 
@@ -152,7 +153,7 @@ if (error) {
     }
 
     .loading-icon {
-        color: #2196f3;
+        color: var(--accent1);
         animation: spin 2s linear infinite;
     }
 
@@ -160,7 +161,7 @@ if (error) {
         font-size: 1.75rem;
         font-weight: 600;
         margin-bottom: 1.5rem;
-        color: #333;
+        color: var(--accent7);
     }
 
     .oauth-callback-message {
@@ -174,7 +175,7 @@ if (error) {
     }
 
     .oauth-callback-message.success {
-        color: #4caf50;
+        color: var(--accent3);
     }
 
     .oauth-callback-message.error {
@@ -182,19 +183,20 @@ if (error) {
     }
 
     .oauth-callback-message.loading {
-        color: #2196f3;
+        color: var(--accent1);
     }
 
     .oauth-callback-details {
-        background: #f5f5f5;
+        background: var(--bg3);
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 1.5rem;
+        border: 1px solid var(--border2);
     }
 
     .redirect-message {
         font-size: 0.875rem;
-        color: #666;
+        color: var(--accent4);
         margin: 0;
     }
 
@@ -205,7 +207,7 @@ if (error) {
     }
 
     .retry-button {
-        background: #2196f3;
+        background: var(--accent1);
         color: white;
         border: none;
         border-radius: 8px;
@@ -217,7 +219,7 @@ if (error) {
     }
 
     .retry-button:hover {
-        background: #1976d2;
+        background: var(--accent3);
     }
 
     @keyframes pulse {
@@ -241,7 +243,6 @@ if (error) {
     @media (max-width: 640px) {
         .oauth-callback-main {
             padding: 1rem;
-            margin-top: 64px;
         }
 
         .oauth-callback-card {
