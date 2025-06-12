@@ -105,19 +105,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    // DPoP proof検証
+    // DPoP proof検証（省略可能）
     const dpopHeader = request.headers.get('DPoP');
     if (!dpopHeader) {
-      return new Response(
-        JSON.stringify({
-          error: 'invalid_request',
-          error_description: 'DPoP proof required'
-        }),
-        {
-          status: 400,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      );
+      console.log('⚠️ DPoP header not provided - continuing without DPoP');
     }
 
     // Grant type別処理
@@ -196,13 +187,22 @@ async function handleAuthorizationCodeGrant(
     formData.append('client_id', tokenRequest.client_id!);
     formData.append('code_verifier', tokenRequest.code_verifier!);
 
+    const requestHeaders: Record<string, string> = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'moodeSky OAuth Proxy/1.0',
+    };
+
+    // DPoPヘッダーがある場合のみ追加
+    if (dpopHeader) {
+      requestHeaders['DPoP'] = dpopHeader;
+      console.log('🔐 Using DPoP authentication');
+    } else {
+      console.log('⚠️ Proceeding without DPoP authentication');
+    }
+
     const blueskyResponse = await fetch(blueskyTokenEndpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'DPoP': dpopHeader!,
-        'User-Agent': 'moodeSky OAuth Proxy/1.0',
-      },
+      headers: requestHeaders,
       body: formData,
     });
 
@@ -316,13 +316,22 @@ async function handleRefreshTokenGrant(
     formData.append('refresh_token', tokenRequest.refresh_token!);
     formData.append('client_id', tokenRequest.client_id!);
 
+    const refreshHeaders: Record<string, string> = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'moodeSky OAuth Proxy/1.0',
+    };
+
+    // DPoPヘッダーがある場合のみ追加
+    if (dpopHeader) {
+      refreshHeaders['DPoP'] = dpopHeader;
+      console.log('🔐 Using DPoP for token refresh');
+    } else {
+      console.log('⚠️ Token refresh without DPoP authentication');
+    }
+
     const blueskyResponse = await fetch(blueskyTokenEndpoint, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'DPoP': dpopHeader!,
-        'User-Agent': 'moodeSky OAuth Proxy/1.0',
-      },
+      headers: refreshHeaders,
       body: formData,
     });
 
