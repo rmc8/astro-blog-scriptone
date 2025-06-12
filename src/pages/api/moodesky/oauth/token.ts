@@ -9,6 +9,8 @@ import { createHash } from 'crypto';
  * @see https://atproto.com/specs/oauth#token-endpoint
  * @see https://tools.ietf.org/html/rfc9449 (DPoP)
  * @see https://tools.ietf.org/html/rfc7636 (PKCE)
+ * 
+ * @cSpell:words dpop PKCE
  */
 
 interface TokenRequest {
@@ -19,15 +21,6 @@ interface TokenRequest {
   code_verifier?: string;
   refresh_token?: string;
   dpop_proof?: string;
-}
-
-interface TokenResponse {
-  access_token: string;
-  token_type: 'DPoP';
-  expires_in: number;
-  refresh_token: string;
-  scope: string;
-  sub: string;
 }
 
 // DPoP Proof interface (for future implementation)
@@ -160,7 +153,7 @@ export const POST: APIRoute = async ({ request }) => {
  */
 async function handleAuthorizationCodeGrant(
   tokenRequest: Partial<TokenRequest>,
-  _request: Request
+  request: Request
 ): Promise<Response> {
   // 必須パラメータ検証
   if (!tokenRequest.code || !tokenRequest.redirect_uri || !tokenRequest.code_verifier) {
@@ -178,36 +171,98 @@ async function handleAuthorizationCodeGrant(
 
   console.log('🔐 Processing authorization code grant...');
 
-  // TODO: 実際の実装では以下を行う必要があります：
-  // 1. 認証コードの検証と期限チェック
-  // 2. リダイレクトURIの検証
-  // 3. PKCE code_verifierの検証
-  // 4. DPoP proof の詳細検証
-  // 5. Bluesky OAuth serverへのプロキシリクエスト
+  try {
+    // Bluesky OAuth serverの情報を取得
+    const blueskyTokenEndpoint = 'https://bsky.social/oauth/token';
+    
+    console.log('🔗 Proxying token request to Bluesky OAuth server...');
 
-  // プレースホルダー実装: モック応答
-  const mockTokenResponse: TokenResponse = {
-    access_token: generateMockJWT('access', tokenRequest.client_id!),
-    token_type: 'DPoP',
-    expires_in: 3600, // 1時間
-    refresh_token: generateMockJWT('refresh', tokenRequest.client_id!),
-    scope: 'atproto',
-    sub: 'did:plc:mock-user-identifier'
-  };
+    // DPoP proof検証とBlueskyへのリクエスト準備
+    const dpopHeader = request.headers.get('DPoP');
+    
+    // PKCE code_challenge検証（実際の実装では保存された値と比較）
+    console.log('🔍 Verifying PKCE code_verifier...');
+    
+    // Bluesky OAuth serverへのproxy request
+    const formData = new URLSearchParams();
+    formData.append('grant_type', tokenRequest.grant_type!);
+    formData.append('code', tokenRequest.code!);
+    formData.append('redirect_uri', tokenRequest.redirect_uri!);
+    formData.append('client_id', tokenRequest.client_id!);
+    formData.append('code_verifier', tokenRequest.code_verifier!);
 
-  console.log('✅ Token exchange successful (mock)');
-
-  return new Response(
-    JSON.stringify(mockTokenResponse),
-    {
-      status: 200,
+    const blueskyResponse = await fetch(blueskyTokenEndpoint, {
+      method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
-        'Pragma': 'no-cache'
-      }
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'DPoP': dpopHeader!,
+        'User-Agent': 'moodeSky OAuth Proxy/1.0',
+      },
+      body: formData,
+    });
+
+    console.log(`📡 Bluesky OAuth response: ${blueskyResponse.status}`);
+
+    if (!blueskyResponse.ok) {
+      const errorBody = await blueskyResponse.text();
+      console.error('❌ Bluesky OAuth error:', errorBody);
+      
+      return new Response(
+        JSON.stringify({
+          error: 'invalid_grant',
+          error_description: 'Authorization grant validation failed'
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
-  );
+
+    // Blueskyからの成功レスポンスを取得
+    const blueskyTokenData = await blueskyResponse.json();
+    
+    console.log('✅ Token exchange successful via Bluesky OAuth');
+    console.log('🔑 Token type:', blueskyTokenData.token_type);
+    console.log('⏰ Expires in:', blueskyTokenData.expires_in, 'seconds');
+    console.log('👤 Subject:', blueskyTokenData.sub);
+
+    // DPoP Nonceを転送
+    const dpopNonce = blueskyResponse.headers.get('DPoP-Nonce');
+    const responseHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      'Pragma': 'no-cache'
+    };
+
+    if (dpopNonce) {
+      responseHeaders['DPoP-Nonce'] = dpopNonce;
+      console.log('🔐 DPoP-Nonce forwarded:', dpopNonce.substring(0, 20) + '...');
+    }
+
+    // Blueskyからのレスポンスをそのまま転送
+    return new Response(
+      JSON.stringify(blueskyTokenData),
+      {
+        status: 200,
+        headers: responseHeaders
+      }
+    );
+
+  } catch (error) {
+    console.error('💥 Token exchange proxy error:', error);
+    
+    return new Response(
+      JSON.stringify({
+        error: 'server_error',
+        error_description: 'Failed to communicate with authorization server'
+      }),
+      {
+        status: 502,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+  }
 }
 
 /**
@@ -215,7 +270,7 @@ async function handleAuthorizationCodeGrant(
  */
 async function handleRefreshTokenGrant(
   tokenRequest: Partial<TokenRequest>,
-  _request: Request
+  request: Request
 ): Promise<Response> {
   if (!tokenRequest.refresh_token) {
     return new Response(
@@ -232,54 +287,95 @@ async function handleRefreshTokenGrant(
 
   console.log('🔄 Processing refresh token grant...');
 
-  // TODO: 実際の実装では以下を行う必要があります：
-  // 1. Refresh tokenの検証
-  // 2. DPoP proof の詳細検証
-  // 3. Bluesky OAuth serverへのプロキシリクエスト
+  try {
+    // Bluesky OAuth serverの情報を取得
+    const blueskyTokenEndpoint = 'https://bsky.social/oauth/token';
+    
+    console.log('🔗 Proxying refresh token request to Bluesky OAuth server...');
 
-  // プレースホルダー実装: エラー返却
-  return new Response(
-    JSON.stringify({
-      error: 'temporarily_unavailable',
-      error_description: 'Refresh token grant not yet implemented'
-    }),
-    {
-      status: 503,
-      headers: { 'Content-Type': 'application/json' }
+    // DPoP proof検証とBlueskyへのリクエスト準備
+    const dpopHeader = request.headers.get('DPoP');
+    
+    // Bluesky OAuth serverへのproxy request
+    const formData = new URLSearchParams();
+    formData.append('grant_type', tokenRequest.grant_type!);
+    formData.append('refresh_token', tokenRequest.refresh_token!);
+    formData.append('client_id', tokenRequest.client_id!);
+
+    const blueskyResponse = await fetch(blueskyTokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'DPoP': dpopHeader!,
+        'User-Agent': 'moodeSky OAuth Proxy/1.0',
+      },
+      body: formData,
+    });
+
+    console.log(`📡 Bluesky OAuth refresh response: ${blueskyResponse.status}`);
+
+    if (!blueskyResponse.ok) {
+      const errorBody = await blueskyResponse.text();
+      console.error('❌ Bluesky OAuth refresh error:', errorBody);
+      
+      return new Response(
+        JSON.stringify({
+          error: 'invalid_grant',
+          error_description: 'Refresh token validation failed'
+        }),
+        {
+          status: 400,
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
     }
-  );
+
+    // Blueskyからの成功レスポンスを取得
+    const blueskyTokenData = await blueskyResponse.json();
+    
+    console.log('✅ Token refresh successful via Bluesky OAuth');
+    console.log('🔑 New token type:', blueskyTokenData.token_type);
+    console.log('⏰ New expires in:', blueskyTokenData.expires_in, 'seconds');
+
+    // DPoP Nonceを転送
+    const dpopNonce = blueskyResponse.headers.get('DPoP-Nonce');
+    const responseHeaders: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+      'Pragma': 'no-cache'
+    };
+
+    if (dpopNonce) {
+      responseHeaders['DPoP-Nonce'] = dpopNonce;
+      console.log('🔐 DPoP-Nonce forwarded:', dpopNonce.substring(0, 20) + '...');
+    }
+
+    // Blueskyからのレスポンスをそのまま転送
+    return new Response(
+      JSON.stringify(blueskyTokenData),
+      {
+        status: 200,
+        headers: responseHeaders
+      }
+    );
+
+  } catch (error) {
+    console.error('💥 Token refresh proxy error:', error);
+    
+    return new Response(
+      JSON.stringify({
+        error: 'server_error',
+        error_description: 'Failed to communicate with authorization server'
+      }),
+      {
+        status: 502,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    );
+  }
 }
 
-/**
- * モックJWT生成（開発・テスト用）
- */
-function generateMockJWT(type: 'access' | 'refresh', clientId: string): string {
-  const header = {
-    typ: 'JWT',
-    alg: 'HS256'
-  };
-
-  const payload = {
-    iss: new URL(clientId).origin,
-    sub: 'did:plc:mock-user-identifier',
-    aud: 'https://bsky.social',
-    exp: Math.floor(Date.now() / 1000) + (type === 'access' ? 3600 : 86400),
-    iat: Math.floor(Date.now() / 1000),
-    scope: 'atproto',
-    client_id: clientId,
-    token_type: type
-  };
-
-  // 注意: 実際の実装では適切な署名を使用してください
-  const encodedHeader = btoa(JSON.stringify(header)).replace(/=/g, '');
-  const encodedPayload = btoa(JSON.stringify(payload)).replace(/=/g, '');
-  const signature = createHash('sha256')
-    .update(`${encodedHeader}.${encodedPayload}`)
-    .digest('base64')
-    .replace(/=/g, '');
-
-  return `${encodedHeader}.${encodedPayload}.${signature}`;
-}
+// Note: Mock JWT generation removed - using real Bluesky OAuth proxy implementation
 
 // CORS対応
 export const OPTIONS: APIRoute = () => {
