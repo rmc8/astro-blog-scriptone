@@ -30,14 +30,13 @@ export const GET: APIRoute = async ({ request }) => {
     // AT Protocol OAuth 2.0 DPoP対応（重要: セキュリティ強化）
     dpop_bound_access_tokens: true,
     
-    // リダイレクトURI（AT Protocol OAuth仕様準拠）
+    // リダイレクトURI（HTTPのみ - Bluesky要件）
     redirect_uris: [
-      // HTTPS リダイレクト（Webアプリ & Vercel Functions用）
-      `${url.protocol}//${url.host}/api/moodesky/oauth/callback`, // Vercel Function
-      `${url.protocol}//${url.host}/moodesky/oauth/callback`, // 代替パス
+      // HTTPS リダイレクト（Vercel Functions用）
+      `${url.protocol}//${url.host}/api/moodesky/oauth/callback`,
       
-      // カスタムURLスキーム（モバイルアプリ用 - RFC 8252準拠）
-      "moodesky://oauth/callback"
+      // 本番用Webページ経由（アプリ起動リンク表示）
+      `${url.protocol}//${url.host}/moodesky/oauth/callback`
     ]
   };
 
