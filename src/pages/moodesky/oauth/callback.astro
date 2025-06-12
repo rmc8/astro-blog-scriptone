@@ -79,7 +79,7 @@ if (error) {
         <script define:vars={{ code, state, error, statusType }}>
             // モバイルアプリへのリダイレクト処理
             if (statusType === 'success' && code) {
-                const redirectUrl = `mooodysky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
+                const redirectUrl = `moodesky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
                 
                 console.log('Redirecting to app:', redirectUrl);
                 
