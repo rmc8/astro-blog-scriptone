@@ -1,6 +1,4 @@
 ---
-import Footer from "@/components/common/Footer.astro";
-import Header from "@/components/common/Header.astro";
 import SEOHead from "@/components/seo/SEOHead.astro";
 
 // クエリパラメータを取得
@@ -38,7 +36,6 @@ if (error) {
     </head>
 
     <body>
-        <Header />
         
         <main class="oauth-callback-main">
             <div class="oauth-callback-container">
@@ -74,7 +71,6 @@ if (error) {
             </div>
         </main>
 
-        <Footer />
 
         <script define:vars={{ code, state, error, statusType }}>
             // モバイルアプリへのリダイレクト処理
@@ -110,12 +106,13 @@ if (error) {
 
 <style>
     .oauth-callback-main {
-        min-height: calc(100vh - 5rem);
+        min-height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 2rem;
         background-color: var(--bg1);
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
     }
 
     .oauth-callback-container {
@@ -128,7 +125,7 @@ if (error) {
         border-radius: 16px;
         padding: 3rem 2rem;
         text-align: center;
-        box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+        box-shadow: 1px 1px 4px var(--shadow1);
         border: 1px solid var(--border1);
         max-width: 500px;
         width: 100%;
