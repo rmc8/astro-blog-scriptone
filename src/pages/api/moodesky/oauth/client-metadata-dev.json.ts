@@ -22,11 +22,11 @@ export const GET: APIRoute = async ({ request }) => {
     response_types: ["code"],
     dpop_bound_access_tokens: true,
     redirect_uris: [
-      // HTTPS リダイレクト（Vercel Functions用）
+      // HTTPS リダイレクト（Vercel Functions用 - 開発・本番共通）
       `${url.protocol}//${url.host}/api/moodesky/oauth/callback`,
       
-      // カスタムURLスキーム（モバイルアプリ用 - RFC 8252準拠）
-      "moodesky://oauth/callback"
+      // 本番用Webページ経由（アプリ起動リンク表示）
+      `${url.protocol}//${url.host}/moodesky/oauth/callback`
     ]
   };
 

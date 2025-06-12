@@ -18,15 +18,29 @@ export const GET: APIRoute = async ({ request, url }) => {
     const error = params.get('error');
     const errorDescription = params.get('error_description');
     
+    // 開発環境判定（dev パラメータまたはUser-Agentで判断）
+    const isDevelopment = params.has('dev') || 
+                          request.headers.get('user-agent')?.includes('Flutter') ||
+                          url.hostname === 'localhost';
+    
     console.log('OAuth Callback received:', {
       code: code ? code.substring(0, 20) + '...' : null,
       state: state ? state.substring(0, 20) + '...' : null,
       error,
-      errorDescription
+      errorDescription,
+      isDevelopment
     });
 
-    // カスタムURLスキームのベースURL
-    const mobileCallbackScheme = 'moodesky://oauth/callback';
+    // リダイレクト先URL決定
+    let callbackBaseUrl: string;
+    
+    if (isDevelopment) {
+      // 開発環境: ローカルHTTPサーバーにリダイレクト
+      callbackBaseUrl = 'http://127.0.0.1:8081/oauth/callback';
+    } else {
+      // 本番環境: Webページ経由（カスタムスキーム廃止）
+      callbackBaseUrl = `${url.protocol}//${url.host}/moodesky/oauth/callback`;
+    }
     
     // エラーケースの処理
     if (error) {
@@ -36,7 +50,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         ...(state && { state })
       });
       
-      const errorUrl = `${mobileCallbackScheme}?${errorParams.toString()}`;
+      const errorUrl = `${callbackBaseUrl}?${errorParams.toString()}`;
       
       console.log('OAuth error, redirecting to:', errorUrl);
       
@@ -59,7 +73,7 @@ export const GET: APIRoute = async ({ request, url }) => {
         ...(state && { state })
       });
       
-      const errorUrl = `${mobileCallbackScheme}?${missingParams.toString()}`;
+      const errorUrl = `${callbackBaseUrl}?${missingParams.toString()}`;
       
       console.log('Missing parameters, redirecting to:', errorUrl);
       
@@ -78,11 +92,11 @@ export const GET: APIRoute = async ({ request, url }) => {
       state
     });
     
-    const successUrl = `${mobileCallbackScheme}?${successParams.toString()}`;
+    const successUrl = `${callbackBaseUrl}?${successParams.toString()}`;
     
-    console.log('OAuth success, redirecting to app:', successUrl);
+    console.log(`OAuth success (${isDevelopment ? 'dev' : 'prod'}), redirecting to:`, successUrl);
     
-    // モバイルアプリにリダイレクト
+    // アプリまたはローカルサーバーにリダイレクト
     return new Response(null, {
       status: 302,
       headers: {
