@@ -15,29 +15,29 @@ export const GET: APIRoute = async ({ request }) => {
 
   // AT Protocol OAuth 2.0 + DPoP準拠メタデータ
   const metadata = {
-    // 必須フィールド（atproto.dart OAuthClientMetadata準拠）
-    client_id: clientId,
-    application_type: "native", // モバイルアプリ用
-    client_name: "moodeSky",
-    client_uri: "https://github.com/rmc-8/moodeSky",
-    scope: "atproto",
-    token_endpoint_auth_method: "none", // 公開クライアント
-    
-    // OAuth 2.0標準フィールド
-    grant_types: ["authorization_code", "refresh_token"],
-    response_types: ["code"],
-    
-    // AT Protocol OAuth 2.0 DPoP対応（重要: セキュリティ強化）
-    dpop_bound_access_tokens: true,
-    
-    // リダイレクトURI（HTTPのみ - Bluesky要件）
-    redirect_uris: [
-      // HTTPS リダイレクト（Vercel Functions用）
-      `${url.protocol}//${url.host}/api/moodesky/oauth/callback`,
-      
-      // 本番用Webページ経由（アプリ起動リンク表示）
-      `${url.protocol}//${url.host}/moodesky/oauth/callback`
-    ]
+      // 必須フィールド（atproto.dart OAuthClientMetadata準拠）
+      client_id: clientId,
+      application_type: "native", // モバイルアプリ用
+      client_name: "moodeSky",
+      client_uri: "https://rmc-8.com/moodesky",
+      scope: "atproto",
+      token_endpoint_auth_method: "none", // 公開クライアント
+
+      // OAuth 2.0標準フィールド
+      grant_types: ["authorization_code", "refresh_token"],
+      response_types: ["code"],
+
+      // AT Protocol OAuth 2.0 DPoP対応（重要: セキュリティ強化）
+      dpop_bound_access_tokens: true,
+
+      // リダイレクトURI（HTTPのみ - Bluesky要件）
+      redirect_uris: [
+          // HTTPS リダイレクト（Vercel Functions用）
+          `${url.protocol}//${url.host}/api/moodesky/oauth/callback`,
+
+          // 本番用Webページ経由（アプリ起動リンク表示）
+          `${url.protocol}//${url.host}/moodesky/oauth/callback`,
+      ],
   };
 
   return new Response(JSON.stringify(metadata, null, 2), {
