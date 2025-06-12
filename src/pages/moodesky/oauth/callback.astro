@@ -74,21 +74,79 @@ if (error) {
                             <button class="retry-button" onclick="window.history.back()">
                                 Go Back
                             </button>
+                            <button class="debug-toggle-button" onclick="toggleDebugInfo()">
+                                🔍 Show Debug Info
+                            </button>
                         </div>
                     )}
+
+                    <!-- デバッグ情報パネル -->
+                    <div id="debug-panel" class="debug-panel" style="display: none;">
+                        <div class="debug-header">
+                            <h3>🔍 OAuth Debug Information</h3>
+                            <p>認証プロセスの詳細情報（セキュリティ情報は除外）</p>
+                        </div>
+                        <div class="debug-content">
+                            <div class="debug-section">
+                                <h4>📋 Request Parameters</h4>
+                                <div class="debug-item">
+                                    <span class="debug-label">Error Type:</span>
+                                    <span class="debug-value" id="debug-error-type">{error || 'None'}</span>
+                                </div>
+                                <div class="debug-item">
+                                    <span class="debug-label">Error Description:</span>
+                                    <span class="debug-value" id="debug-error-desc">{error_description || 'None'}</span>
+                                </div>
+                                <div class="debug-item">
+                                    <span class="debug-label">Has Authorization Code:</span>
+                                    <span class="debug-value" id="debug-has-code">{code ? 'Yes' : 'No'}</span>
+                                </div>
+                                <div class="debug-item">
+                                    <span class="debug-label">Has State Parameter:</span>
+                                    <span class="debug-value" id="debug-has-state">{state ? 'Yes' : 'No'}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="debug-section">
+                                <h4>🌐 Network Information</h4>
+                                <div class="debug-item">
+                                    <span class="debug-label">Callback URL:</span>
+                                    <span class="debug-value" id="debug-callback-url">Loading...</span>
+                                </div>
+                                <div class="debug-item">
+                                    <span class="debug-label">Referrer:</span>
+                                    <span class="debug-value" id="debug-referrer">Loading...</span>
+                                </div>
+                                <div class="debug-item">
+                                    <span class="debug-label">User Agent:</span>
+                                    <span class="debug-value" id="debug-user-agent">Loading...</span>
+                                </div>
+                            </div>
+
+                            <div class="debug-section">
+                                <h4>⏰ Server Logs (Last 5 minutes)</h4>
+                                <div id="debug-server-logs" class="debug-logs">
+                                    <div class="debug-log-entry">Loading server logs...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
 
 
         <script is:inline define:vars={{ code, state, error, statusType }}>
+            // デバッグ情報の初期化
+            initializeDebugInfo();
+            
             // モバイルアプリへのリダイレクト処理（即座に実行）
             if (statusType === 'success' && code) {
                 const redirectUrl = `moodesky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
                 
                 console.log('🔄 OAuth Callback: Redirecting to app with code');
-                console.log('🔄 Redirect URL:', redirectUrl);
-                console.log('🔄 Code received:', code.substring(0, 20) + '...');
+                console.log('🔄 Redirect URL scheme: moodesky://oauth/callback');
+                console.log('🔄 Code received: [REDACTED FOR SECURITY]');
                 console.log('🔄 State received:', state);
                 
                 // 即座にモバイルアプリへのリダイレクトを実行
@@ -120,6 +178,62 @@ if (error) {
                             'If the app does not open, please close the browser tab and open the app manually.';
                     }
                 }, 3000);
+            }
+
+            // デバッグ情報表示の関数群
+            function toggleDebugInfo() {
+                const debugPanel = document.getElementById('debug-panel');
+                const button = document.querySelector('.debug-toggle-button');
+                
+                if (debugPanel.style.display === 'none') {
+                    debugPanel.style.display = 'block';
+                    button.textContent = '🔍 Hide Debug Info';
+                    loadServerLogs();
+                } else {
+                    debugPanel.style.display = 'none';
+                    button.textContent = '🔍 Show Debug Info';
+                }
+            }
+
+            function initializeDebugInfo() {
+                // ネットワーク情報の取得
+                setTimeout(() => {
+                    document.getElementById('debug-callback-url').textContent = 
+                        window.location.href.replace(/code=[^&]+/, 'code=[REDACTED]');
+                    document.getElementById('debug-referrer').textContent = 
+                        document.referrer || 'None';
+                    document.getElementById('debug-user-agent').textContent = 
+                        navigator.userAgent.substring(0, 100) + '...';
+                }, 100);
+            }
+
+            function loadServerLogs() {
+                const logsContainer = document.getElementById('debug-server-logs');
+                logsContainer.innerHTML = '<div class="debug-log-entry">Loading...</div>';
+
+                // サーバーログの取得
+                fetch('/api/moodesky/oauth/debug-logs')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.logs && data.logs.length > 0) {
+                            logsContainer.innerHTML = '';
+                            data.logs.forEach(log => {
+                                const logEntry = document.createElement('div');
+                                logEntry.className = `debug-log-entry log-${log.level || 'info'}`;
+                                logEntry.innerHTML = `
+                                    <span class="log-timestamp">[${log.timestamp}]</span>
+                                    <span class="log-level">${log.level?.toUpperCase() || 'INFO'}</span>
+                                    <span class="log-message">${log.message}</span>
+                                `;
+                                logsContainer.appendChild(logEntry);
+                            });
+                        } else {
+                            logsContainer.innerHTML = '<div class="debug-log-entry">No recent logs found</div>';
+                        }
+                    })
+                    .catch(error => {
+                        logsContainer.innerHTML = '<div class="debug-log-entry log-error">Failed to load server logs</div>';
+                    });
             }
         </script>
     </body>
@@ -238,6 +352,138 @@ if (error) {
 
     .retry-button:hover {
         background: var(--accent3);
+    }
+
+    .debug-toggle-button {
+        background: #2c3e50;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-left: 1rem;
+    }
+
+    .debug-toggle-button:hover {
+        background: #34495e;
+    }
+
+    .debug-panel {
+        margin-top: 2rem;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: 8px;
+        padding: 1.5rem;
+        font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+        font-size: 0.875rem;
+    }
+
+    .debug-header h3 {
+        margin: 0 0 0.5rem 0;
+        color: var(--accent1);
+        font-size: 1.25rem;
+    }
+
+    .debug-header p {
+        margin: 0 0 1.5rem 0;
+        color: var(--accent4);
+        font-size: 0.875rem;
+    }
+
+    .debug-section {
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border1);
+    }
+
+    .debug-section:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+
+    .debug-section h4 {
+        margin: 0 0 1rem 0;
+        color: var(--accent2);
+        font-size: 1rem;
+    }
+
+    .debug-item {
+        display: flex;
+        margin-bottom: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .debug-label {
+        font-weight: 600;
+        color: var(--accent3);
+        min-width: 180px;
+        margin-right: 1rem;
+    }
+
+    .debug-value {
+        flex: 1;
+        color: var(--accent6);
+        word-break: break-all;
+    }
+
+    .debug-logs {
+        max-height: 200px;
+        overflow-y: auto;
+        background: var(--bg1);
+        border: 1px solid var(--border1);
+        border-radius: 4px;
+        padding: 0.75rem;
+    }
+
+    .debug-log-entry {
+        margin-bottom: 0.5rem;
+        padding: 0.25rem 0;
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+
+    .debug-log-entry:last-child {
+        margin-bottom: 0;
+    }
+
+    .log-timestamp {
+        color: var(--accent4);
+        margin-right: 0.5rem;
+    }
+
+    .log-level {
+        font-weight: 600;
+        margin-right: 0.5rem;
+        padding: 0.1rem 0.3rem;
+        border-radius: 3px;
+        font-size: 0.7rem;
+    }
+
+    .log-info .log-level {
+        background: #3498db;
+        color: white;
+    }
+
+    .log-success .log-level {
+        background: #2ecc71;
+        color: white;
+    }
+
+    .log-warning .log-level {
+        background: #f39c12;
+        color: white;
+    }
+
+    .log-error .log-level {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .log-message {
+        color: var(--accent6);
     }
 
     @keyframes pulse {

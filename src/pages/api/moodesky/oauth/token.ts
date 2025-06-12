@@ -1,5 +1,6 @@
 
 import type { APIRoute } from 'astro';
+import { addDebugLog } from './debug-logs.js';
 
 /**
  * moodeSKy OAuth Token Exchange Endpoint
@@ -37,9 +38,12 @@ interface TokenRequest {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
+    addDebugLog('info', 'OAuth token exchange request received');
+    
     // Content-Type検証
     const contentType = request.headers.get('content-type');
     if (!contentType?.includes('application/x-www-form-urlencoded')) {
+      addDebugLog('error', `Invalid Content-Type: ${contentType}`);
       return new Response(
         JSON.stringify({
           error: 'invalid_request',
@@ -79,6 +83,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     // 必須パラメータ検証
     if (!tokenRequest.grant_type || !tokenRequest.client_id) {
+      addDebugLog('error', `Missing required parameters - grant_type: ${!!tokenRequest.grant_type}, client_id: ${!!tokenRequest.client_id}`);
       return new Response(
         JSON.stringify({
           error: 'invalid_request',
@@ -91,9 +96,12 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    addDebugLog('info', `Processing ${tokenRequest.grant_type} grant request`);
+
     // Client ID検証
     const expectedClientId = `${new URL(request.url).origin}/api/moodesky/oauth/client-metadata.json`;
     if (tokenRequest.client_id !== expectedClientId) {
+      addDebugLog('error', `Client ID mismatch - expected: ${expectedClientId}, got: ${tokenRequest.client_id}`);
       return new Response(
         JSON.stringify({
           error: 'invalid_client',
@@ -106,10 +114,14 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
+    addDebugLog('success', 'Client ID validation successful');
+
     // DPoP proof検証（省略可能）
     const dpopHeader = request.headers.get('DPoP');
     if (!dpopHeader) {
-      console.log('⚠️ DPoP header not provided - continuing without DPoP');
+      addDebugLog('warning', 'DPoP header not provided - continuing without DPoP');
+    } else {
+      addDebugLog('info', 'DPoP header present - using DPoP authentication');
     }
 
     // Grant type別処理
@@ -132,6 +144,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   } catch (error) {
     console.error('❌ Token exchange error:', error);
+    addDebugLog('error', `Token exchange server error: ${error}`);
     return new Response(
       JSON.stringify({
         error: 'server_error',
@@ -152,8 +165,11 @@ async function handleAuthorizationCodeGrant(
   tokenRequest: Partial<TokenRequest>,
   request: Request
 ): Promise<Response> {
+  addDebugLog('info', 'Starting authorization code grant processing');
+  
   // 必須パラメータ検証
   if (!tokenRequest.code || !tokenRequest.redirect_uri || !tokenRequest.code_verifier) {
+    addDebugLog('error', `Missing authorization code grant parameters - code: ${!!tokenRequest.code}, redirect_uri: ${!!tokenRequest.redirect_uri}, code_verifier: ${!!tokenRequest.code_verifier}`);
     return new Response(
       JSON.stringify({
         error: 'invalid_request',
@@ -166,7 +182,7 @@ async function handleAuthorizationCodeGrant(
     );
   }
 
-  console.log('🔐 Processing authorization code grant...');
+  addDebugLog('success', `Authorization code grant parameters validated - redirect_uri: ${tokenRequest.redirect_uri}`);
 
   try {
     // Bluesky OAuth serverの情報を取得
@@ -215,6 +231,9 @@ async function handleAuthorizationCodeGrant(
 
     if (!blueskyResponse.ok) {
       const errorBody = await blueskyResponse.text();
+      addDebugLog('error', `Bluesky OAuth server error: ${blueskyResponse.status} ${blueskyResponse.statusText}`);
+      addDebugLog('error', `Bluesky error response: ${errorBody.substring(0, 200)}...`);
+      
       console.error('❌ =============== Bluesky OAuth Error ===============');
       console.error('❌ Status:', blueskyResponse.status);
       console.error('❌ Status Text:', blueskyResponse.statusText);
@@ -236,6 +255,9 @@ async function handleAuthorizationCodeGrant(
 
     // Blueskyからの成功レスポンスを取得
     const blueskyTokenData = await blueskyResponse.json();
+    
+    addDebugLog('success', `Token exchange successful - token_type: ${blueskyTokenData.token_type}, expires_in: ${blueskyTokenData.expires_in}s`);
+    addDebugLog('info', `OAuth token issued for subject: ${blueskyTokenData.sub}`);
     
     console.log('✅ Token exchange successful via Bluesky OAuth');
     console.log('🔑 Token type:', blueskyTokenData.token_type);
