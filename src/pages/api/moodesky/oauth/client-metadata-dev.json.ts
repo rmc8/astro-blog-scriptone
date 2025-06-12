@@ -15,7 +15,7 @@ export const GET: APIRoute = async ({ request }) => {
     client_id: clientId,
     application_type: "native",
     client_name: "moodeSky Development",
-    client_uri: "https://github.com/rmc-8/moodeSky",
+    client_uri: `${url.protocol}//${url.host}/moodesky`,
     scope: "atproto",
     token_endpoint_auth_method: "none",
     grant_types: ["authorization_code", "refresh_token"],
