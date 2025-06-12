@@ -1,12 +1,21 @@
 ---
+/**
+ * moodeSKy OAuth Callback Page
+ * 
+ * AT Protocol OAuth 2.0 + DPoP認証コールバック処理
+ * RAGから得た公式atproto.dart実装パターンに準拠
+ * 
+ * @see https://atproto.com/specs/oauth#redirect-based-flow
+ * @see https://github.com/myConsciousness/atproto.dart/tree/main/packages/atproto_oauth
+ */
 import SEOHead from "@/components/seo/SEOHead.astro";
 
-// クエリパラメータを取得
+// OAuth 2.0標準クエリパラメータを取得
 const url = new URL(Astro.request.url);
-const code = url.searchParams.get('code');
-const state = url.searchParams.get('state');
-const error = url.searchParams.get('error');
-const error_description = url.searchParams.get('error_description');
+const code = url.searchParams.get('code');        // 認証コード
+const state = url.searchParams.get('state');      // CSRF保護用
+const error = url.searchParams.get('error');      // エラー種類
+const error_description = url.searchParams.get('error_description'); // エラー詳細
 
 // Error handling
 let statusMessage = '';
@@ -72,7 +81,7 @@ if (error) {
         </main>
 
 
-        <script define:vars={{ code, state, error, statusType }}>
+        <script is:inline define:vars={{ code, state, error, statusType }}>
             // モバイルアプリへのリダイレクト処理
             if (statusType === 'success' && code) {
                 const redirectUrl = `moodesky://oauth/callback?code=${encodeURIComponent(code)}${state ? `&state=${encodeURIComponent(state)}` : ''}`;
@@ -112,7 +121,7 @@ if (error) {
         justify-content: center;
         padding: 2rem;
         background-color: var(--bg1);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     }
 
     .oauth-callback-container {
