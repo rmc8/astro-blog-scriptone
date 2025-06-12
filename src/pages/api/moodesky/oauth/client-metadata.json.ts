@@ -13,7 +13,7 @@ export const GET: APIRoute = async ({ request }) => {
     response_types: ["code"],
     redirect_uris: [
       "https://rmc-8.com/moodesky/oauth/callback",
-      "mooodysky://oauth/callback"
+      "moodesky://oauth/callback"
     ],
     scope: "atproto",
     dpop_bound_access_tokens: true,
