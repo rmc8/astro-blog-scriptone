@@ -34,7 +34,17 @@ export const GET: APIRoute = async ({ request }) => {
     redirect_uris: [
       `${url.protocol}//${url.host}/moodesky/oauth/callback`, // HTTPS（Webアプリ用）
       "http://localhost:8080/oauth/callback", // HTTP loopback（ネイティブアプリ用）
-      "http://127.0.0.1:8080/oauth/callback"   // IPv4 loopback（代替）
+      "http://localhost:8081/oauth/callback", // 代替ポート1
+      "http://localhost:8082/oauth/callback", // 代替ポート2
+      "http://localhost:8083/oauth/callback", // 代替ポート3
+      "http://localhost:8084/oauth/callback", // 代替ポート4
+      "http://localhost:8085/oauth/callback", // 代替ポート5
+      "http://127.0.0.1:8080/oauth/callback",   // IPv4 loopback（代替）
+      "http://127.0.0.1:8081/oauth/callback",
+      "http://127.0.0.1:8082/oauth/callback",
+      "http://127.0.0.1:8083/oauth/callback",
+      "http://127.0.0.1:8084/oauth/callback",
+      "http://127.0.0.1:8085/oauth/callback"
     ]
   };
 
