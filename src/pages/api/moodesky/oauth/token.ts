@@ -1,5 +1,4 @@
 import type { APIRoute } from 'astro';
-import { createHash } from 'crypto';
 
 /**
  * moodeSKy OAuth Token Exchange Endpoint
@@ -62,14 +61,20 @@ export const POST: APIRoute = async ({ request }) => {
       }
     }
 
-    console.log('🔄 Token exchange request:', {
-      grant_type: tokenRequest.grant_type,
-      client_id: tokenRequest.client_id,
-      redirect_uri: tokenRequest.redirect_uri,
-      has_code: !!tokenRequest.code,
-      has_code_verifier: !!tokenRequest.code_verifier,
-      has_dpop_proof: !!request.headers.get('DPoP')
-    });
+    console.log('🔄 =============== Token Exchange Debug Info ===============');
+    console.log('🔄 Grant Type:', tokenRequest.grant_type);
+    console.log('🔄 Client ID:', tokenRequest.client_id);
+    console.log('🔄 Redirect URI:', tokenRequest.redirect_uri);
+    console.log('🔄 Has Authorization Code:', !!tokenRequest.code);
+    console.log('🔄 Has Code Verifier:', !!tokenRequest.code_verifier);
+    console.log('🔄 Has DPoP Header:', !!request.headers.get('DPoP'));
+    console.log('🔄 Code Verifier Length:', tokenRequest.code_verifier?.length || 0);
+    console.log('🔄 Authorization Code Length:', tokenRequest.code?.length || 0);
+    if (request.headers.get('DPoP')) {
+      console.log('🔄 DPoP Header Preview:', request.headers.get('DPoP')?.substring(0, 50) + '...');
+    }
+    console.log('🔄 Request Headers:', Object.fromEntries(request.headers.entries()));
+    console.log('🔄 ======================================================');
 
     // 必須パラメータ検証
     if (!tokenRequest.grant_type || !tokenRequest.client_id) {
@@ -201,11 +206,20 @@ async function handleAuthorizationCodeGrant(
       body: formData,
     });
 
-    console.log(`📡 Bluesky OAuth response: ${blueskyResponse.status}`);
+    console.log('📡 =============== Bluesky OAuth Response ===============');
+    console.log('📡 Response Status:', blueskyResponse.status);
+    console.log('📡 Response Status Text:', blueskyResponse.statusText);
+    console.log('📡 Response Headers:', Object.fromEntries(blueskyResponse.headers.entries()));
+    console.log('📡 ======================================================');
 
     if (!blueskyResponse.ok) {
       const errorBody = await blueskyResponse.text();
-      console.error('❌ Bluesky OAuth error:', errorBody);
+      console.error('❌ =============== Bluesky OAuth Error ===============');
+      console.error('❌ Status:', blueskyResponse.status);
+      console.error('❌ Status Text:', blueskyResponse.statusText);
+      console.error('❌ Error Body:', errorBody);
+      console.error('❌ Error Headers:', Object.fromEntries(blueskyResponse.headers.entries()));
+      console.error('❌ ===================================================');
       
       return new Response(
         JSON.stringify({
