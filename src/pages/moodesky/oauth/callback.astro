@@ -74,19 +74,27 @@ if (error) {
                             <button class="retry-button" onclick="window.history.back()">
                                 Go Back
                             </button>
-                            <button class="debug-toggle-button" onclick="toggleDebugInfo()">
-                                🔍 Show Debug Info
+                        </div>
+                    )}
+
+                    <!-- 控えめなデバッグボタン（エラー時のみ表示） -->
+                    {statusType === 'error' && (
+                        <div class="debug-corner">
+                            <button class="debug-corner-button" onclick="toggleDebugInfo()" title="Show technical details">
+                                <span class="debug-icon">🔍</span>
+                                <span class="debug-text">Debug</span>
                             </button>
                         </div>
                     )}
 
                     <!-- デバッグ情報パネル -->
                     <div id="debug-panel" class="debug-panel" style="display: none;">
-                        <div class="debug-header">
-                            <h3>🔍 OAuth Debug Information</h3>
-                            <p>認証プロセスの詳細情報（セキュリティ情報は除外）</p>
-                        </div>
                         <div class="debug-content">
+                            <button class="debug-close" onclick="toggleDebugInfo()" title="Close debug panel">×</button>
+                            <div class="debug-header">
+                                <h3>🔍 OAuth Debug Information</h3>
+                                <p>認証プロセスの詳細情報（セキュリティ情報は除外）</p>
+                            </div>
                             <div class="debug-section">
                                 <h4>📋 Request Parameters</h4>
                                 <div class="debug-item">
@@ -131,6 +139,7 @@ if (error) {
                             </div>
                         </div>
                     </div>
+                </div>
                 </div>
             </div>
         </main>
@@ -183,27 +192,39 @@ if (error) {
             // デバッグ情報表示の関数群
             function toggleDebugInfo() {
                 const debugPanel = document.getElementById('debug-panel');
-                const button = document.querySelector('.debug-toggle-button');
+                const button = document.querySelector('.debug-corner-button');
+                const debugText = button.querySelector('.debug-text');
                 
-                if (debugPanel.style.display === 'none') {
+                if (debugPanel.style.display === 'none' || debugPanel.style.display === '') {
                     debugPanel.style.display = 'block';
-                    button.textContent = '🔍 Hide Debug Info';
+                    debugText.textContent = 'Hide';
+                    button.title = 'Hide technical details';
                     loadServerLogs();
                 } else {
                     debugPanel.style.display = 'none';
-                    button.textContent = '🔍 Show Debug Info';
+                    debugText.textContent = 'Debug';
+                    button.title = 'Show technical details';
                 }
             }
 
             function initializeDebugInfo() {
                 // ネットワーク情報の取得
                 setTimeout(() => {
-                    document.getElementById('debug-callback-url').textContent = 
-                        window.location.href.replace(/code=[^&]+/, 'code=[REDACTED]');
-                    document.getElementById('debug-referrer').textContent = 
-                        document.referrer || 'None';
-                    document.getElementById('debug-user-agent').textContent = 
-                        navigator.userAgent.substring(0, 100) + '...';
+                    const callbackUrlElement = document.getElementById('debug-callback-url');
+                    const referrerElement = document.getElementById('debug-referrer');
+                    const userAgentElement = document.getElementById('debug-user-agent');
+                    
+                    if (callbackUrlElement) {
+                        callbackUrlElement.textContent = 
+                            window.location.href.replace(/code=[^&]+/g, 'code=[REDACTED]');
+                    }
+                    if (referrerElement) {
+                        referrerElement.textContent = document.referrer || 'None';
+                    }
+                    if (userAgentElement) {
+                        userAgentElement.textContent = 
+                            navigator.userAgent.substring(0, 100) + '...';
+                    }
                 }, 100);
             }
 
@@ -354,31 +375,91 @@ if (error) {
         background: var(--accent3);
     }
 
-    .debug-toggle-button {
-        background: #2c3e50;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 2rem;
-        font-size: 1rem;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        margin-left: 1rem;
+    .debug-corner {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
     }
 
-    .debug-toggle-button:hover {
-        background: #34495e;
+    .debug-corner-button {
+        background: rgba(52, 73, 94, 0.8);
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        opacity: 0.7;
+    }
+
+    .debug-corner-button:hover {
+        background: rgba(52, 73, 94, 0.95);
+        opacity: 1;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .debug-icon {
+        font-size: 0.9em;
+    }
+
+    .debug-text {
+        font-size: 0.75rem;
     }
 
     .debug-panel {
-        margin-top: 2rem;
-        background: var(--bg3);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1001;
+        overflow-y: auto;
+        padding: 20px;
+    }
+
+    .debug-content {
+        max-width: 900px;
+        margin: 0 auto;
+        background: var(--bg2);
         border: 1px solid var(--border2);
-        border-radius: 8px;
-        padding: 1.5rem;
+        border-radius: 12px;
+        padding: 2rem;
         font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
         font-size: 0.875rem;
+        position: relative;
+    }
+
+    .debug-close {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--accent4);
+        padding: 5px;
+        border-radius: 50%;
+        width: 35px;
+        height: 35px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .debug-close:hover {
+        background: var(--bg3);
+        color: var(--accent1);
     }
 
     .debug-header h3 {
