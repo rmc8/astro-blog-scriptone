@@ -116,7 +116,7 @@ export const GET: APIRoute = async ({ request, url }) => {
       error_description: 'Internal server error during OAuth callback'
     });
     
-    const fallbackUrl = `moodesky://oauth/callback?${fallbackError.toString()}`;
+    const fallbackUrl = `http://127.0.0.1:8081/oauth/callback?${fallbackError.toString()}`;
     
     return new Response(null, {
       status: 302,
