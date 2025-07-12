@@ -1,0 +1,99 @@
+---
+export interface Props {
+    content: string;
+    title?: string;
+}
+
+const { content, title } = Astro.props;
+---
+
+<figure class="mermaid-container">
+    {title && <figcaption class="mermaid-title">{title}</figcaption>}
+    <div class="mermaid-diagram" data-mermaid={content}></div>
+</figure>
+
+<script>
+    import type { MermaidConfig } from "mermaid";
+
+    const initMermaid = async () => {
+        const mermaidDiagrams = document.querySelectorAll(".mermaid-diagram");
+        
+        if (mermaidDiagrams.length === 0) return;
+
+        const { default: mermaid } = await import("mermaid");
+        
+        const config: MermaidConfig = {
+            startOnLoad: false,
+            theme: "default",
+            fontFamily: "inherit",
+        };
+        
+        mermaid.initialize(config);
+
+        mermaidDiagrams.forEach(async (element, index) => {
+            const content = element.getAttribute("data-mermaid");
+            if (!content) return;
+
+            try {
+                const id = `mermaid-${index}`;
+                const { svg } = await mermaid.render(id, content);
+                element.innerHTML = svg;
+            } catch (error) {
+                console.error("Mermaid rendering error:", error);
+                element.innerHTML = `<pre class="mermaid-error">Error rendering diagram</pre>`;
+            }
+        });
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initMermaid);
+    } else {
+        initMermaid();
+    }
+</script>
+
+<style>
+    .mermaid-container {
+        margin: 1.5rem 0;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        padding: 1rem;
+        background: #fafafa;
+    }
+
+    .mermaid-title {
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #374151;
+        text-align: center;
+    }
+
+    .mermaid-diagram {
+        text-align: center;
+        overflow-x: auto;
+    }
+
+    .mermaid-diagram :global(svg) {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .mermaid-error {
+        color: #dc2626;
+        background: #fef2f2;
+        padding: 0.75rem;
+        border-radius: 4px;
+        border: 1px solid #fecaca;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .mermaid-container {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        
+        .mermaid-title {
+            color: #f9fafb;
+        }
+    }
+</style>

@@ -1,0 +1,84 @@
+---
+---
+
+<script>
+    import type { MermaidConfig } from "mermaid";
+
+    const initMermaid = async () => {
+        const mermaidDiagrams = document.querySelectorAll(".mermaid-diagram");
+        
+        if (mermaidDiagrams.length === 0) return;
+
+        const { default: mermaid } = await import("mermaid");
+        
+        const config: MermaidConfig = {
+            startOnLoad: false,
+            theme: document.documentElement.classList.contains('dark') ? "dark" : "default",
+            fontFamily: "inherit",
+        };
+        
+        mermaid.initialize(config);
+
+        mermaidDiagrams.forEach(async (element, index) => {
+            const encodedContent = element.getAttribute("data-mermaid");
+            if (!encodedContent) return;
+
+            try {
+                const content = decodeURIComponent(encodedContent);
+                const id = `mermaid-${index}-${Date.now()}`;
+                const { svg } = await mermaid.render(id, content);
+                element.innerHTML = svg;
+                element.classList.add("mermaid-rendered");
+            } catch (error) {
+                console.error("Mermaid rendering error:", error);
+                element.innerHTML = `<pre class="mermaid-error">図表のレンダリングエラー</pre>`;
+            }
+        });
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initMermaid);
+    } else {
+        initMermaid();
+    }
+</script>
+
+<style is:global>
+    .mermaid-diagram {
+        margin: 1.5rem auto;
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        background: #fafafa;
+        text-align: center;
+        overflow-x: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        max-width: 100%;
+    }
+
+    .mermaid-diagram svg {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .mermaid-error {
+        color: #dc2626;
+        background: #fef2f2;
+        padding: 0.75rem;
+        border-radius: 4px;
+        border: 1px solid #fecaca;
+        margin: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .mermaid-diagram {
+            background: #1f2937;
+            border-color: #374151;
+        }
+    }
+</style>

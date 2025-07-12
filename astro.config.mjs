@@ -7,6 +7,7 @@ import mdx from "@astrojs/mdx";
 import remarkToc from "remark-toc";
 import remarkFlexibleCodeTitles from "remark-flexible-code-titles";
 import sitemap from "@astrojs/sitemap";
+import { remarkMermaid } from "./src/lib/remarkMermaidPlugin.ts";
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,6 +32,6 @@ export default defineConfig({
     output: "static",
     adapter: vercel(),
     markdown: {
-        remarkPlugins: [remarkToc, remarkFlexibleCodeTitles],
+        remarkPlugins: [remarkToc, remarkFlexibleCodeTitles, remarkMermaid],
     },
 });
