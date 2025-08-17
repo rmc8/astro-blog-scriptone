@@ -43,7 +43,9 @@ type Params = InferGetStaticParamsType<typeof getStaticPaths>;
 const { slug } = Astro.params as Params;
 
 if (slug && !EXISTING_PAGE_SLUGS.has(slug)) {
-  return Astro.redirect(`/blog/ja/${slug}`, 301);
+  // Location ヘッダーは ASCII 必須のため、スラッグをエンコード
+  const encodedSlug = encodeURI(slug);
+  return Astro.redirect(`/blog/ja/${encodedSlug}`, 301);
 }
 
 return Astro.redirect('/404', 302); // 302 Found (一時的なリダイレクト)
